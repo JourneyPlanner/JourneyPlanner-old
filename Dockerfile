@@ -9,6 +9,6 @@ RUN npm run build
 # production stage
 FROM nginx:stable-alpine as production-stage
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
-COPY --from=build-stage /app/dist /usr/share/nginx/html
+COPY --from=build-stage /app/dist /var/www/journeyplanner.io/html
 EXPOSE 443
 CMD ["nginx", "-g", "daemon off;"]
