@@ -3,7 +3,7 @@ FROM node:lts as build-stage
 WORKDIR /app
 COPY JourneyPlanner/package*.json ./
 RUN npm install
-COPY JourneyPlanner/* .
+COPY JourneyPlanner .
 RUN npm run build
 
 # production stage
