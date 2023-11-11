@@ -1,14 +1,15 @@
 # build stage
 FROM node:lts as build-stage
 WORKDIR /app
-COPY package*.json ./
+COPY JourneyPlanner/package*.json ./
 RUN npm install
-COPY . .
+COPY JourneyPlanner/* .
 RUN npm run build
 
 # production stage
 FROM nginx:stable-alpine as production-stage
-COPY ./conf/nginx.conf /etc/nginx/nginx.conf
+COPY journeyplanner.io.* /etc/ssl/
+COPY Journeyplanner/conf/nginx.conf /etc/nginx/nginx.conf
 COPY --from=build-stage /app/dist /var/www/journeyplanner.io/html
 EXPOSE 443
 CMD ["nginx", "-g", "daemon off;"]
