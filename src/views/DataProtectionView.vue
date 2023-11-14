@@ -1,11 +1,16 @@
 <script setup lang="ts">
-
+import BackButton from "@/components/buttons/BackButton.vue";
+import Footer from "@/components/Footer.vue";
 </script>
 
 <template>
-  <h2 class="font-nunito font-bold text-3xl text-center">Datenschutzerklärung</h2>
-  <a @click="$router.back">back</a>
-  <div class="ml-20 mr-20 mt-2">
+  <div class="grid grid-cols-3 grid-rows-1">
+    <h2 class="col-start-2 font-nunito font-bold text-3xl text-center">Datenschutzerklärung</h2>
+    <div class="grid grid-cols-3 grid-rows-1">
+      <BackButton class="col-start-3"/>
+    </div>
+  </div>
+  <div class="ml-60 mr-60 mt-2">
     <p class="font-nunito-sans text-base">
       Personenbezogene Daten (nachfolgend zumeist nur „Daten“ genannt) werden von
       uns nur im Rahmen der Erforderlichkeit
@@ -110,14 +115,14 @@
       Verarbeitungsverfahren gemacht werden.
     </p>
     <br>
-    <h4 class="jet-listing-dynamic-field__content font-semibold">Kundenkonto / Registrierungsfunktion</h4>
+    <h4 class="font-semibold">Kundenkonto / Registrierungsfunktion</h4>
     <p class="font-nunito-sans text-base">
       Falls Sie über unseren Internetauftritt ein Kundenkonto bei uns anlegen, werden wir die von Ihnen bei der
-      Registrierung eingegebenen Daten (also bspw. Ihren Namen, Ihre Anschrift oder Ihre E-Mail-Adresse) ausschließlich
+      Registrierung eingegebenen Daten (also bspw. Ihren Username oder Ihre E-Mail-Adresse) ausschließlich
       für vorvertragliche Leistungen, für die Vertragserfüllung oder zum Zwecke der Kundenpflege (bspw. um Ihnen eine
       Übersicht über Ihre bisherigen Bestellungen bei uns zur Verfügung zu stellen oder um Ihnen die sog.
       Merkzettelfunktion anbieten zu können) erheben und speichern. Gleichzeitig speichern wir dann die IP-Adresse und
-      das Datum Ihrer Registrierung nebst Uhrzeit. Eine Weitergabe dieser Daten an Dritte erfolgt natürlich nicht.#
+      das Datum Ihrer Registrierung nebst Uhrzeit. Eine Weitergabe dieser Daten an Dritte erfolgt natürlich nicht.
     </p>
     <p class="font-nunito-sans text-base">
       Im Rahmen des weiteren Anmeldevorgangs wird Ihre Einwilligung in diese Verarbeitung eingeholt und auf diese
@@ -143,7 +148,7 @@
     </p>
     <br>
     <h4
-      class="jet-listing-dynamic-field__content font-semibold">Nutzerbeiträge, Kommentare und Bewertungen</h4>
+      class="font-semibold">Nutzerbeiträge, Kommentare und Bewertungen</h4>
     <p class="font-nunito-sans text-base">Wir bieten Ihnen an, auf unseren Internetseiten Fragen, Antworten, Meinungen
       oder Bewertungen, nachfolgend nur „Beiträge genannt, zu veröffentlichen. Sofern Sie dieses Angebot in Anspruch
       nehmen, verarbeiten und veröffentlichen wir Ihren Beitrag, Datum und Uhrzeit der Einreichung sowie das von
@@ -164,7 +169,7 @@
       berechtigtes Interesse liegt in der ggf. notwendigen Rechtsverteidigung.
     </p>
     <br>
-    <h4 class="jet-listing-dynamic-field__content font-semibold">Serverdaten</h4>
+    <h4 class="font-semibold">Serverdaten</h4>
     <p class="font-nunito-sans text-base">
       Aus technischen Gründen, insbesondere zur Gewährleistung eines sicheren und
       stabilen Internetauftritts, werden Daten durch Ihren Internet-Browser an uns bzw. an unseren Webspace-Provider
@@ -187,7 +192,7 @@
       der Löschung ausgenommen.
     </p>
     <br>
-    <h4 class="jet-listing-dynamic-field__content font-semibold">CloudFlare</h4>
+    <h4 class="font-semibold">CloudFlare</h4>
     <p class="font-nunito-sans text-base">
       Zur Absicherung unseres Internetauftritts sowie zur Optimierung der Ladezeiten setzen wir den Dienst CloudFlare als
       sog. CDN (Content-Delivery-Network) ein. Es handelt sich hierbei um einen Dienst der Cloudflare Inc., 101 Townsend
@@ -230,7 +235,7 @@
       Rechten und Möglichkeiten zum Schutz Ihrer Privatsphäre an.
     </p>
     <br>
-    <h4 class="jet-listing-dynamic-field__content font-semibold">OpenStreetMap</h4>
+    <h4 class="font-semibold">OpenStreetMap</h4>
     <p class="font-nunito-sans text-base">
       Für Anfahrtsbeschreibungen setzen wir OpenStreetMap, einen Dienst der OpenStreetMap Foundation, St John’s
       Innovation Centre, Cowley Road, Cambridge, CB 4 0 WS, United Kingdom, nachfolgend nur „OpenStreetMap“ genannt,
@@ -271,8 +276,5 @@
         href="https://www.ratgeberrecht.eu/datenschutz/datenschutzerklaerung-generator-dsgvo.html" target="_blank"
         rel="noopener">Anwaltskanzlei Weiß &amp; Partner</a></p>
   </div>
+  <Footer class="mt-3" />
 </template>
-
-<style scoped>
-
-</style>

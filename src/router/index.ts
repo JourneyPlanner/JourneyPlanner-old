@@ -25,7 +25,10 @@ const router = createRouter({
             name: 'impressum',
             component: () => import('../views/ImprintView.vue')
         }
-    ]
+    ],
+    scrollBehavior(to, form, savedPosition) {
+        return { top: 0 }
+    },
 })
 
 export default router

@@ -11,7 +11,7 @@
         Impressum
       </RouterLink>
       <a href="mailto:contact@journeyplanner.io" class="font-semibold">contact@journeyplanner.io</a>
-      <RouterLink to="blob">
+      <RouterLink to="datenschutz">
         Datenschutz
       </RouterLink>
     </div>
