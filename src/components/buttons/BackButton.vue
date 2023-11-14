@@ -12,7 +12,7 @@ function hasHistory() {
           border border-call-to-action rounded-[48px]
           text-text-black font-nunito-sans font-bold xl:text-xl
           sm:text-base md:text-base
-          mx-10 my-2
+          mx-8 my-2
           "
   >
     Zurück

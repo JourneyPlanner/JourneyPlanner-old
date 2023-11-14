@@ -48,8 +48,6 @@ import Footer from "@/components/Footer.vue";
     </p>
   </div>
   <Footer class="fixed bottom-0 w-full"/>
-
-
 </template>
 
 <style scoped>
