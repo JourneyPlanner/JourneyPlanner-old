@@ -19,8 +19,18 @@ const router = createRouter({
     },
     {
       path: '/dashboard',
-        name: 'dashboard',
-        component: () => import('../views/UserDashboardView.vue')
+      name: 'dashboard',
+      component: () => import('../views/UserDashboardView.vue')
+    },
+    {
+      path: '/datenschutz',
+      name: 'datenschutz',
+      component: () => import('../views/DataProtectionView.vue')
+    },
+    {
+      path: '/impressum',
+      name: 'impressum',
+      component: () => import('../views/ImprintView.vue')
     }
   ]
 })
