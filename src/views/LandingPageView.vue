@@ -3,14 +3,14 @@ import VespaIllustration from "../components/illustrations/VespaIllustration.vue
 import NavBar from "../components/NavBar.vue";
 import FunctionCard from "../components/FunctionCard.vue";
 import IconCalender from "../components/icons/IconCalender.vue";
-import IconTeilen from "../components/icons/IconTeilen.vue";
-import IconErleben from "../components/icons/IconErleben.vue";
+import IconTeilen from "../components/icons/IconShare.vue";
+import IconErleben from "../components/icons/IconExperience.vue";
 import MemberCard from "../components/MemberCard.vue";
 
-import Raven from "../components/pictures/Raven.vue";
-import Severin from "../components/pictures/Severin.vue";
-import Roman from "../components/pictures/Roman.vue";
-import Stefi from "../components/pictures/Stefi.vue";
+import Raven from "../components/pictures/RavenPic.vue";
+import Severin from "../components/pictures/SeverinPic.vue";
+import Roman from "../components/pictures/RomanPic.vue";
+import Stefi from "../components/pictures/StefiPic.vue";
 import LoginButton from "@/components/buttons/LoginButton.vue";
 import RegisterButton from "@/components/buttons/RegisterButton.vue";
 import Footer from "../components/Footer.vue";
@@ -20,7 +20,7 @@ import Footer from "../components/Footer.vue";
   <div class="absolute overflow-x-hidden md:-top-24 md:right-0 md:w-1/2 xl:-top-36 xl:-right-28 xl:w-1/2">
     <VespaIllustration/>
   </div>
-  <div class="relative ">
+  <div class="relative overflow-hidden ">
     <div id="start" />
     <NavBar  class="sticky top-0"/>
 
