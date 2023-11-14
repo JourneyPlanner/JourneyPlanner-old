@@ -17,7 +17,9 @@ import Footer from "../components/Footer.vue";
 </script>
 
 <template>
-  <div class="absolute overflow-x-hidden md:-top-24 md:right-0 md:w-1/2 xl:-top-36 xl:-right-28 xl:w-1/2">
+  <!--  <div class="absolute overflow-x-hidden md:-top-24 md:right-0 md:w-1/2 xl:-top-36 xl:-right-28 xl:w-1/2">
+-->
+  <div class="absolute overflow-x-hidden md:-top-24 xl:-top-36 md:right-0 ">
     <VespaIllustration/>
   </div>
   <div class="relative">
