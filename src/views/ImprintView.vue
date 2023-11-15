@@ -1,17 +1,19 @@
 <script setup lang="ts">
-
 import BackButton from "@/components/buttons/BackButton.vue";
 import Footer from "@/components/Footer.vue";
 </script>
 
 <template>
-  <div class="grid grid-cols-3 grid-rows-1">
-    <h2 class="col-start-2 font-nunito font-bold text-3xl text-center">Impressum</h2>
-    <div class="grid grid-cols-3 grid-rows-1">
-      <BackButton class="col-start-3"/>
+  <div class="grid grid-cols-2grid-rows-1 sm:grid-cols-3">
+
+    <h2 class=" font-nunito font-semibold text-xl ml-5 mt-5
+              sm:font-bold sm:col-start-2 sm:text-xl md:text-2xl md:text-center">Impressum</h2>
+
+    <div class="grid grid-cols-3 grid-rows-1 px-5">
+      <BackButton class="col-start-3 mt-3 xl:col-start-2"/>
     </div>
   </div>
-  <div class="ml-60 mr-60 mt-2">
+  <div class="ml-5 mt-10 mr-1 sm:ml-20 sm:mr-10 lg:mx-60">
     <p><b>Informationen und Offenlegung gemäß &sect;5 (1) ECG, &sect; 25 MedienG, &sect; 63 GewO und &sect; 14 UGB</b>
     </p>
     <p><b>Webseitenbetreiber:</b> Mattias Burkard</p>

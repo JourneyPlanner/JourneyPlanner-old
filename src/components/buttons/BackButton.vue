@@ -10,11 +10,15 @@ function hasHistory() {
           class="
           bg-call-to-action
           border border-call-to-action rounded-[48px]
-          text-text-black font-nunito-sans font-bold xl:text-xl
-          sm:text-base md:text-base
-          mx-8 my-2
+          text-text-black font-nunito-sans font-semibold
+          text-base
+
+          sm:text-base sm:font-bold
+          md:text-xl
           "
+
   >
+    <!-- mx-8 my-4 -->
     Zurück
   </button>
 </template>

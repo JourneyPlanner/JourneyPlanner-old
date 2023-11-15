@@ -4,13 +4,15 @@ import Footer from "@/components/Footer.vue";
 </script>
 
 <template>
-  <div class="grid grid-cols-3 grid-rows-1">
-    <h2 class="col-start-2 font-nunito font-bold text-3xl text-center">Datenschutzerklärung</h2>
-    <div class="grid grid-cols-3 grid-rows-1">
-      <BackButton class="col-start-3"/>
+  <div class="grid grid-cols-2 grid-rows-1 sm:grid-cols-3">
+
+    <h2 class="font-nunito font-semibold text-xl text-center ml-5 mt-5
+          sm:font-bold sm:col-start-2 sm:text-xl md:text-2xl">Datenschutzerklärung</h2>
+    <div class="grid grid-cols-3 grid-rows-1 px-5">
+      <BackButton class="col-start-3 mt-3 xl:col-start-2"/>
     </div>
   </div>
-  <div class="ml-60 mr-60 mt-2">
+  <div class="ml-5 mt-10 mr-1 sm:ml-20 sm:mr-10 lg:mx-60">
     <p class="font-nunito-sans text-base">
       Personenbezogene Daten (nachfolgend zumeist nur „Daten“ genannt) werden von
       uns nur im Rahmen der Erforderlichkeit
