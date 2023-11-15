@@ -4,8 +4,7 @@ import Footer from "@/components/Footer.vue";
 </script>
 
 <template>
-  <div class="grid grid-cols-2grid-rows-1 sm:grid-cols-3">
-
+  <div class="grid grid-cols-2 grid-rows-1 sm:grid-cols-3">
     <h2 class=" font-nunito font-semibold text-xl ml-5 mt-5
               sm:font-bold sm:col-start-2 sm:text-xl md:text-2xl md:text-center">Impressum</h2>
 
@@ -43,15 +42,11 @@ import Footer from "@/components/Footer.vue";
       umgehend
       entfernen.</p>
     <p><b>Blattlinie:</b> Tool für Reiseplanung</p>
-    <p class="font-light">Quelle: <b><a href="https://www.rechtstexte-generator.at/dsgvo-generator-oesterreich/">Datenschutz
+    <p class="font-light mt-2">Quelle: <b><a href="https://www.rechtstexte-generator.at/dsgvo-generator-oesterreich/">Datenschutz
       DSGVO
       Generator</a></b> in Kooperation mit <b><a
         href="https://www.ortner-rechtsanwalt.at/rechtsanwalt-fuer-arbeitsrecht/">Rechtsanwalt Arbeitsrecht</a></b>
     </p>
   </div>
-  <Footer class="fixed bottom-0 w-full"/>
+  <Footer class="bottom-0 w-full md:fixed"/>
 </template>
-
-<style scoped>
-
-</style>
