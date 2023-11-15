@@ -1,7 +1,3 @@
-<script setup lang="ts">
-
-</script>
-
 <template>
   <div class="flex justify-center items-center">
     <div class="bg-primary rounded-[68px] font-nunito font-light text-base py-2 mt-4 mb-2">
@@ -11,7 +7,3 @@
     </div>
   </div>
 </template>
-
-<style scoped>
-
-</style>
