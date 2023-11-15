@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { createRouter, createWebHistory } from 'vue-router'
 import LandingPageView from "@/views/LandingPageView.vue";
 
@@ -20,6 +21,13 @@ import HomeView from '../views/HomeView.vue'
 import RegistrationView from "../views/RegistrationView.vue";
 
 const router = createRouter({
+=======
+import {createRouter, createWebHistory} from 'vue-router'
+import HomeView from '../views/HomeView.vue'
+import RegistrationView from "../views/RegistrationView.vue";
+
+const router = createRouter({
+>>>>>>> 1722ddf428d110310f0aa173f8ea68ce3cc6df6b
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
@@ -40,7 +48,10 @@ const router = createRouter({
             component: RegistrationView
         }
     ]
+<<<<<<< HEAD
 >>>>>>> 1722ddf (added Registration Site)
+=======
+>>>>>>> 1722ddf428d110310f0aa173f8ea68ce3cc6df6b
 })
 
 export default router
