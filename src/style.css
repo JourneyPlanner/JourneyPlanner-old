@@ -1,41 +1,9 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@import "../fonts/nunito.css";
+@import "../fonts/nunito_sans.css";
 
 html {font-size: 100%;} /*16px*/
 
-@layer base {
-    /* latin-ext */
-    @font-face {
-        font-family: 'Nunito';
-        font-style: normal;
-        font-stretch: 100%;
-        src: local('Nunito'), local('Nunito'), url('../fonts/nunito_ext.woff2') format('woff2');
-        unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-    }
-    /* latin */
-    @font-face {
-        font-family: 'Nunito';
-        font-style: normal;
-        font-stretch: 100%;
-        src: local('Nunito'), local('Nunito'), url('../fonts/nunito.woff2') format('woff2');
-        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-    }
-
-    /* latin-ext */
-    @font-face {
-        font-family: 'Nunito Sans';
-        font-style: normal;
-        font-stretch: 100%;
-        src: local('Nunito  Sans'), local('Nunito-Sans'), url('../fonts/nunito_sans_ext.woff2') format('woff2');
-        unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-    }
-    /* latin */
-    @font-face {
-        font-family: 'Nunito Sans';
-        font-style: normal;
-        font-stretch: 100%;
-        src: local('Nunito  Sans'), local('Nunito-Sans'), url('../fonts/nunito_sans.woff2') format('woff2');
-        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-    }
-}
