@@ -25,6 +25,7 @@ export default {
     }
 
     const v$ = useVuelidate(rules, state)
+
     async function signUp() {
       const {user, error} = await supabase.auth.signUp(
           {
@@ -54,40 +55,46 @@ export default {
 </script>
 <template>
   <div class="about bg-background">
-    <div class="form">
-      <h1 class="text-4xl pl-6.1538em font-nunito">Registrierung</h1>
-      <form class="bg-primary rounded-2xl">
-        <div class="inside">
-          <h2 class="text-2xl font-nunito font-semibold">Benutzername</h2>
-          <input v-model="v$.username.$model" class="font-nunito text-2xl" placeholder="Benutzername eingeben">
-          <p v-if="v$.username.$error" class="text-delete text-xl font-nunito">Benutzername ist verpflichtend</p>
-          <h2 class="text-2xl font-nunito font-semibold">E-Mail</h2>
-          <input v-model="v$.contact.email.$model" class="font-nunito text-2xl" placeholder="E-Mail eingeben">
-          <p v-if="v$.contact.email.$error" class="text-delete text-xl font-nunito">Nicht das richtige Format</p>
-          <h2 class="text-2xl font-nunito font-semibold">Passwort</h2>
-          <input v-model=v$.password.$model type="password" class="font-nunito text-2xl" placeholder="Passwort eingeben">
-          <p v-if="v$.password.$error" class="text-delete text-xl font-nunito">Muss zumindest 6 Character enthalten</p>
-          <h2 class="text-2xl font-nunito font-semibold">Passwort wiederholen</h2>
-          <input v-model=v$.passwordRepeat.$model type="password" class="font-nunito text-2xl" placeholder="Passwort eingeben">
-          <p v-if="v$.passwordRepeat.$error" class="text-delete text-xl font-nunito">Nicht ident zu Passwort</p>
-          <div class="check">
-            <label class="font-nunito text-base">
-              <input type="checkbox">
-              Hiermit stimmt du unserer <a class="underline" href=""> Datenschutzerklärung</a> zu
-            </label>
+    <div id="firsHalf" class="w-1/2 items-center justify-center flex">
+      <div class="form w-1/2">
+        <h1 class="text-4xl pl-6.1538em font-nunito">Registrierung</h1>
+        <form class="bg-primary rounded-2xl">
+          <div class="inside">
+            <h2 class="text-2xl font-nunito font-semibold">Benutzername</h2>
+            <input v-model="v$.username.$model" class="font-nunito text-2xl" placeholder="Benutzername eingeben">
+            <p v-if="v$.username.$error" class="text-delete text-xl font-nunito">Benutzername ist verpflichtend</p>
+            <h2 class="text-2xl font-nunito font-semibold">E-Mail</h2>
+            <input v-model="v$.contact.email.$model" class="font-nunito text-2xl" placeholder="E-Mail eingeben">
+            <p v-if="v$.contact.email.$error" class="text-delete text-xl font-nunito">Nicht das richtige Format</p>
+            <h2 class="text-2xl font-nunito font-semibold">Passwort</h2>
+            <input v-model=v$.password.$model type="password" class="font-nunito text-2xl"
+                   placeholder="Passwort eingeben">
+            <p v-if="v$.password.$error" class="text-delete text-xl font-nunito">Muss zumindest 6 Character
+              enthalten</p>
+            <h2 class="text-2xl font-nunito font-semibold">Passwort wiederholen</h2>
+            <input v-model=v$.passwordRepeat.$model type="password" class="font-nunito text-2xl"
+                   placeholder="Passwort eingeben">
+            <p v-if="v$.passwordRepeat.$error" class="text-delete text-xl font-nunito">Nicht ident zu Passwort</p>
+            <div class="check">
+              <label class="font-nunito text-base">
+                <input type="checkbox">
+                Hiermit stimmt du unserer <a class="underline" href=""> Datenschutzerklärung</a> zu
+              </label>
+            </div>
+            <div class="register">
+              <button type="button" class="registerButton bg-call-to-action rounded-3xl" @click="signUp">Sign up
+              </button>
+              <p class="font-nunito text-xl font-bold px-2">Schon registriert?</p>
+            </div>
           </div>
-          <div class="register">
-            <button type="button" class="registerButton bg-call-to-action rounded-3xl" @click="signUp">Sign up</button>
-            <p class="font-nunito text-xl font-bold px-2">Schon registriert?</p>
-          </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 </template>
 
 <style>
-
+/*
 .form {
   margin-left: 16.25vw;
   padding-top: 10.31vw;
@@ -122,5 +129,5 @@ h2 {
   padding-top: 1.2vw;
   padding-bottom: 1.41vw;
 }
-
+*/
 </style>
