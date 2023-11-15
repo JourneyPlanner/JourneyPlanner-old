@@ -48,5 +48,5 @@ import Footer from "@/components/Footer.vue";
         href="https://www.ortner-rechtsanwalt.at/rechtsanwalt-fuer-arbeitsrecht/">Rechtsanwalt Arbeitsrecht</a></b>
     </p>
   </div>
-  <Footer class="bottom-0 w-full"/>
+  <Footer class="bottom-0 w-full md:fixed"/>
 </template>
