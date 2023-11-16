@@ -2,8 +2,8 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-@import "../fonts/nunito.css";
-@import "../fonts/nunito_sans.css";
+@import "assets/fonts/nunito.css";
+@import "assets/fonts/nunito_sans.css";
 
 html {font-size: 100%;} /*16px*/
 
