@@ -5,7 +5,7 @@
 <template>
   <RouterLink to="/" class="bg-call-to-action
   border border-4 border-call-to-action rounded-[18px]
-  text-text-black font-nunito-sans font-bold xl:text-xl
+  text-text-black font-nunito-sans font-bold xl:text-base
   sm:text-base md:text-base py-1 px-8 flex justify-around mr-2">
     Zurück zur Startseite
   </RouterLink>
