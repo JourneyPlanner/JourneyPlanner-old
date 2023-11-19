@@ -89,7 +89,7 @@ export default {
                 <label class="font-nunito text-base">
                   <input type="checkbox" v-model="v$.accepted.$model">
                   Hiermit akzeptiere ich die
-                  <RouterLink to="blob">
+                  <RouterLink to="datenschutz">
                     Datenschutzerklärung
                   </RouterLink>
                 </label>
@@ -126,39 +126,5 @@ h2 {
   @apply pt-[3%] text-left
 }
 
-/*
-.form {
-  margin-left: 16.25vw;
-  padding-top: 10.31vw;
-  width: 25.94vw;
-
-}
-
-.inside {
-  padding-left: 1.25vw;
-}
-
-input:not([type="checkbox"]) {
-  width: 23.28vw;
-}
-
-
-
-.check {
-  padding-top: 3.14vh;
-}
-
-.registerButton {
-  width: 12.29vw;
-  text-align: center;
-}
-
-.register {
-  display: flex;
-  align-items: center;
-  padding-top: 1.2vw;
-  padding-bottom: 1.41vw;
-}
-*/
 
 </style>
