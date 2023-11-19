@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import LandingPageView from "@/views/LandingPageView.vue";
+import RegistrationView from "@/views/RegistrationView.vue";
 
 
 const router = createRouter({
@@ -9,6 +10,11 @@ const router = createRouter({
             path: '/',
             name: 'home',
             component: LandingPageView
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: RegistrationView
         },
         {
             path: '/dashboard',
@@ -30,5 +36,6 @@ const router = createRouter({
         return { top: 0 }
     },
 })
+
 
 export default router
