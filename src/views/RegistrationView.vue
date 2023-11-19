@@ -4,10 +4,15 @@ import {computed, reactive, ref} from "vue";
 import {supabase} from "@/lib/supabaseClient";
 import {useVuelidate} from '@vuelidate/core'
 import {required, email, sameAs, minLength} from '@vuelidate/validators'
+import Footer from "@/components/Footer.vue";
+import FliegerIllustration from "@/components/illustrations/FliegerIllustration.vue";
+import BackToHomeButton from "@/components/buttons/BackToHomeButton.vue";
 
 export default {
+  components: {BackToHomeButton, FliegerIllustration, Footer},
   setup() {
     const state = reactive({
+      accepted: false,
       password: '',
       passwordRepeat: '',
       username: '',
@@ -16,6 +21,7 @@ export default {
       }
     })
     const rules = {
+      accepted: {checked: sameAs(true), $autoDirty: true},
       username: {required}, // Matches state.firstName
       password: {required, minlength: minLength(6)},
       passwordRepeat: {sameAsPassword: sameAs(computed(() => state.password))},
@@ -25,11 +31,11 @@ export default {
     }
 
     const v$ = useVuelidate(rules, state)
-<<<<<<< HEAD
 
-=======
->>>>>>> 1722ddf428d110310f0aa173f8ea68ce3cc6df6b
     async function signUp() {
+      if (!state.accepted) {
+        return;
+      }
       const {user, error} = await supabase.auth.signUp(
           {
             email: state.contact.email,
@@ -46,7 +52,6 @@ export default {
         console.log(error);
       } else {
         console.log(user);
-        window.location.href = "http://localhost:5173/dashboard"
       }
     }
 
@@ -57,82 +62,71 @@ export default {
 
 </script>
 <template>
-  <div class="about bg-background">
-<<<<<<< HEAD
-    <div id="firsHalf" class="w-1/2 items-center justify-center flex">
-      <div class="form w-1/2">
-        <h1 class="text-4xl pl-6.1538em font-nunito">Registrierung</h1>
-        <form class="bg-primary rounded-2xl">
-          <div class="inside">
-            <h2 class="text-2xl font-nunito font-semibold">Benutzername</h2>
-            <input v-model="v$.username.$model" class="font-nunito text-2xl" placeholder="Benutzername eingeben">
-            <p v-if="v$.username.$error" class="text-delete text-xl font-nunito">Benutzername ist verpflichtend</p>
+  <div class="about bg-background flex">
+    <div id="firsHalf" class="xl:w-1/2 md:w-2/3 sm:w-[100%] items-center justify-center flex flex-col">
+      <BackToHomeButton class="absolute top-[2%] left-[2%]"/>
+      <div class="form xl:w-1/2 md:w-[80%] sm:w-[80%]">
+        <h1 class="text-4xl pl-6.1538em font-nunito pt-[15%]">Registrierung</h1>
+        <form class="bg-primary rounded-2xl w-[25vw]">
+          <div class="inside items-center justify-center flex flex-col">
+            <div class="text-left items-start justify-items-start w-auto">
+              <h2 class=" text-left text-2xl font-nunito font-semibold">Benutzername</h2>
+            </div>
+            <input v-model="v$.username.$model" class="font-nunito text-2xl " placeholder="Benutzername eingeben">
+            <p v-if="v$.username.$error" class="text-delete text-base font-nunito">Benutzername ist verpflichtend</p>
             <h2 class="text-2xl font-nunito font-semibold">E-Mail</h2>
             <input v-model="v$.contact.email.$model" class="font-nunito text-2xl" placeholder="E-Mail eingeben">
-            <p v-if="v$.contact.email.$error" class="text-delete text-xl font-nunito">Nicht das richtige Format</p>
+            <p v-if="v$.contact.email.$error" class="text-delete text-base font-nunito">Nicht das richtige Format</p>
             <h2 class="text-2xl font-nunito font-semibold">Passwort</h2>
             <input v-model=v$.password.$model type="password" class="font-nunito text-2xl"
                    placeholder="Passwort eingeben">
-            <p v-if="v$.password.$error" class="text-delete text-xl font-nunito">Muss zumindest 6 Character
+            <p v-if="v$.password.$error" class="text-delete text-base font-nunito">Muss zumindest 6 Character
               enthalten</p>
             <h2 class="text-2xl font-nunito font-semibold">Passwort wiederholen</h2>
             <input v-model=v$.passwordRepeat.$model type="password" class="font-nunito text-2xl"
                    placeholder="Passwort eingeben">
-            <p v-if="v$.passwordRepeat.$error" class="text-delete text-xl font-nunito">Nicht ident zu Passwort</p>
+            <p v-if="v$.passwordRepeat.$error" class="text-delete text-base font-nunito">Nicht ident zu Passwort</p>
             <div class="check">
               <label class="font-nunito text-base">
-                <input type="checkbox">
-                Hiermit stimmt du unserer <a class="underline" href=""> Datenschutzerklärung</a> zu
+                <input type="checkbox" v-model="v$.accepted.$model">
+                Hiermit stimmt du unserer
+                <RouterLink to="blob">
+                  Datenschutzerklärung
+                </RouterLink>
+                zu
               </label>
             </div>
-            <div class="register">
-              <button type="button" class="registerButton bg-call-to-action rounded-3xl" @click="signUp">Sign up
+            <div class="items-center justify-center flex p-3">
+              <button :disabled="v$.$invalid" @mouseover="v$.$touch()" type="button"
+                      class="registerButton bg-call-to-action rounded-3xl font-nunito text-xl font-bold p-1.5"
+                      @click="signUp">Registrieren
               </button>
-              <p class="font-nunito text-xl font-bold px-2">Schon registriert?</p>
+              <RouterLink class="font-nunito text-xl font-bold px-2 break-after-all" to="login">Schon registriert?
+              </RouterLink>
             </div>
+            <p v-if="v$.accepted.$error" class="text-delete text-base font-nunito">Bitte akzeptieren sie die
+              Datenschutzerklärung</p>
           </div>
         </form>
       </div>
-=======
-    <div class="form">
-      <h1 class="text-4xl pl-6.1538em font-nunito">Registrierung</h1>
-      <form class="bg-primary rounded-2xl">
-        <div class="inside">
-          <h2 class="text-2xl font-nunito font-semibold">Benutzername</h2>
-          <input v-model="v$.username.$model" class="font-nunito text-2xl" placeholder="Benutzername eingeben">
-          <p v-if="v$.username.$error" class="text-delete text-xl font-nunito">Benutzername ist verpflichtend</p>
-          <h2 class="text-2xl font-nunito font-semibold">E-Mail</h2>
-          <input v-model="v$.contact.email.$model" class="font-nunito text-2xl" placeholder="E-Mail eingeben">
-          <p v-if="v$.contact.email.$error" class="text-delete text-xl font-nunito">Nicht das richtige Format</p>
-          <h2 class="text-2xl font-nunito font-semibold">Passwort</h2>
-          <input v-model=v$.password.$model type="password" class="font-nunito text-2xl" placeholder="Passwort eingeben">
-          <p v-if="v$.password.$error" class="text-delete text-xl font-nunito">Muss zumindest 6 Character enthalten</p>
-          <h2 class="text-2xl font-nunito font-semibold">Passwort wiederholen</h2>
-          <input v-model=v$.passwordRepeat.$model type="password" class="font-nunito text-2xl" placeholder="Passwort eingeben">
-          <p v-if="v$.passwordRepeat.$error" class="text-delete text-xl font-nunito">Nicht ident zu Passwort</p>
-          <div class="check">
-            <label class="font-nunito text-base">
-              <input type="checkbox">
-              Hiermit stimmt du unserer <a class="underline" href=""> Datenschutzerklärung</a> zu
-            </label>
-          </div>
-          <div class="register">
-            <button type="button" class="registerButton bg-call-to-action rounded-3xl" @click="signUp">Sign up</button>
-            <p class="font-nunito text-xl font-bold px-2">Schon registriert?</p>
-          </div>
-        </div>
-      </form>
->>>>>>> 1722ddf428d110310f0aa173f8ea68ce3cc6df6b
+        <Footer class="absolute bottom-0 w-[100%]"/>
+    </div>
+    <div class="w-1/2 items-center justify-center overflow-x-hidden">
+      <FliegerIllustration class="h-[85vh] ml-[13%]"/>
     </div>
   </div>
 </template>
 
 <style>
-<<<<<<< HEAD
-/*
-=======
+input:not([type="checkbox"]) {
+  @apply flex w-[90%]
+}
 
->>>>>>> 1722ddf428d110310f0aa173f8ea68ce3cc6df6b
+h2 {
+  @apply pt-[3%] text-left
+}
+
+/*
 .form {
   margin-left: 16.25vw;
   padding-top: 10.31vw;
@@ -148,9 +142,7 @@ input:not([type="checkbox"]) {
   width: 23.28vw;
 }
 
-h2 {
-  padding-top: 1.82vw;
-}
+
 
 .check {
   padding-top: 3.14vh;
@@ -167,9 +159,6 @@ h2 {
   padding-top: 1.2vw;
   padding-bottom: 1.41vw;
 }
-<<<<<<< HEAD
 */
-=======
 
->>>>>>> 1722ddf428d110310f0aa173f8ea68ce3cc6df6b
 </style>
