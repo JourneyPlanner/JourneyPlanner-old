@@ -49,7 +49,6 @@ export default {
             }
           }
       )
-
       if (error) {
         console.log(error);
       } else {
