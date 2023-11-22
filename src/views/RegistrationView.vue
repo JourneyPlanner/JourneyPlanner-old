@@ -44,7 +44,8 @@ export default {
             options: {
               data: {
                 username: state.username,
-              }
+              },
+              emailRedirectTo: 'https://journeyplanner.io/dashboard'
             }
           }
       )
@@ -93,7 +94,7 @@ export default {
               <p v-if="v$.passwordRepeat.$error" class="text-delete text-base font-nunito">Nicht ident zu Passwort</p>
               <div class="check">
                 <label class="font-nunito text-base">
-                  <input type="checkbox" v-model="v$.accepted.$model">
+                  <input type="checkbox" class="p-3" v-model="v$.accepted.$model">
                   Hiermit akzeptiere ich die
                   <RouterLink :to="{ name: 'datenschutz'}" target="_blank" class="underline underline-offset-2 ml-4 lg:ml-0">
                     Datenschutzerklärung
