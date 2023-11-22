@@ -1,14 +1,13 @@
 <script setup lang="ts">
 
 import UserDashboardJourneyItem from "@/components/UserDashboardJourneyItem.vue";
-import {supabase} from "@/lib/supabaseClient";
+import {supabase} from "@/lib/supabaseClient.js";
 import {ref} from "vue";
+import IconNewJourney from "@/components/icons/IconNewJourney.vue";
 
 const journeys = ref();
 
-console.log()
-
-const { data, error } = await supabase
+const {data, error} = await supabase
     .from('journey')
     .select('*')
 
@@ -23,14 +22,11 @@ console.log(journeys.value)
       <template #date-range>02.08. - 12.09.</template>
     </UserDashboardJourneyItem>
 
-    <div class="bg-call-to-action rounded-[32px] overflow-hidden py-8">
-      <div class="font-nunito font-medium text-2xl pl-3">
-        <slot name="journey-name"></slot>
+    <RouterLink to="/reise/neu">
+      <div class="bg-call-to-action rounded-[32px] py-12 flex items-center justify-center">
+        <IconNewJourney class="h-20 w-20"/>
       </div>
-      <div class="font-nunito text-xl pl-3">
-        <slot name="date-range"></slot>
-      </div>
-    </div>
+    </RouterLink>
   </div>
 </template>
 

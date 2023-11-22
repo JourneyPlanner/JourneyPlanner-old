@@ -5,7 +5,7 @@ import UserDashboardJourneyItem from "../components/UserDashboardJourneyItem.vue
 import NewJourneyButton from "../components/buttons/NewJourneyButton.vue";
 import Footer from "@/components/Footer.vue";
 
-import { defineAsyncComponent } from "vue";
+import {defineAsyncComponent} from "vue";
 
 const AsyncDashboard = defineAsyncComponent(() =>
     import('@/components/AsyncDashboard.vue')
@@ -26,19 +26,20 @@ const AsyncDashboard = defineAsyncComponent(() =>
       <RouterLink to="settings">
         <SettingsIcon class="mt-9 ml-5 w-14"/>
       </RouterLink>
-
     </div>
   </header>
 
   <body>
-    <Suspense>
-      <template #default>
-        <AsyncDashboard/>
-      </template>
-      <template #fallback>
-        <p class="text-xl font-medium">Loading...</p>
-      </template>
-    </Suspense>
+  <Suspense>
+    <template #default>
+      <AsyncDashboard/>
+    </template>
+    <template #fallback>
+      <div class="flex text-center justify-center">
+        <p class="text-3xl font-medium font-nunito">Lade...</p>
+      </div>
+    </template>
+  </Suspense>
   </body>
 
   <Footer class="absolute inset-x-0 bottom-0"/>

@@ -4,7 +4,7 @@ import IconNewJourney from "@/components/icons/IconNewJourney.vue";
 </script>
 
 <template>
-  <RouterLink to="/neue-reise" class="bg-call-to-action
+  <RouterLink to="/reise/neu" class="bg-call-to-action
   border-4 border-call-to-action rounded-[44px]
   text-text-black font-nunito font-semibold text-2xl
    flex justify-around my-10 pr-5 pl-2">
