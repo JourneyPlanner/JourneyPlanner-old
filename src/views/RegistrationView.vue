@@ -51,7 +51,7 @@ export default {
       if (error) {
         console.log(error);
       } else {
-        console.log(user);
+
       }
     }
 
