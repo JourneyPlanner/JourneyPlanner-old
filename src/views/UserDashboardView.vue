@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import HomeMarkerIcon from "../components/icons/IconHomeMarker.vue";
 import SettingsIcon from "../components/icons/IconSettings.vue";
-import UserDashboardJourneyItem from "../components/UserDashboardJourneyItem.vue";
 import NewJourneyButton from "../components/buttons/NewJourneyButton.vue";
 import Footer from "@/components/Footer.vue";
 
@@ -10,17 +9,16 @@ import {defineAsyncComponent} from "vue";
 const AsyncDashboard = defineAsyncComponent(() =>
     import('@/components/AsyncDashboard.vue')
 );
-
 </script>
 
 <template>
-  <header class="flex flex-row">
-    <div class="flex flex-row basis-1/2 ml-10">
+  <header class="flex flex-row justify-between mb-4">
+    <div class="flex flex-row ml-10 mt-3">
       <HomeMarkerIcon class="mt-3 ml-7 mr-5"/>
       <h1 class="font-nunito font-medium text-4xl">Deine Reisen</h1>
     </div>
 
-    <div class="flex flex-row basis-1/2 pl-80">
+    <div class="flex flex-row mr-20">
       <NewJourneyButton/>
 
       <RouterLink to="settings">
@@ -42,9 +40,6 @@ const AsyncDashboard = defineAsyncComponent(() =>
   </Suspense>
   </body>
 
+
   <Footer class="absolute inset-x-0 bottom-0"/>
 </template>
-
-<style scoped>
-
-</style>

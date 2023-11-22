@@ -3,7 +3,7 @@ import LandingPageView from "@/views/LandingPageView.vue";
 import RegistrationView from "@/views/RegistrationView.vue";
 import LoginView from "@/views/LoginView.vue";
 //@ts-ignore
-import { supabase } from "@/lib/supabaseClient.js";
+import {supabase} from "@/lib/supabaseClient.js";
 
 
 const router = createRouter({
@@ -52,6 +52,11 @@ const router = createRouter({
             //component: () => import('../views/NewJourneyFormView.vue')
         }
          */
+        {
+            path: '/reise/:uuid',
+            name: 'reise-uuid',
+            component: () => import('../views/JourneyView.vue')
+        }
     ],
     scrollBehavior(to, form, savedPosition) {
         return {top: 0}
