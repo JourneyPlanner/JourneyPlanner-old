@@ -1,18 +1,10 @@
-<script setup lang="ts">
-
-</script>
-
 <template>
-  <div class="bg-primary rounded-[32px] overflow-hidden">
-    <div class="font-nunito font-semibold text-3xl">
+  <div class="bg-primary rounded-[32px] overflow-hidden py-8">
+    <div class="font-nunito font-medium text-2xl pl-3">
       <slot name="journey-name"></slot>
     </div>
-    <div class="font-nunito text-2xl">
+    <div class="font-nunito text-xl pl-3">
       <slot name="date-range"></slot>
     </div>
   </div>
 </template>
-
-<style scoped>
-
-</style>

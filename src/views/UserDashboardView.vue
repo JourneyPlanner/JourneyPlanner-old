@@ -2,42 +2,46 @@
 import HomeMarkerIcon from "../components/icons/IconHomeMarker.vue";
 import SettingsIcon from "../components/icons/IconSettings.vue";
 import UserDashboardJourneyItem from "../components/UserDashboardJourneyItem.vue";
+import NewJourneyButton from "../components/buttons/NewJourneyButton.vue";
+import Footer from "@/components/Footer.vue";
+
+import { defineAsyncComponent } from "vue";
+
+const AsyncDashboard = defineAsyncComponent(() =>
+    import('@/components/AsyncDashboard.vue')
+);
+
 </script>
 
 <template>
   <header class="flex flex-row">
-    <HomeMarkerIcon/>
-    <h1 class="font-nunito font-semibold text-4xl">Deine Reisen</h1>
+    <div class="flex flex-row basis-1/2 ml-10">
+      <HomeMarkerIcon class="mt-3 ml-7 mr-5"/>
+      <h1 class="font-nunito font-medium text-4xl">Deine Reisen</h1>
+    </div>
 
-    <!-- Button noch, aber warten auf button folder -->
+    <div class="flex flex-row basis-1/2 pl-80">
+      <NewJourneyButton/>
 
-    <!-- besser noch zu nem komponenten machen -->
-    <SettingsIcon />
+      <RouterLink to="settings">
+        <SettingsIcon class="mt-9 ml-5 w-14"/>
+      </RouterLink>
+
+    </div>
   </header>
 
   <body>
-  <div id="journeys" class="grid grid-cols-4 gap-20">
-    <UserDashboardJourneyItem>
-      <template #journey-name>Stockholm</template>
-      <template #date-range>02.08. - 12.09.</template>
-    </UserDashboardJourneyItem>
-
-    <UserDashboardJourneyItem>
-      <template #journey-name>Stockholm</template>
-      <template #date-range>02.08. - 12.09.</template>
-    </UserDashboardJourneyItem>
-
-    <UserDashboardJourneyItem>
-      <template #journey-name>Stockholm</template>
-      <template #date-range>02.08. - 12.09.</template>
-    </UserDashboardJourneyItem>
-
-    <UserDashboardJourneyItem>
-      <template #journey-name>Stockholm</template>
-      <template #date-range>02.08. - 12.09.</template>
-    </UserDashboardJourneyItem>
-  </div>
+    <Suspense>
+      <template #default>
+        <AsyncDashboard/>
+      </template>
+      <template #fallback>
+        <p class="text-xl font-medium">Loading...</p>
+      </template>
+    </Suspense>
   </body>
+
+  <Footer class="absolute inset-x-0 bottom-0"/>
 </template>
 
 <style scoped>
