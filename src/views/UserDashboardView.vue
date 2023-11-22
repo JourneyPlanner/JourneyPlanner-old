@@ -12,34 +12,35 @@ const AsyncDashboard = defineAsyncComponent(() =>
 </script>
 
 <template>
-  <header class="flex flex-row justify-between mb-4">
-    <div class="flex flex-row ml-10 mt-3">
-      <HomeMarkerIcon class="mt-3 ml-7 mr-5"/>
-      <h1 class="font-nunito font-medium text-4xl">Deine Reisen</h1>
-    </div>
-
-    <div class="flex flex-row mr-20">
-      <NewJourneyButton/>
-
-      <RouterLink to="settings">
-        <SettingsIcon class="mt-9 ml-5 w-14"/>
-      </RouterLink>
-    </div>
-  </header>
-
-  <body>
-  <Suspense>
-    <template #default>
-      <AsyncDashboard/>
-    </template>
-    <template #fallback>
-      <div class="flex text-center justify-center">
-        <p class="text-3xl font-medium font-nunito">Lade...</p>
+  <div class="flex flex-col min-h-screen">
+    <header class="flex flex-row justify-between mb-4">
+      <div class="flex flex-row ml-10 mt-3">
+        <HomeMarkerIcon class="mt-3 ml-7 mr-5"/>
+        <h1 class="font-nunito font-medium text-4xl">Deine Reisen</h1>
       </div>
-    </template>
-  </Suspense>
-  </body>
 
+      <div class="flex flex-row mr-20">
+        <NewJourneyButton/>
 
-  <Footer class="absolute inset-x-0 bottom-0"/>
+        <RouterLink to="settings">
+          <SettingsIcon class="mt-9 ml-5 w-14"/>
+        </RouterLink>
+      </div>
+    </header>
+
+    <main>
+    <Suspense>
+      <template #default>
+        <AsyncDashboard/>
+      </template>
+      <template #fallback>
+        <div class="flex text-center justify-center">
+          <p class="text-3xl font-medium font-nunito">Lade...</p>
+        </div>
+      </template>
+    </Suspense>
+    </main>
+
+    <Footer class="mt-auto"/>
+  </div>
 </template>
