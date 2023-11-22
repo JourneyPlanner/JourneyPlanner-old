@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import LandingPageView from "@/views/LandingPageView.vue";
 import RegistrationView from "@/views/RegistrationView.vue";
+import LoginView from "@/views/LoginView.vue";
 
 
 const router = createRouter({
@@ -30,6 +31,11 @@ const router = createRouter({
             path: '/impressum',
             name: 'impressum',
             component: () => import('../views/ImprintView.vue')
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: LoginView
         }
     ],
     scrollBehavior(to, form, savedPosition) {
