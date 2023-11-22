@@ -7,6 +7,7 @@ import {required, email, sameAs, minLength} from '@vuelidate/validators'
 import Footer from "@/components/Footer.vue";
 import FliegerIllustration from "@/components/illustrations/FliegerIllustration.vue";
 import BackToHomeButton from "@/components/buttons/BackToHomeButton.vue";
+import router from "@/router";
 
 export default {
   components: {BackToHomeButton, FliegerIllustration, Footer},
@@ -47,11 +48,10 @@ export default {
             }
           }
       )
-
       if (error) {
         console.log(error);
       } else {
-
+        await router.push("/login" + "?registered=true");
       }
     }
 
@@ -95,7 +95,7 @@ export default {
                 <label class="font-nunito text-base">
                   <input type="checkbox" v-model="v$.accepted.$model">
                   Hiermit akzeptiere ich die
-                  <RouterLink to="datenschutz" class="underline underline-offset-2 ml-4 lg:ml-0">
+                  <RouterLink :to="{ name: 'datenschutz'}" target="_blank" class="underline underline-offset-2 ml-4 lg:ml-0">
                     Datenschutzerklärung
                   </RouterLink>
                 </label>
@@ -107,7 +107,9 @@ export default {
                         class="registerButton bg-call-to-action rounded-3xl font-nunito text-xl font-bold p-1 px-2"
                         @click="signUp">Registrieren
                 </button>
-                <RouterLink class="font-nunito text-base font-bold px-2 break-after-all underline underline-offset-2 lg:ml-4" to="login">Schon registriert?
+                <RouterLink
+                    class="font-nunito text-base font-bold px-2 break-after-all underline underline-offset-2 lg:ml-4"
+                    to="login">Schon registriert?
                 </RouterLink>
               </div>
             </div>
