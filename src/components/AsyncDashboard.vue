@@ -1,25 +1,29 @@
 <script setup lang="ts">
 
 import UserDashboardJourneyItem from "@/components/UserDashboardJourneyItem.vue";
-import {supabase} from "@/lib/supabaseClient.js";
-import {ref} from "vue";
+import { ref } from "vue";
 import IconNewJourney from "@/components/icons/IconNewJourney.vue";
+
+//@ts-ignore
+import {supabase} from "@/lib/supabaseClient.js";
 
 const journeys = ref();
 
 const {data, error} = await supabase
     .from('journey')
     .select('*')
+console.log(error)
+
+
 
 journeys.value = data;
-console.log(journeys.value)
 </script>
 
 <template>
   <div id="journeys" class="grid grid-cols-4 gap-4 ml-20 mr-36">
     <UserDashboardJourneyItem v-for="journey in journeys">
-      <template #journey-name>Stockholm</template>
-      <template #date-range>02.08. - 12.09.</template>
+      <template #journey-name>{{ journey.name }}</template>
+      <template #date-range>{{ journey.from }} {{ journey.to }}</template>
     </UserDashboardJourneyItem>
 
     <RouterLink to="/reise/neu">

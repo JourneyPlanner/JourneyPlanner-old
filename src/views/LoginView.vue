@@ -1,19 +1,18 @@
 <script lang="ts">
-import {computed, reactive, ref} from "vue";
+import { reactive, ref } from "vue";
 //@ts-ignore
-import {supabase} from "@/lib/supabaseClient";
-import {useVuelidate} from '@vuelidate/core'
-import {required, email, sameAs, minLength} from '@vuelidate/validators'
+import { supabase } from "@/lib/supabaseClient";
+import { useVuelidate } from '@vuelidate/core'
+import { required, email } from '@vuelidate/validators'
 import Footer from "@/components/Footer.vue";
 import PersonWalkingIllustration from "@/components/illustrations/PersonWalkingIllustration.vue";
 import BackToHomeButton from "@/components/buttons/BackToHomeButton.vue";
 import router from "@/router";
-import Dialog from 'primevue/dialog';
-import {useRoute} from "vue-router";
+import { useRoute } from "vue-router";
 
 
 export default {
-  components: {BackToHomeButton, PersonWalkingIllustration, Footer},
+  components: { BackToHomeButton, PersonWalkingIllustration, Footer },
   setup() {
     const registered = ref(false);
     if (useRoute().query.registered == "true") {
@@ -32,6 +31,7 @@ export default {
         email: ''
       }
     })
+
     const rules = {
       password: {required},
       contact: {
@@ -86,7 +86,8 @@ export default {
           <p>
             Du hast auf etwas zugegriffen, wofür du eingeloggt sein musst.
             <br>
-            Bitte melde dich an oder <RouterLink to="register" class="underline">erstelle ein Konto.</RouterLink>
+            Bitte melde dich an oder
+            <RouterLink to="register" class="underline">erstelle ein Konto.</RouterLink>
             <br>
             Solltest du auf Probleme stoßen, kannst du uns unter
             <a class="underline" href="mailto:contact@journeyplanner.io">contact@journeyplanner.io</a> erreichen.
@@ -131,14 +132,12 @@ export default {
   </div>
 </template>
 
-<style>
-input:not([type="checkbox"]) {
+<style scoped>
+input {
   @apply flex w-[90%] border rounded border-none focus:outline-none focus:ring-2 focus:ring-call-to-action pl-1
 }
 
 h2 {
   @apply pt-[3%] text-left
 }
-
-
 </style>

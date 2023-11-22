@@ -2,8 +2,8 @@ import {createRouter, createWebHistory} from 'vue-router';
 import LandingPageView from "@/views/LandingPageView.vue";
 import RegistrationView from "@/views/RegistrationView.vue";
 import LoginView from "@/views/LoginView.vue";
-
-import {supabase} from "@/lib/supabaseClient.js";
+//@ts-ignore
+import { supabase } from "@/lib/supabaseClient.js";
 
 
 const router = createRouter({
