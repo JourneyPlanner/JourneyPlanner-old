@@ -15,7 +15,7 @@ const AsyncDashboard = defineAsyncComponent(() =>
   <div class="flex flex-col min-h-screen">
     <header class="flex flex-row justify-between mb-4">
       <div class="flex flex-row ml-10 mt-3">
-        <HomeMarkerIcon class="mt-3 ml-7 mr-5"/>
+        <HomeMarkerIcon class="mt-3.5 ml-7 mr-5"/>
         <h1 class="font-nunito font-medium text-4xl">Deine Reisen</h1>
       </div>
 
