@@ -46,12 +46,12 @@ const router = createRouter({
             name: 'einstellungen',
             component: () => import('../views/SettingsView.vue')
         },
+        */
         {
             path: '/reise/neu',
             name: 'new-journey',
-            //component: () => import('../views/NewJourneyFormView.vue')
-        }
-         */
+            component: () => import('../views/NewJourneyFormView.vue')
+        },
         {
             path: '/reise/:uuid',
             name: 'reise-uuid',
