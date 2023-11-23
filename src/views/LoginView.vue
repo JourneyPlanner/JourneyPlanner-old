@@ -82,10 +82,8 @@ export default {
         </Dialog>
 
         <Dialog v-model:visible="unauthorized" modal header="Bitte logge dich ein!"
-                :style="{ width: '50rem' }">
-          <p>
-            Du hast auf etwas zugegriffen, wofür du eingeloggt sein musst.
-            <br>
+                :style="{ width: '50rem' }" class="font-nunito text-text-black text-xl">
+          <p class="font-nunito-sans text-text-black">
             Bitte melde dich an oder
             <RouterLink to="register" class="underline">erstelle ein Konto.</RouterLink>
             <br>
