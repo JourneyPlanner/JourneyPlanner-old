@@ -63,7 +63,7 @@ export default {
 
 </script>
 <template>
-  <div class="relative">
+  <div class="relative text-text-black">
     <div class="bg-background flex">
       <div id="firsHalf" class="xl:w-1/2 md:w-2/3 sm:w-[100%] items-center justify-center flex flex-col">
         <BackToHomeButton class="absolute top-[2%] left-[2%]"/>

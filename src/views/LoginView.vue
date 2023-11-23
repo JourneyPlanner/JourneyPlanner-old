@@ -1,14 +1,13 @@
 <script lang="ts">
-import {computed, reactive, ref} from "vue";
+import {reactive, ref} from "vue";
 //@ts-ignore
 import {supabase} from "@/lib/supabaseClient";
 import {useVuelidate} from '@vuelidate/core'
-import {required, email, sameAs, minLength} from '@vuelidate/validators'
+import {required, email} from '@vuelidate/validators'
 import Footer from "@/components/Footer.vue";
 import PersonWalkingIllustration from "@/components/illustrations/PersonWalkingIllustration.vue";
 import BackToHomeButton from "@/components/buttons/BackToHomeButton.vue";
 import router from "@/router";
-import Dialog from 'primevue/dialog';
 import {useRoute} from "vue-router";
 
 
@@ -16,10 +15,10 @@ export default {
   components: {BackToHomeButton, PersonWalkingIllustration, Footer},
   setup() {
     const visible = ref(false);
-    if (useRoute().query.registered == "true"){
-       visible.value = true;
+    if (useRoute().query.registered == "true") {
+      visible.value = true;
     }
-    const wrongPassw =  ref(false);
+    const wrongPassw = ref(false);
     const state = reactive({
       password: '',
       contact: {
@@ -51,24 +50,24 @@ export default {
       }
     }
 
-    return {state, v$, signIn, wrongPassw,visible}
+    return {state, v$, signIn, wrongPassw, visible}
   }
 }
 
 
 </script>
 <template>
-  <div class="relative">
+  <div class="relative text-text-black">
     <div class="about bg-background flex">
       <div class="w-1/2 items-center justify-center overflow-x-hidden">
         <PersonWalkingIllustration class="h-[85vh] ml-[-25%] mt-[5%]"/>
       </div>
       <div id="firsHalf" class="xl:w-1/2 md:w-2/3 sm:w-[100%] items-center justify-center flex flex-col">
-        <Dialog v-model:visible="visible" modal header="Bestätige noch deine E-Mail-Adresse!" :style="{ width: '50rem' }">
-          <p>
-            Deine Registrierung ist fast abgeschlossen. Bitte bestätige noch deine E-Mail-Adresse.
+        <Dialog v-model:visible="visible" modal header="Bestätige noch deine E-Mail-Adresse"
+                :style="{ width: '70rem' }" class="font-nunito text-text-black text-xl">
+          <p class="font-nunito-sans text-text-black">
+            Deine Registrierung ist fast abgeschlossen. Schau mal in dein Postfach und bestätige deine E-Mail-Adresse.
             Solltest du keine Mail von uns bekommen haben, schaue bitte in deinem Spamordner nach.
-            <br>
             Solltest du auf Probleme stoßen, kannst du uns unter
             <a class="underline" href="mailto:contact@journeyplanner.io">contact@journeyplanner.io</a> erreichen.
           </p>
@@ -78,7 +77,8 @@ export default {
           <h1 class="xl:text-3xl md:text-3xl sm:text-3xl pl-6.1538em font-nunito pt-[15%]">Login</h1>
           <form class="bg-primary rounded-2xl xl:w-[25vw] md:w-[50vw] sm:w-[75vw]">
             <div class="inside flex flex-col pl-8 ">
-              <p v-if="wrongPassw" class="pt-3 text-delete text-base font-nunito font-bold">Falscher Benutzername oder Passwort</p>
+              <p v-if="wrongPassw" class="pt-3 text-delete text-base font-nunito font-bold">Falscher Benutzername oder
+                Passwort</p>
               <h2 class="col-start-1 text-xl font-nunito font-semibold">E-Mail</h2>
               <input v-model="v$.contact.email.$model" class="font-nunito text-xl" placeholder="E-Mail eingeben">
               <p v-if="v$.contact.email.$error" class="text-delete text-base font-nunito">Nicht das richtige Format</p>
@@ -87,10 +87,12 @@ export default {
                      placeholder="Passwort eingeben">
               <div class="my-3">
                 <button :disabled="v$.$invalid" @mouseover="v$.$touch()" type="button"
-                        class="registerButton bg-call-to-action rounded-3xl font-nunito text-xl font-bold p-1.5 px-6"
+                        class="bg-call-to-action rounded-3xl font-nunito text-xl font-bold p-1.5 px-6"
                         @click="signIn">Login
                 </button>
-                <RouterLink class="font-nunito text-base font-bold px-2 break-after-all underline underline-offset-2 lg:ml-14" to="register">Noch kein Konto?
+                <RouterLink
+                    class="font-nunito text-base font-bold px-2 break-after-all underline underline-offset-2 lg:ml-14"
+                    to="register">Noch kein Konto?
                 </RouterLink>
               </div>
             </div>
