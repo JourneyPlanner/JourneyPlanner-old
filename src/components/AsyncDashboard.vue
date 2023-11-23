@@ -64,8 +64,8 @@ if (data) {
     </RouterLink>
 
     <RouterLink to="/reise/neu" v-tooltip.top="'Neue Reise erstellen'">
-      <div class="bg-call-to-action rounded-[32px] py-14 mt-1 flex items-center justify-center">
-        <IconNewJourney class="h-20 w-20 fill-text-black"/>
+      <div class="bg-call-to-action rounded-[32px] py-12 mt-1 flex items-center justify-center shadow-md hover:opacity-80">
+        <IconNewJourney class="h-20 w-20 fill-text-black mb-3.5"/>
       </div>
     </RouterLink>
   </div>

@@ -20,10 +20,10 @@ const AsyncDashboard = defineAsyncComponent(() =>
       </div>
 
       <div class="flex flex-row mr-20">
-        <NewJourneyButton/>
+        <NewJourneyButton class="border-2 border-call-to-action hover:opacity-80"/>
 
         <RouterLink to="settings">
-          <SettingsIcon class="mt-9 ml-5 w-14"/>
+          <SettingsIcon class="mt-9 ml-5 w-14 hover:opacity-80"/>
         </RouterLink>
       </div>
     </header>
