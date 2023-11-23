@@ -16,7 +16,7 @@ const AsyncDashboard = defineAsyncComponent(() =>
     <header class="flex flex-row justify-between mb-4">
       <div class="flex flex-row ml-10 mt-3">
         <HomeMarkerIcon class="mt-3.5 ml-7 mr-5"/>
-        <h1 class="font-nunito font-medium text-4xl">Deine Reisen</h1>
+        <h1 class="font-nunito font-medium text-4xl text-text-black">Deine Reisen</h1>
       </div>
 
       <div class="flex flex-row mr-20">
@@ -35,7 +35,7 @@ const AsyncDashboard = defineAsyncComponent(() =>
       </template>
       <template #fallback>
         <div class="flex text-center justify-center">
-          <p class="text-3xl font-medium font-nunito">Lade...</p>
+          <p class="text-3xl font-medium font-nunito text-text-black">Lade...</p>
         </div>
       </template>
     </Suspense>
