@@ -17,7 +17,6 @@ const router = createRouter({
             component: LandingPageView,
             beforeEnter: async (to, from, next) => {
                 const user = await supabase.auth.getSession();
-                console.log(user)
                 if (user.data.session != null) {
                     next('/dashboard')
                 } else {
