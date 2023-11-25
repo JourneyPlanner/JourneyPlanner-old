@@ -2,8 +2,10 @@ import {createRouter, createWebHistory} from 'vue-router';
 import LandingPageView from "@/views/LandingPageView.vue";
 import RegistrationView from "@/views/RegistrationView.vue";
 import LoginView from "@/views/LoginView.vue";
+import NotFoundView from "@/views/NotFoundView.vue";
+
 //@ts-ignore
-import {supabase} from "@/lib/supabaseClient.js";
+import {supabase} from "@/lib/supabaseClient";
 
 
 const router = createRouter({
@@ -12,7 +14,15 @@ const router = createRouter({
         {
             path: '/',
             name: 'home',
-            component: LandingPageView
+            component: LandingPageView,
+            beforeEnter: async (to, from, next) => {
+                const user = await supabase.auth.getSession();
+                if (user.data.session != null) {
+                    next('/dashboard')
+                } else {
+                    next()
+                }
+            }
         },
         {
             path: '/register',
@@ -39,6 +49,11 @@ const router = createRouter({
             path: '/login',
             name: 'login',
             component: LoginView
+        },
+        {
+            path: '/:pathMatch(.*)*',
+            name: 'not-found',
+            component: NotFoundView
         },
         /*
         {
