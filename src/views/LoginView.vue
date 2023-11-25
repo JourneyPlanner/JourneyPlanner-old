@@ -1,23 +1,28 @@
 <script lang="ts">
-import {reactive, ref} from "vue";
+import { reactive, ref } from "vue";
 //@ts-ignore
-import {supabase} from "@/lib/supabaseClient";
-import {useVuelidate} from '@vuelidate/core'
-import {required, email} from '@vuelidate/validators'
+import { supabase } from "@/lib/supabaseClient";
+import { useVuelidate } from '@vuelidate/core'
+import { required, email } from '@vuelidate/validators'
 import Footer from "@/components/Footer.vue";
 import PersonWalkingIllustration from "@/components/illustrations/PersonWalkingIllustration.vue";
 import BackToHomeButton from "@/components/buttons/BackToHomeButton.vue";
 import router from "@/router";
-import {useRoute} from "vue-router";
-
+import { useRoute } from "vue-router";
 
 export default {
-  components: {BackToHomeButton, PersonWalkingIllustration, Footer},
+  components: { BackToHomeButton, PersonWalkingIllustration, Footer },
   setup() {
-    const visible = ref(false);
+    const registered = ref(false);
     if (useRoute().query.registered == "true") {
-      visible.value = true;
+      registered.value = true;
     }
+
+    const unauthorized = ref(false);
+    if (useRoute().query.unauthorized == "true") {
+      unauthorized.value = true;
+    }
+
     const wrongPassw = ref(false);
     const state = reactive({
       password: '',
@@ -25,6 +30,7 @@ export default {
         email: ''
       }
     })
+
     const rules = {
       password: {required},
       contact: {
@@ -50,7 +56,7 @@ export default {
       }
     }
 
-    return {state, v$, signIn, wrongPassw, visible}
+    return {state, v$, signIn, wrongPassw, registered, unauthorized}
   }
 }
 
@@ -63,15 +69,27 @@ export default {
         <PersonWalkingIllustration class="h-[85vh] ml-[-25%] mt-[5%]"/>
       </div>
       <div id="firsHalf" class="xl:w-1/2 md:w-2/3 sm:w-[100%] items-center justify-center flex flex-col">
-        <Dialog v-model:visible="visible" modal header="Bestätige noch deine E-Mail-Adresse"
-                :style="{ width: '70rem' }" class="font-nunito text-text-black text-xl">
-          <p class="font-nunito-sans text-text-black">
-            Deine Registrierung ist fast abgeschlossen. Schau mal in dein Postfach und bestätige deine E-Mail-Adresse.
+        <Dialog v-model:visible="registered" modal header="Bestätige noch deine E-Mail-Adresse!"
+                :style="{ width: '50rem' }">
+          <p>
+            Deine Registrierung ist fast abgeschlossen. Bitte bestätige noch deine E-Mail-Adresse.
             Solltest du keine Mail von uns bekommen haben, schaue bitte in deinem Spamordner nach.
             Solltest du auf Probleme stoßen, kannst du uns unter
             <a class="underline" href="mailto:contact@journeyplanner.io">contact@journeyplanner.io</a> erreichen.
           </p>
         </Dialog>
+
+        <Dialog v-model:visible="unauthorized" modal header="Bitte logge dich ein!"
+                :style="{ width: '50rem' }" class="font-nunito text-text-black text-xl">
+          <p class="font-nunito-sans text-text-black">
+            Bitte melde dich an oder
+            <RouterLink to="register" class="underline">erstelle ein Konto.</RouterLink>
+            <br>
+            Solltest du auf Probleme stoßen, kannst du uns unter
+            <a class="underline" href="mailto:contact@journeyplanner.io">contact@journeyplanner.io</a> erreichen.
+          </p>
+        </Dialog>
+
         <BackToHomeButton class="absolute top-[2%] w-2/12 left-[82vw] pr-4"/>
         <div class="form xl:w-1/2 md:w-[80%] sm:w-[80%]">
           <h1 class="xl:text-3xl md:text-3xl sm:text-3xl pl-6.1538em font-nunito pt-[15%]">Login</h1>
@@ -110,14 +128,12 @@ export default {
   </div>
 </template>
 
-<style>
-input:not([type="checkbox"]) {
+<style scoped>
+input {
   @apply flex w-[90%] border rounded border-none focus:outline-none focus:ring-2 focus:ring-call-to-action pl-1
 }
 
 h2 {
   @apply pt-[3%] text-left
 }
-
-
 </style>
