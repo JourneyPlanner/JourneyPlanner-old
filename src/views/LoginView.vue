@@ -10,7 +10,6 @@ import BackToHomeButton from "@/components/buttons/BackToHomeButton.vue";
 import router from "@/router";
 import { useRoute } from "vue-router";
 
-
 export default {
   components: { BackToHomeButton, PersonWalkingIllustration, Footer },
   setup() {
@@ -64,7 +63,7 @@ export default {
 
 </script>
 <template>
-  <div class="relative">
+  <div class="relative text-text-black">
     <div class="about bg-background flex">
       <div class="w-1/2 items-center justify-center overflow-x-hidden">
         <PersonWalkingIllustration class="h-[85vh] ml-[-25%] mt-[5%]"/>
@@ -75,7 +74,6 @@ export default {
           <p>
             Deine Registrierung ist fast abgeschlossen. Bitte bestätige noch deine E-Mail-Adresse.
             Solltest du keine Mail von uns bekommen haben, schaue bitte in deinem Spamordner nach.
-            <br>
             Solltest du auf Probleme stoßen, kannst du uns unter
             <a class="underline" href="mailto:contact@journeyplanner.io">contact@journeyplanner.io</a> erreichen.
           </p>
@@ -107,7 +105,7 @@ export default {
                      placeholder="Passwort eingeben">
               <div class="my-3">
                 <button :disabled="v$.$invalid" @mouseover="v$.$touch()" type="button"
-                        class="registerButton bg-call-to-action rounded-3xl font-nunito text-xl font-bold p-1.5 px-6"
+                        class="bg-call-to-action rounded-3xl font-nunito text-xl font-bold p-1.5 px-6"
                         @click="signIn">Login
                 </button>
                 <RouterLink
