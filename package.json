@@ -15,7 +15,7 @@
     "@vuelidate/validators": "^2.0.4",
     "pinia": "^2.1.7",
     "primevue": "^3.41.1",
-    "vue": "^3.3.8",
+    "vue": "^3.3.9",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
