@@ -29,12 +29,12 @@ import Footer from "../components/Footer.vue";
         JourneyPlanner
       </h1>
       <h2 class="font-nunito text-2xl text-text-black font-semibold">
-        Reiseplannung leicht gemacht
+        Reiseplanung leicht gemacht
       </h2>
       <p class="font-nunito-sans text-xl text-text-black  w-3/6 flex flex-wrap mt-3">
         Deine ultimative Plattform zur mühelosen Organisation von unvergesslichen Abenteuern!
         <br>
-        Gestalte deine Reise, teile deinen Plan, und geht gemeinsam auf Entdeckungsreise.
+        Gestalte deine Reise, teile deinen Plan und gehe gemeinsam auf Entdeckungsreise.
         <br>
         Bereit für dein nächstes Abenteuer?
       </p>
