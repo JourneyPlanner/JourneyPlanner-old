@@ -8,7 +8,7 @@ import {supabase} from "@/lib/supabaseClient.js";
 
 const journeys = ref();
 
-const {data, error} = await supabase
+const {data} = await supabase
     .from('journey')
     .select(`
       pk_journey_uuid,
@@ -16,8 +16,8 @@ const {data, error} = await supabase
       from,
       to,
       user_is_in (function) as function
-      `);
-console.log(error)
+      `)
+    .order('from', {ascending: true});
 
 if (data) {
   data.forEach((row: any) => {
@@ -64,8 +64,9 @@ if (data) {
     </RouterLink>
 
     <RouterLink to="/reise/neu" v-tooltip.top="'Neue Reise erstellen'">
-      <div class="bg-call-to-action rounded-[32px] py-12 mt-1 flex items-center justify-center shadow-md hover:opacity-80">
-        <IconNewJourney class="h-20 w-20 fill-text-black mb-3.5"/>
+      <div
+          class="bg-call-to-action rounded-[32px] py-12 mt-1 flex items-center justify-center shadow-md hover:opacity-80">
+        <IconNewJourney class="h-20 w-20 fill-text-black mb-2 mt-1.5"/>
       </div>
     </RouterLink>
   </div>
