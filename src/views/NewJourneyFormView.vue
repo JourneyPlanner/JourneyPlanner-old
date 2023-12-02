@@ -12,6 +12,7 @@ import {computed} from 'vue';
 import {reactive} from 'vue';
 import {useVuelidate} from '@vuelidate/core';
 import {required} from '@vuelidate/validators';
+//@ts-ignore
 import {supabase} from "@/lib/supabaseClient";
 import router from "@/router";
 
