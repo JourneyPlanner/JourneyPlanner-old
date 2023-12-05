@@ -8,6 +8,8 @@ import {supabase} from "@/lib/supabaseClient.js";
 
 const journeys = ref();
 
+const { data: {user}} = await supabase.auth.getUser();
+
 const {data} = await supabase
     .from('journey')
     .select(`
@@ -15,8 +17,9 @@ const {data} = await supabase
       name,
       from,
       to,
-      user_is_in (function) as function
+      user_is_in (pk_user_uuid, function)
       `)
+    .eq('user_is_in.pk_user_uuid', user.id)
     .order('from', {ascending: true});
 
 if (data) {
