@@ -2,7 +2,7 @@
 import HomeMarkerIcon from "../components/icons/IconHomeMarker.vue";
 import Footer from "@/components/Footer.vue";
 import {defineAsyncComponent, ref} from "vue";
-import JourneyMedia from "@/components/JourneyMedia.vue";
+//import JourneyMedia from "@/components/JourneyMedia.vue";
 
 const AsyncDashboard = defineAsyncComponent(() =>
     import('@/components/AsyncJourney.vue')
