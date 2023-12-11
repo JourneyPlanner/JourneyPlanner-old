@@ -20,5 +20,6 @@ app.use(router)
 app.use(PrimeVue);
 app.component('Button', Button);
 app.component('Dialog', Dialog);
+app.directive('tooltip', Tooltip);
 
 app.mount('#app')
