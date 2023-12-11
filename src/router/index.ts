@@ -55,13 +55,12 @@ const router = createRouter({
             name: 'not-found',
             component: NotFoundView
         },
-        /*
         {
             path: '/einstellungen',
             name: 'einstellungen',
-            component: () => import('../views/SettingsView.vue')
+            component: () => import('../views/SettingsView.vue'),
+            meta: {requiresAuth: true}
         },
-        */
         {
             path: '/reise/neu',
             name: 'new-journey',
