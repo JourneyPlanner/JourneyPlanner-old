@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {ref} from "vue";
 //@ts-ignore
 import {supabase} from "@/lib/supabaseClient.js";
@@ -26,7 +26,6 @@ if (usernamesData) {
     for (let i = 0; i < row["user_is_in"].length; i++) {
       if (row["user_is_in"][i]["pk_user_uuid"] === currentUser.id) {
         currentUserIndex.value = i;
-        console.log(currentUserIndex.value);
       }
       if (row["user_is_in"][i]["function"] === 0) {
         row["user_is_in"][i]["function"] = 'Reisende/r';
@@ -38,6 +37,7 @@ if (usernamesData) {
     }
   });
 }
+console.log(usernamesError);
 usernames.value = usernamesData;
 
 const {data, error} = await supabase
@@ -98,6 +98,7 @@ async function toTourGuide(user_uuid: string, index: number) {
         .eq('pk_journey_uuid', journeyID);
     location.reload();
   }
+  console.log(error);
 
 }
 
@@ -113,6 +114,7 @@ async function toRegular(user_uuid: string, index: number) {
     location.reload();
 
   }
+  console.log(error);
 }
 
 </script>
@@ -121,32 +123,32 @@ async function toRegular(user_uuid: string, index: number) {
   <div>
     <div id="topInformation" class="w-[100%] h-[15vh] items-center justify-center flex flex-col bg-primary">
       <div class="grid grid-cols-4">
-        <div class="col-span-2 w-[45vw]" v-tooltip.bottom="{
+        <div v-tooltip.bottom="{
                value: journey[0].name,
                  style:{
                    width: '30vw'
-                 }}">
+                 }}" class="col-span-2 w-[45vw]">
           <h1 class="font-nunito text-4xl text-text-black font-medium overflow-hidden whitespace-nowrap overflow-ellipsis px-5">
             {{ journey[0].name }}</h1>
         </div>
-        <div class="col-start-4 justify-center items-center grid grid-cols-6" v-if="currentUserIndex !== null">
-          <RouterLink to="/dashboard" class="col-start-3"
-                      v-if="journey[0].user_is_in[currentUserIndex].function === 'Reiseleiter/in'">
+        <div v-if="currentUserIndex !== null" class="col-start-4 justify-center items-center grid grid-cols-6">
+          <RouterLink v-if="journey[0].user_is_in[currentUserIndex].function === 'Reiseleiter/in'" class="col-start-3"
+                      to="/dashboard">
             <BackToDashboadIllustration class="px-3"/>
           </RouterLink>
-          <RouterLink to="/dashboard" class="col-start-4"
-                      v-if="journey[0].user_is_in[currentUserIndex].function === 'Reisende/r'">
+          <RouterLink v-if="journey[0].user_is_in[currentUserIndex].function === 'Reisende/r'" class="col-start-4"
+                      to="/dashboard">
             <BackToDashboadIllustration class="px-3"/>
           </RouterLink>
-          <RouterLink to="/" class="" v-if="journey[0].user_is_in[currentUserIndex].function === 'Reiseleiter/in'">
+          <RouterLink v-if="journey[0].user_is_in[currentUserIndex].function === 'Reiseleiter/in'" class="" to="/">
             <AddPeopleIllustration class="px-3"/>
           </RouterLink>
           <MenuIllustration class="px-3 cursor-pointer" @click="openNav()"/>
         </div>
       </div>
-      <div class="h-[100%] fixed z-10 top-0 right-0 bg-secondary overflow-x-hidden transition duration-500"
-           v-if="showSidebar">
-        <a href="javascript:void(0)" class="w-16 px-3 text-2xl" @click="closeNav()">&times;</a>
+      <div v-if="showSidebar"
+           class="h-[100%] fixed z-10 top-0 right-0 bg-secondary overflow-x-hidden transition duration-500">
+        <a class="w-16 px-3 text-2xl" href="javascript:void(0)" @click="closeNav()">&times;</a>
         <div v-for="(index) in usernames[0].user.length"
              class="font-nunito text-2xl text-text-black font-semibold overflow-hidden whitespace-nowrap overflow-ellipsis px-5 text-right">
           <p class="font-semibold"> {{ usernames[0].user[index - 1].username }}</p>
@@ -170,7 +172,3 @@ async function toRegular(user_uuid: string, index: number) {
       {{ journey[0].from }} - {{ journey[0].to }}</p>
   </div>
 </template>
-
-<style scoped>
-
-</style>
