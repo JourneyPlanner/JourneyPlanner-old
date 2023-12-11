@@ -71,6 +71,11 @@ const router = createRouter({
             path: '/reise/:uuid',
             name: 'reise-uuid',
             component: () => import('../views/JourneyView.vue')
+        },
+        {
+            path: '/reise/:uuid/aktivitaet/neu',
+            name: 'aktivitaetNeu',
+            component: () => import('../views/NewActivityFormView.vue')
         }
     ],
     scrollBehavior(to, form, savedPosition) {
