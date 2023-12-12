@@ -65,17 +65,20 @@ const router = createRouter({
         {
             path: '/reise/neu',
             name: 'new-journey',
-            component: () => import('../views/NewJourneyFormView.vue')
+            component: () => import('../views/NewJourneyFormView.vue'),
+            meta: {requiresAuth: true}
         },
         {
             path: '/reise/:uuid',
             name: 'reise-uuid',
-            component: () => import('../views/JourneyView.vue')
+            component: () => import('../views/JourneyView.vue'),
+            meta: {requiresAuth: true}
         },
         {
             path: '/reise/:uuid/aktivitaet/neu',
             name: 'aktivitaetNeu',
-            component: () => import('../views/NewActivityFormView.vue')
+            component: () => import('../views/NewActivityFormView.vue'),
+            meta: {requiresAuth: true}
         }
     ],
     scrollBehavior(to, form, savedPosition) {
