@@ -56,6 +56,11 @@ const router = createRouter({
             component: NotFoundView
         },
         {
+            path: '/fehler',
+            name: 'error',
+            component: NotFoundView
+        },
+        {
             path: '/einstellungen',
             name: 'einstellungen',
             component: () => import('../views/SettingsView.vue'),
@@ -78,6 +83,11 @@ const router = createRouter({
             name: 'aktivitaetNeu',
             component: () => import('../views/NewActivityFormView.vue'),
             meta: {requiresAuth: true}
+        },
+        {
+            path: '/beitreten/:uuid',
+            name: 'beitreten',
+            component: () => import('../views/JoinJourneyView.vue'),
         }
     ],
     scrollBehavior(to, form, savedPosition) {

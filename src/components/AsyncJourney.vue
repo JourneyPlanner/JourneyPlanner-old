@@ -7,13 +7,16 @@ import BackToDashboadIllustration from "@/components/illustrations/BackToDashboa
 import MenuIllustration from "@/components/illustrations/MenuIllustration.vue";
 import AddPeopleIllustration from "@/components/illustrations/AddPeopleIllustration.vue";
 
+import Toast from 'primevue/toast';
+import {useToast} from 'primevue/usetoast';
+
+const toast = useToast();
 const journey = ref();
 const showSidebar = ref(false);
 const usernames = ref();
 const {data: {user}} = await supabase.auth.getUser();
 const currentUser = user;
 const currentUserIndex = ref();
-console.log(currentUser);
 const journeyID = useRoute().params.uuid;
 const {data: usernamesData, error: usernamesError} = await supabase
     .from('journey')
@@ -37,7 +40,9 @@ if (usernamesData) {
     }
   });
 }
-console.log(usernamesError);
+if (usernamesError) {
+  console.log(usernamesError);
+}
 usernames.value = usernamesData;
 
 const {data, error} = await supabase
@@ -49,7 +54,9 @@ const {data, error} = await supabase
       to,
       user_is_in (function) as function
       `).eq('pk_journey_uuid', journeyID);
-console.log(error)
+if (error) {
+  console.log(error);
+}
 if (data) {
   data.forEach((row: any) => {
     let fromDate = new Date(row["from"]);
@@ -76,7 +83,6 @@ if (data) {
     }
   });
   journey.value = data;
-
 }
 
 function openNav() {
@@ -89,7 +95,6 @@ function closeNav() {
 }
 
 async function toTourGuide(user_uuid: string, index: number) {
-
   if (currentUser.id !== user_uuid) {
     const {error} = await supabase
         .from('user_is_in')
@@ -98,12 +103,12 @@ async function toTourGuide(user_uuid: string, index: number) {
         .eq('pk_journey_uuid', journeyID);
     location.reload();
   }
-  console.log(error);
-
+  if (error) {
+    console.log(error);
+  }
 }
 
 async function toRegular(user_uuid: string, index: number) {
-
   if (currentUser.id !== user_uuid) {
     const {error} = await supabase
         .from('user_is_in')
@@ -112,14 +117,30 @@ async function toRegular(user_uuid: string, index: number) {
         .eq('pk_journey_uuid', journeyID);
     journey.value[0].user_is_in[index].function = 'Reisende/r';
     location.reload();
-
   }
-  console.log(error);
+  if (error) {
+    console.log(error);
+  }
 }
 
+async function copyLink() {
+  let link = await supabase
+      .from('journey')
+      .select('invite')
+      .eq('pk_journey_uuid', journeyID);
+  link = 'https://journeyplanner.io/beitreten/' + link.data[0].invite;
+  await navigator.clipboard.writeText(link);
+  toast.add({
+    severity: 'info',
+    summary: 'Link kopiert',
+    detail: 'Der Link wurde in deine Zwischenablage kopiert',
+    life: 3000
+  });
+}
 </script>
 
 <template>
+  <Toast/>
   <div>
     <div id="topInformation" class="w-[100%] h-[15vh] items-center justify-center flex flex-col bg-primary">
       <div class="grid grid-cols-4">
@@ -140,9 +161,10 @@ async function toRegular(user_uuid: string, index: number) {
                       to="/dashboard">
             <BackToDashboadIllustration class="px-3"/>
           </RouterLink>
-          <RouterLink v-if="journey[0].user_is_in[currentUserIndex].function === 'Reiseleiter/in'" class="" to="/">
+          <button v-if="journey[0].user_is_in[currentUserIndex].function === 'Reiseleiter/in'" class=""
+                  to="/" @click="copyLink">
             <AddPeopleIllustration class="px-3"/>
-          </RouterLink>
+          </button>
           <MenuIllustration class="px-3 cursor-pointer" @click="openNav()"/>
         </div>
       </div>

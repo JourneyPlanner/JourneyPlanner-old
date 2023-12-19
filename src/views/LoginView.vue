@@ -23,6 +23,11 @@ export default {
       unauthorized.value = true;
     }
 
+    const redirect = useRoute().query.redirect;
+    if (redirect) {
+      unauthorized.value = true;
+    }
+
     const wrongPassw = ref(false);
     const state = reactive({
       password: '',
@@ -52,6 +57,9 @@ export default {
         console.log(error);
         wrongPassw.value = true;
       } else {
+        if (redirect) {
+          await router.push(redirect +  '');
+        }
         await router.push("/dashboard");
       }
     }
@@ -59,7 +67,6 @@ export default {
     return {state, v$, signIn, wrongPassw, registered, unauthorized}
   }
 }
-
 
 </script>
 <template>
