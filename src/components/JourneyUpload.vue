@@ -1,8 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import FileUpload from 'primevue/fileupload';
 import Toast from 'primevue/toast';
 import {useToast} from "primevue/usetoast";
 import {useRoute} from "vue-router";
+//@ts-ignore
 import {supabase} from "@/lib/supabaseClient";
 
 const toast = useToast();
@@ -13,35 +14,60 @@ const uuid = useRoute().params.uuid;
  * @param event
  * @returns {Promise<void>}
  */
-async function onUpload (event) {
+async function onUpload(event: any) {
   const files = event.files;
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
     const file_name_split = file.name.split(".");
     const storage_name = file_name_split[0].replace(/[^a-zA-Z0-9_-]/g, '') + '.' + file_name_split[1];
 
-    toast.add({severity: 'info', summary: 'In Progress', detail: `${storage_name} wird hochgeladen...`, life: 1000});
+    if (file.size > 50000000) {
+      toast.add({severity: 'error', summary: 'Fehler', detail: `${storage_name} ist zu groß`, life: 3000});
+      continue;
+    }
+
+    toast.add({
+      severity: 'info',
+      summary: 'In Progress',
+      detail: `${storage_name} wird hochgeladen. Dies kann einen Moment dauern.`,
+      life: 1500
+    });
 
     const {data, error} = await supabase.storage
         .from('upload')
         .upload(`${uuid}/${storage_name}`, file);
 
     if (error) {
-      toast.add({severity: 'error', summary: 'Fehler', detail: `Fehler beim hochladen von ${storage_name}`, life: 3000});
+      toast.add({
+        severity: 'error',
+        summary: 'Fehler',
+        detail: `Fehler beim Hochladen von ${storage_name}`,
+        life: 3000
+      });
     } else {
-      toast.add({severity: 'success', summary: 'Hochgeladen', detail: `${storage_name} wurde erfolgreich hochgeladen`, life: 3000});
+      toast.add({
+        severity: 'success',
+        summary: 'Hochgeladen',
+        detail: `${storage_name} wurde erfolgreich hochgeladen`,
+        life: 3000
+      });
     }
   }
 }
 </script>
 
 <template>
-  <div class="">
+  <div class="px-10 pb-10">
     <Toast/>
+    <h3 class="font-nunito-sans text-xl font-bold text-text-black">Hochladen</h3>
     <FileUpload @uploader="onUpload($event)" :custom-upload="true" :multiple="true" :mode="'advanced'">
 
       <template #empty>
-        <p>Drag and drop files to here to upload.</p>
+        <p class="pb-20 justify-center text-center font-nunito text-xl">
+          Fotos, Videos, Dokumente mit Drag'n'Drop oder per Choose Button hinzufügen.
+          <br>
+          Max. 50MB pro Datei
+        </p>
       </template>
     </FileUpload>
   </div>
