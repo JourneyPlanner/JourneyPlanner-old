@@ -18,20 +18,19 @@
     "primevue": "^3.43.0",
     "vue": "^3.3.9",
     "vue-gallery": "^2.0.5",
-    "vue-router": "^4.2.5",
-    "zip-lib": "^0.7.3"
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@tsconfig/node18": "^18.2.2",
-    "@types/node": "^20.10.4",
+    "@types/node": "^20.10.5",
     "@vitejs/plugin-vue": "^4.5.2",
-    "@vue/tsconfig": "^0.4.0",
+    "@vue/tsconfig": "^0.5.1",
     "autoprefixer": "^10.4.16",
     "npm-run-all2": "^6.1.1",
     "postcss": "^8.4.31",
-    "tailwindcss": "^3.3.5",
+    "tailwindcss": "^3.3.6",
     "typescript": "~5.3.3",
-    "vite": "^5.0.7",
+    "vite": "^5.0.10",
     "vue-tsc": "^1.8.25"
   }
 }
