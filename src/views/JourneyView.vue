@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Footer from "@/components/Footer.vue";
-import {defineAsyncComponent, ref} from "vue";
-//import JourneyMedia from "@/components/JourneyMedia.vue";
+import {defineAsyncComponent} from "vue";
+import JourneyMedia from "@/components/JourneyMemories.vue";
 
 const AsyncDashboard = defineAsyncComponent(() =>
     import('@/components/AsyncJourney.vue')
