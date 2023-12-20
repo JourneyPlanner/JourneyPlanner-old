@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import Toast from 'primevue/toast';
 import {useToast} from "primevue/usetoast";
 //@ts-ignore
@@ -12,6 +12,9 @@ const editorTitle = ref("");
 //uuid is the folder
 const uuid = useRoute().params.uuid;
 
+/**
+ * save editor content to supabase storage bucket
+ */
 async function saveEditor() {
   const content = editorContent.value;
   if (content.trim() !== '') {
@@ -68,13 +71,16 @@ async function saveEditor() {
     <h3 class="font-nunito-sans text-xl font-bold text-text-black">Neuen Text schreiben</h3>
     <div class="flex flex-row justify-between">
       <div>
-        <label for="editorTitle" class="font-nunito text-xl text-text-black font-medium">Titel:</label>
-        <input type="text" placeholder="Neues Dokument" id="editorTitle" v-model="editorTitle"
-               class="rounded border-none focus:outline-none focus:ring-2 focus:ring-call-to-action pl-1.5 py-1.5 ml-3 mb-2 pr-15">
+        <label class="font-nunito text-xl text-text-black font-medium" for="editorTitle">Titel:</label>
+        <input id="editorTitle" v-model="editorTitle"
+               class="rounded border-none focus:outline-none focus:ring-2 focus:ring-call-to-action pl-1.5 py-1.5 ml-3 mb-2 pr-15"
+               placeholder="Neues Dokument"
+               type="text">
         <span class="font-nunito-sans text-text-black">.txt</span>
       </div>
-      <button @click="saveEditor" :disabled="!editorContent.trim()"
-              class="font-nunito text-base font-bold bg-call-to-action rounded-[38px] px-6 py-1 shadow-md disabled:opacity-80 hover:opacity-80 mb-2">
+      <button :disabled="!editorContent.trim()"
+              class="font-nunito text-base font-bold bg-call-to-action rounded-[38px] px-6 py-1 shadow-md disabled:opacity-80 hover:opacity-80 mb-2"
+              @click="saveEditor">
         Speichern
       </button>
     </div>

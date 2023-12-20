@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import JourneyUpload from "@/components/JourneyUpload.vue";
 import IconDownload from "@/components/icons/IconDownload.vue";
 import Toast from 'primevue/toast';
@@ -8,11 +8,11 @@ import JSZip from "jszip";
 //@ts-ignore
 import {supabase} from "@/lib/supabaseClient";
 import JourneyEditor from "@/components/JourneyEditor.vue";
+import {defineAsyncComponent} from "vue";
 
 const JourneyGallery = defineAsyncComponent(() =>
     import('@/components/JourneyGallery.vue')
 );
-import {defineAsyncComponent} from "vue";
 
 
 const toast = useToast();

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import FileUpload from 'primevue/fileupload';
 import Toast from 'primevue/toast';
 import {useToast} from "primevue/usetoast";
@@ -60,7 +60,7 @@ async function onUpload(event: any) {
   <div class="px-10 pb-10">
     <Toast/>
     <h3 class="font-nunito-sans text-xl font-bold text-text-black">Hochladen</h3>
-    <FileUpload @uploader="onUpload($event)" :custom-upload="true" :multiple="true" :mode="'advanced'">
+    <FileUpload :custom-upload="true" :mode="'advanced'" :multiple="true" @uploader="onUpload($event)">
 
       <template #empty>
         <p class="pb-20 justify-center text-center font-nunito text-xl">

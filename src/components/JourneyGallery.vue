@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 
 //@ts-ignore
 import VueGallery from 'vue-gallery';
@@ -86,7 +86,7 @@ async function fetchMedia() {
 </script>
 
 <template>
-  <Toast />
+  <Toast/>
   <div class="px-10 pb-10">
     <h3 class="font-nunito-sans text-xl font-bold text-text-black">Bilder | Videos | Texte</h3>
     <div class="bg-background rounded-md">
@@ -96,14 +96,14 @@ async function fetchMedia() {
 
       <div v-else class="grid grid-cols-5 gap-2 pt-2 pb-2 px-2">
 
-        <VueGallery v-if="images.length > 0" :images="images" :index="index" @close="index = null" />
+        <VueGallery v-if="images.length > 0" :images="images" :index="index" @close="index = null"/>
         <div
-            v-if="images.length > 0"
-            class="image relative bg-cover bg-center rounded-md w-48 h-48 shadow-md"
             v-for="(image, imageIndex) in images"
+            v-if="images.length > 0"
             :key="`image-${imageIndex}`"
-            @click="index = imageIndex"
             :style="{ backgroundImage: 'url(' + image + ')', backgroundSize: 'cover' }"
+            class="image relative bg-cover bg-center rounded-md w-48 h-48 shadow-md"
+            @click="index = imageIndex"
         ></div>
 
         <div v-for="video in videos" :key="`video-${video}`">
@@ -111,10 +111,12 @@ async function fetchMedia() {
         </div>
 
         <div v-for="file in texts" :key="`text-${file}`">
-          <p class="w-48 h-48 rounded-md bg-center shadow-md overflow-hidden no overflow-ellipsis font-nunito-sans p-2 mt-2">{{ file }}</p>
+          <p class="w-48 h-48 rounded-md bg-center shadow-md overflow-hidden no overflow-ellipsis font-nunito-sans p-2 mt-2">
+            {{ file }}</p>
         </div>
       </div>
     </div>
-    <p class="font-nunito-sans text-text-black">Alle Bilder, Videos, die kompletten Texte und andere Dateien können ganz oben heruntergeladen werden.</p>
+    <p class="font-nunito-sans text-text-black">Alle Bilder, Videos, die kompletten Texte und andere Dateien können ganz
+      oben heruntergeladen werden.</p>
   </div>
 </template>
