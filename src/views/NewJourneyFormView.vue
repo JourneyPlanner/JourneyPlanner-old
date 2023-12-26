@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import CreateJourneyLeftIllustration from "@/components/illustrations/CreateJourneyLeftIllustration.vue";
 import CreateJourneyRightIllustration from "@/components/illustrations/CreateJourneyRightIllustration.vue";
 
@@ -8,13 +8,15 @@ import Footer from "@/components/Footer.vue";
 import Toast from 'primevue/toast';
 import {useToast} from 'primevue/usetoast';
 
-import {computed} from 'vue';
-import {reactive} from 'vue';
+import {computed, reactive} from 'vue';
 import {useVuelidate} from '@vuelidate/core';
 import {required} from '@vuelidate/validators';
 //@ts-ignore
 import {supabase} from "@/lib/supabaseClient";
 import router from "@/router";
+import {v4 as uuidv4} from 'uuid';
+
+const journeyInvite = uuidv4();
 
 const toast = useToast();
 
@@ -23,7 +25,7 @@ const form = reactive({
   place: '',
   from: '',
   to: '',
-  link: 'journeyplanner.io/invite/xxxxx',
+  link: 'journeyplanner.io/beitreten/' + journeyInvite
 })
 
 const rules = computed(() => {
@@ -49,9 +51,11 @@ const v$ = useVuelidate(rules, form)
  * custom sleep method to set timeout
  * @param ms milliseconds to wait
  */
+/*
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+*/
 
 /**
  * handle form submit
@@ -71,7 +75,7 @@ async function create() {
     const {error} = await supabase
         .from('journey')
         .insert([
-          {name: form.name, place: form.place, from: form.from, to: form.to},
+          {name: form.name, place: form.place, from: form.from, to: form.to, invite: journeyInvite},
         ])
     if (error) {
       toast.add({
@@ -87,10 +91,20 @@ async function create() {
         detail: 'Du wirst gleich weitergeleitet...',
         life: 1000
       });
-      await sleep(1000);
+      //await sleep(1000);
       await router.push('/dashboard?created=true');
     }
   }
+}
+
+function copyLink() {
+  navigator.clipboard.writeText(form.link);
+  toast.add({
+    severity: 'info',
+    summary: 'Link kopiert',
+    detail: 'Der Link wurde in deine Zwischenablage kopiert',
+    life: 3000
+  });
 }
 </script>
 
@@ -109,50 +123,50 @@ async function create() {
       <h1 class="font-nunito text-2xl font-bold">Neue Reise erstellen</h1>
       <div class="bg-primary rounded-[58px] pl-6 pt-3 pr-10 pb-6">
         <form class="flex flex-col font-nunito font-semibold text-xl" @submit.prevent="create">
-          <label for="journey-name" class="pb-0.5 pt-2">Name deiner Reise</label>
-          <input id="journey-name" placeholder="Reisename" v-model="form.name" @blur="v$.name.$touch" tabindex="1"
-                 class="rounded border-none focus:outline-none focus:ring-2 focus:ring-call-to-action pl-1.5">
+          <label class="pb-0.5 pt-2" for="journey-name">Name deiner Reise</label>
+          <input id="journey-name" v-model="form.name" class="rounded border-none focus:outline-none focus:ring-2 focus:ring-call-to-action pl-1.5" placeholder="Reisename" tabindex="1"
+                 @blur="v$.name.$touch">
           <p v-if="v$.name.$error" class="text-delete text-base font-nunito-sans font-bold">Bitte gib deiner Reise einen
             Namen</p>
-          <label for="journey-place" class="pb-0.5 pt-2">Stadt/Land/Gebiet</label>
-          <input id="journey-place" placeholder="Stadt/Land/Gebiet" v-model="form.place" @blur="v$.place.$touch"
+          <label class="pb-0.5 pt-2" for="journey-place">Stadt/Land/Gebiet</label>
+          <input id="journey-place" v-model="form.place" class="rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action" placeholder="Stadt/Land/Gebiet"
                  tabindex="2"
-                 class="rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action">
+                 @blur="v$.place.$touch">
           <p v-if="v$.place.$error" class="text-delete text-base font-nunito font-bold">Bitte gib dein Reiseziel ein</p>
           <div class="flex flex-row gap-5">
             <div class="flex flex-col">
-              <label for="journey-from" class="pt-2">von</label>
-              <input id="journey-from" type="date" v-model="form.from" @blur="v$.from.$touch" tabindex="3"
-                     class="rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action">
+              <label class="pt-2" for="journey-from">von</label>
+              <input id="journey-from" v-model="form.from" class="rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action" tabindex="3" type="date"
+                     @blur="v$.from.$touch">
               <p v-if="v$.from.$error" class="text-delete text-base font-nunito font-bold">Bitte gib ein Datum an</p>
             </div>
             <div class="flex flex-col">
-              <label for="journey-to" class="pt-2">bis</label>
-              <input id="journey-to" type="date" v-model="form.to" @blur="v$.to.$touch" tabindex="4"
-                     class="rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action">
+              <label class="pt-2" for="journey-to">bis</label>
+              <input id="journey-to" v-model="form.to" class="rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action" tabindex="4" type="date"
+                     @blur="v$.to.$touch">
             </div>
           </div>
           <p v-if="v$.to.$error" class="text-delete text-base font-nunito font-bold">Enddatum muss mindestens am
             Startdatum
             liegen</p>
-          <label for="journey-link" class="pt-2">Beitrittslink</label>
+          <label class="pt-2" for="journey-link">Beitrittslink</label>
           <div class="flex flex-row justify-between gap-2">
-            <input id="journey-link" disabled v-model="form.link"
-                   class="w-full bg-disabled-input rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action">
+            <input id="journey-link" v-model="form.link" class="w-full bg-disabled-input rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action"
+                   disabled>
             <div class="" tabindex="5">
-              <InviteButton class="p-1"/>
+              <InviteButton class="p-1 hover:opacity-[85%]" @click="copyLink"/>
             </div>
           </div>
           <span
               class="font-nunito-sans text-base mt-1">Mit diesem Link kannst du andere zu deiner Reise einladen.</span>
           <div class="pt-4 flex flex-row justify-between">
-            <RouterLink to="/dashboard" class="bg-cancel rounded-[38px] px-3 py-1 shadow-md hover:opacity-80"
-                        tabindex="7">
+            <RouterLink class="bg-cancel rounded-[38px] px-3 py-1 shadow-md hover:opacity-80" tabindex="7"
+                        to="/dashboard">
               Abbrechen
             </RouterLink>
-            <button type="submit" @submit.prevent="create()"
-                    class="bg-call-to-action rounded-[38px] px-6 py-1 shadow-md disabled:opacity-80 hover:opacity-80"
-                    tabindex="6">
+            <button class="bg-call-to-action rounded-[38px] px-6 py-1 shadow-md disabled:opacity-80 hover:opacity-80" tabindex="6"
+                    type="submit"
+                    @submit.prevent="create()">
               Erstellen
             </button>
           </div>
