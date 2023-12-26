@@ -78,6 +78,12 @@ const router = createRouter({
             name: 'aktivitaetNeu',
             component: () => import('../views/NewActivityFormView.vue'),
             meta: {requiresAuth: true}
+        },
+        {
+            path: '/reise/:uuid/calender',
+            name: 'calender',
+            component: () => import('../components/CalenderTest.vue'),
+            meta: {requiresAuth: true}
         }
     ],
     scrollBehavior(to, form, savedPosition) {
