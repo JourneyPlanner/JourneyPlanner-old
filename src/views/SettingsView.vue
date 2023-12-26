@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 
 import Footer from "@/components/Footer.vue";
 import SettingsIcon from "@/components/icons/IconSettings.vue";
@@ -34,11 +34,11 @@ const rules = computed(() => ({
 
 const v$ = useVuelidate(rules, {emailRef, username, password});
 
-supabase.auth.getSession().then((user: any) => {
+supabase.auth.getSession().then((user) => {
       supabase.from('user')
           .select('username')
           .eq('pk_uuid', user.data.session.user.id)
-          .then((data: any, error: any) => {
+          .then((data, error) => {
             if (error) {
               console.log(error);
             } else {

@@ -1,9 +1,7 @@
-<script lang="ts" setup>
+<script setup>
 
-//@ts-ignore
 import VueGallery from 'vue-gallery';
 import {ref} from "vue";
-//@ts-ignore
 import {supabase} from "@/lib/supabaseClient";
 import Toast from "primevue/toast";
 import {useToast} from "primevue/usetoast";
@@ -37,11 +35,11 @@ async function fetchMedia() {
       life: 3000
     });
   } else {
-    const image_promises: any = [];
-    const video_promises: any = [];
-    const files_promises: any = [];
+    const image_promises = [];
+    const video_promises = [];
+    const files_promises = [];
 
-    files.forEach((file: any) => {
+    files.forEach((file) => {
       if (file.name != '.emptyFolderPlaceholder') {
         if (file.metadata.mimetype.startsWith('image/')) {
           image_promises.push(
@@ -57,19 +55,19 @@ async function fetchMedia() {
       }
     });
 
-    const image_links_array: any = [];
+    const image_links_array = [];
     let image_links = await Promise.all(image_promises);
     image_links.forEach((file) => {
       image_links_array.push(file.data.signedUrl);
     });
 
-    const video_links_array: any = [];
+    const video_links_array = [];
     let video_links = await Promise.all(video_promises);
     video_links.forEach((file) => {
       video_links_array.push(file.data.signedUrl);
     });
 
-    const file_contents: any = [];
+    const file_contents = [];
     let file_links = await Promise.all(files_promises);
     for (const file of file_links) {
       const response = await fetch(file.data.signedUrl);
