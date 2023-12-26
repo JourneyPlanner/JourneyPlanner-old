@@ -1,5 +1,4 @@
-<script lang="ts" setup>
-// @ts-ignore
+<script setup>
 import {supabase} from "@/lib/supabaseClient";
 import {useRoute} from "vue-router";
 import router from "@/router";
