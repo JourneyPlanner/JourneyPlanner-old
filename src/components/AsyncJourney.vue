@@ -66,7 +66,6 @@ if (data) {
       row["from"] = fromDateDay + '.' + fromDateMonth + '.' + fromDateYear;
       row["to"] = toDateDay + '.' + toDateMonth + '.' + toDateYear;
     }
-    console.log(row["user_is_in"].length)
     for (let i = 0; i < row["user_is_in"].length; i++) {
       if (row["user_is_in"][i]["function"] === 0) {
         row["user_is_in"][i]["function"] = 'Reisende/r';
@@ -79,7 +78,6 @@ if (data) {
 
   });
   journey.value = data;
-  console.log(data);
 
 }
 
@@ -89,7 +87,6 @@ function openNav() {
 
 function closeNav() {
   showSidebar.value = false;
-  console.log(showSidebar.value);
 }
 
 async function toTourGuide(user_uuid: string, index: number) {
@@ -136,7 +133,6 @@ async function toRegular(user_uuid: string, index: number) {
             {{ journey[0].name }}</h1>
         </div>
         <div v-if="currentUserIndex !== null" class="col-start-4 justify-center items-center grid grid-cols-6">
-          {{console.log (journey[0].user_is_in[currentUserIndex].function)}}
           <RouterLink v-if="journey[0].user_is_in[currentUserIndex].function === 'Reiseleiter/in'" class="col-start-3"
                       to="/dashboard">
             <BackToDashboadIllustration class="px-3"/>
