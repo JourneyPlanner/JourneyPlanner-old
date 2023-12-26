@@ -1,6 +1,5 @@
-<script lang="ts" setup>
+<script setup>
 import {ref} from "vue";
-//@ts-ignore
 import {supabase} from "@/lib/supabaseClient.js";
 import {useRoute} from "vue-router";
 import BackToDashboadIllustration from "@/components/illustrations/BackToDashboadIllustration.vue";
@@ -21,7 +20,7 @@ const {data: usernamesData, error: usernamesError} = await supabase
     user_is_in(pk_user_uuid, function)
     `).eq('pk_journey_uuid', journeyID);
 if (usernamesData) {
-  usernamesData.forEach((row: any) => {
+  usernamesData.forEach((row) => {
     for (let i = 0; i < row["user_is_in"].length; i++) {
       if (row["user_is_in"][i]["pk_user_uuid"] === currentUser.id) {
         currentUserIndex.value = i;
@@ -50,7 +49,7 @@ const {data, error} = await supabase
       `).eq('pk_journey_uuid', journeyID);
 console.log(error)
 if (data) {
-  data.forEach((row: any) => {
+  data.forEach((row) => {
     let fromDate = new Date(row["from"]);
     let fromDateDay = fromDate.getDay();
     let fromDateMonth = fromDate.getMonth() + 1;
@@ -89,7 +88,14 @@ function closeNav() {
   showSidebar.value = false;
 }
 
-async function toTourGuide(user_uuid: string, index: number) {
+/**
+ * set user to tour guide
+ *
+ * @param user_uuid {string}
+ * @param index {number}
+ * @returns {Promise<void>}
+ */
+async function toTourGuide(user_uuid, index) {
 
   if (currentUser.id !== user_uuid) {
     const {error} = await supabase
@@ -103,7 +109,14 @@ async function toTourGuide(user_uuid: string, index: number) {
 
 }
 
-async function toRegular(user_uuid: string, index: number) {
+/**
+ * set user to regular
+ *
+ * @param user_uuid {string}
+ * @param index {number}
+ * @returns {Promise<void>}
+ */
+async function toRegular(user_uuid, index) {
 
   if (currentUser.id !== user_uuid) {
     const {error} = await supabase

@@ -82,7 +82,7 @@ const router = createRouter({
         {
             path: '/reise/:uuid/calender',
             name: 'calender',
-            component: () => import('../components/CalenderTest.vue'),
+            component: () => import('../components/Calender.vue'),
             meta: {requiresAuth: true}
         }
     ],

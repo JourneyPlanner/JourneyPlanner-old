@@ -1,9 +1,8 @@
-<script setup lang="ts">
+<script setup>
 import UserDashboardJourneyItem from "@/components/UserDashboardJourneyItem.vue";
 import {ref} from "vue";
 import IconNewJourney from "@/components/icons/IconNewJourney.vue";
 
-//@ts-ignore
 import {supabase} from "@/lib/supabaseClient.js";
 
 const journeys = ref();
@@ -23,7 +22,7 @@ const {data} = await supabase
     .order('from', {ascending: true});
 
 if (data) {
-  data.forEach((row: any) => {
+  data.forEach((row) => {
     let fromDate = new Date(row["from"]);
     let fromDateDay = fromDate.getDay();
     let fromDateMonth = fromDate.getMonth() + 1;

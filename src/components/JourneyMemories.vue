@@ -1,11 +1,10 @@
-<script lang="ts" setup>
+<script setup>
 import JourneyUpload from "@/components/JourneyUpload.vue";
 import IconDownload from "@/components/icons/IconDownload.vue";
 import Toast from 'primevue/toast';
 import {useToast} from "primevue/usetoast";
 import {useRoute} from "vue-router";
 import JSZip from "jszip";
-//@ts-ignore
 import {supabase} from "@/lib/supabaseClient";
 import JourneyEditor from "@/components/JourneyEditor.vue";
 import {defineAsyncComponent} from "vue";
@@ -46,14 +45,14 @@ async function download() {
           .from('journey')
           .select(`name`).eq('pk_journey_uuid', uuid);
 
-      const promises: any = [];
+      const promises = [];
       const zip = new JSZip();
 
-      files.forEach((file: any) => {
+      files.forEach((file) => {
         if (file.name !== ".emptyFolderPlaceholder") {
           promises.push(
               supabase.storage.from('upload').createSignedUrl(`${uuid}/${file.name}`, 3600)
-                  .then(async (signedUrlResponse: any) => {
+                  .then(async (signedUrlResponse) => {
                     const fileResponse = await fetch(signedUrlResponse.data.signedUrl);
                     zip.file(file.name, await fileResponse.blob());
                   })

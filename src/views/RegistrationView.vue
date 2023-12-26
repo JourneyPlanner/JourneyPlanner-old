@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 import {computed, reactive, ref} from "vue";
 //@ts-ignore
 import {supabase} from "@/lib/supabaseClient";

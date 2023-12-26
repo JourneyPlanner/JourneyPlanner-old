@@ -1,5 +1,4 @@
 <script>
-//@ts-ignore
 import {supabase} from "@/lib/supabaseClient";
 import {useRoute} from "vue-router";
 import {ref, toRaw} from "vue";
@@ -23,7 +22,7 @@ export default {
     return {
       currentUserRole: ref(),
       activities: ref(),
-      showData: ref(false),
+      showDataBool: false,
       nothing_To_Render: null,
       index: 0,
       test: {},
@@ -74,7 +73,7 @@ export default {
           this.ausgewaeltesEvent = this.activities[i].pk_activity_uuid
         }
       }
-      this.showData = true;
+      this.showDataBool = true;
     },
     setupDraggable() {
       new Draggable(document.getElementById("planned-tasks"), {
@@ -95,7 +94,7 @@ export default {
       if (error) {
         console.log(error);
       }
-      this.showData = false;
+      this.showDataBool = false;
       location.reload();
     }, async initializeDrop(event) {
       const startTime = event.event._instance.range.start.toISOString().split("T");
@@ -213,7 +212,7 @@ export default {
     },
     handleClose() {
       return () => {
-        this.showData = false;
+        this.showDataBool = false;
       };
     }
   },
@@ -227,7 +226,7 @@ export default {
   <div>
     <section class="content mt-4">
       <div class="container-fluid">
-        <Dialog v-model:visible="showData" :header="name"
+        <Dialog :visible="showDataBool" :header="name"
                 :style="{ width: '60rem' }" @update:visible="handleClose()">
           <button v-if="currentUserRole === 1"
                   class="bg-delete rounded-3xl font-nunito text-xl font-bold p-1 px-2 shadow-md"

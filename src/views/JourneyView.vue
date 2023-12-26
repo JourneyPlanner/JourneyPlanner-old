@@ -8,7 +8,7 @@ const AsyncDashboard = defineAsyncComponent(() =>
 );
 
 const AsyncCalendar = defineAsyncComponent( () =>
-    import('@/components/CalenderTest.vue')
+    import('@/components/Calender.vue')
 );
 
 </script>
