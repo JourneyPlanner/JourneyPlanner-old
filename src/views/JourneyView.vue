@@ -7,6 +7,10 @@ const AsyncDashboard = defineAsyncComponent(() =>
     import('@/components/AsyncJourney.vue')
 );
 
+const AsyncCalendar = defineAsyncComponent( () =>
+    import('@/components/CalenderTest.vue')
+);
+
 </script>
 
 <template>
@@ -15,6 +19,16 @@ const AsyncDashboard = defineAsyncComponent(() =>
       <Suspense>
         <template #default>
           <AsyncDashboard/>
+        </template>
+        <template #fallback>
+          <div class="flex text-center justify-center">
+            <p class="text-3xl font-medium font-nunito text-text-black">Lade...</p>
+          </div>
+        </template>
+      </Suspense>
+      <Suspense>
+        <template #default>
+          <AsyncCalendar/>
         </template>
         <template #fallback>
           <div class="flex text-center justify-center">
