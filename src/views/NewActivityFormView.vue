@@ -88,7 +88,7 @@ async function create() {
     } else {
       toast.add({
         severity: 'success',
-        summary: 'Reise erstellt',
+        summary: 'Aktivität erstellt',
         detail: 'Du wirst gleich weitergeleitet...',
         life: 1000
       });
@@ -168,7 +168,7 @@ input[type=number]{
           </div>
           <div class="flex flex-row gap-5 grid grid-cols-2">
             <div class="flex flex-col">
-              <label for="journey-from" class="pt-2">Adresse</label>
+              <label for="journey-from" class="pt-2">Adresse**</label>
               <input id="journey-from" type="text" v-model="form.adresse" placeholder="Adresse"
                      class="rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action ">
             </div>
@@ -186,7 +186,8 @@ input[type=number]{
             </textarea>
           </div>
           <div class="pt-1">
-            <p class="text-base font-medium">*Pflichtfelder</p>
+            <p class="text-base font-medium">* Pflichtfelder</p>
+            <p class="text-text-black text-base font-nunito-sans">** Benötigt falls sie auf der Karte angezeigt werden soll</p>
           </div>
           <div class="pt-4 flex flex-row justify-between">
             <button @click="cancel" class="bg-cancel rounded-[38px] px-3 py-1 shadow-md hover:opacity-80">

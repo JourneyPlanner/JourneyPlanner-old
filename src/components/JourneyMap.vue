@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import {supabase} from "@/lib/supabaseClient";
 import {useRoute} from "vue-router";
 import L from "leaflet";
@@ -7,6 +7,8 @@ import {onMounted, ref} from "vue";
 
 const map = ref();
 const mapContainer = ref();
+const notFoundActivities = ref([]);
+let markerGroup = null;
 
 //uuid is the folder
 const uuid = useRoute().params.uuid;
@@ -16,21 +18,26 @@ onMounted(() => {
   getMapData()
 })
 
+/**
+ * setMap if not set and then fill with data
+ */
 async function getMapData() {
   if (!map.value) {
     setMap()
   }
 
+  markerGroup.clearLayers();
+
   await getJourneyLocation();
-
   await getJourneyLocationCoordinates(journeyPlace.value);
-
   let activities = await getActivities();
-
   await handleActivites(activities);
 
 }
 
+/**
+ * set up leaflet map
+ */
 function setMap() {
   map.value = L.map(mapContainer.value).setView([48.2083, 16.3731], 2);
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -38,8 +45,25 @@ function setMap() {
     attribution:
         '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(map.value);
+  markerGroup = L.layerGroup().addTo(map.value);
+
+  map.value.on("zoomend", updateMarkerPositions);
+  map.value.on("moveend", updateMarkerPositions);
 }
 
+function updateMarkerPositions() {
+  // Iterate through markers and update their positions
+  markerGroup.eachLayer((marker) => {
+    const latLng = marker.getLatLng();
+    const newLatLng = map.value.latLngToLayerPoint(latLng);
+    marker.setLatLng(map.value.layerPointToLatLng(newLatLng));
+  });
+}
+
+
+/**
+ * get location of journey
+ */
 async function getJourneyLocation() {
   const {data: journey, error} = await supabase
       .from('journey')
@@ -49,28 +73,43 @@ async function getJourneyLocation() {
   journeyPlace.value = journey[0].place;
 }
 
-async function getJourneyLocationCoordinates(journeyPlace: string) {
+/**
+ * get coordinates of journey location
+ * @param journeyPlace in database stored location
+ */
+async function getJourneyLocationCoordinates(journeyPlace) {
   await fetch("https://nominatim.openstreetmap.org/search?q=" + journeyPlace + "&format=geojson").then(function (response) {
     return response.json();
   }).then(function (json) {
-    let long = json.features[0].geometry.coordinates[0];
-    let lat = json.features[0].geometry.coordinates[1];
-    map.value.setView([lat, long], 11)
+    if (json.features.length !== 0) {
+      let long = json.features[0].geometry.coordinates[0];
+      let lat = json.features[0].geometry.coordinates[1];
+      map.value.setView([lat, long], 11);
+    } else {
+      //console.log('error finding place: ' + journeyPlace)
+    }
   })
 }
 
-async function getActivities(): Promise<any> {
+/**
+ * get all activities from current journey
+ */
+async function getActivities() {
   const {data: activities, error} = await supabase
       .from('activity')
-      .select('pk_activity_uuid, name, address, added_to_calendar')
+      .select('pk_activity_uuid, name, address, google_maps_link, added_to_calendar')
       .eq('fk_journey_uuid', uuid);
-
   return activities;
 }
 
-async function handleActivites(activities: any) {
+/**
+ * foreach activity fetch location and display marker in map
+ * @param activities all activities from a journey
+ */
+async function handleActivites(activities) {
+  const notFoundArray = [];
   const greenIcon = new L.Icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
@@ -79,7 +118,7 @@ async function handleActivites(activities: any) {
   })
 
   const redIcon = new L.Icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
@@ -87,44 +126,88 @@ async function handleActivites(activities: any) {
     shadowSize: [41, 41]
   })
 
-  for (const activity of activities) {
-    //let url: string = "https://nominatim.openstreetmap.org/search?street=" + activity.address + "&amenity=" + activity.name + "&format=geojson";
-    //let encodedUrl: string = url.replaceAll(" ", "+");
 
-    let url: string = "https://nominatim.openstreetmap.org/search?q=" + activity.name + "+" + journeyPlace.value + "&format=geojson";
-    let encodedUrl: string = url.replaceAll(" ", "+");
-    console.log(encodedUrl)
+
+  for (const activity of activities) {
+    let activityName = activity.name;
+    let activityAddress = activity.address;
+    let activityMapsLink = activity.google_maps_link;
+    //let url: string = "https://nominatim.openstreetmap.org/search?q=" + activityName + "+" + journeyPlace.value + "&format=geojson";
+    let url = "https://nominatim.openstreetmap.org/search?q=" + activityAddress + "&format=geojson";
+
+    let encodedUrl = url.replaceAll(" ", "+");
+
+    //console.log(encodedUrl)
+
     await fetch(encodedUrl).then(function (response) {
       return response.json();
     }).then(function (json) {
-      let long = json.features[0].geometry.coordinates[0];
-      let lat = json.features[0].geometry.coordinates[1];
+      if (json.features.length !== 0) {
+        let long = json.features[0].geometry.coordinates[0];
+        let lat = json.features[0].geometry.coordinates[1];
 
-      const icon = activity.added_to_calendar ? greenIcon : redIcon;
+        const icon = activity.added_to_calendar ? greenIcon : redIcon;
 
-      L.marker([lat, long], {draggable: false, icon: icon})
-          .addTo(map.value)
-          .bindTooltip(activity.name)
+        L.marker([lat, long], {draggable: false, icon: icon})
+            .addTo(markerGroup)
+            .bindTooltip(activityName)
+        //console.log('added marker: ' + activityName + ' at ' + lat + ' ' + long);
+      } else {
+        //console.log(activityName + " can't be found");
+
+        notFoundArray.push({name: activityName, address: activityAddress, maps: activityMapsLink})
+      }
     })
-
   }
+  notFoundActivities.value = notFoundArray;
 }
 
 </script>
 
 <template>
-  <div class="px-40 mt-10">
-    <div class="bg-primary rounded-[58px]">
-      <div class="flex flex-row justify-between">
-        <h2 class="font-nunito font-semibold text-3xl pl-10 pt-5">Karte</h2>
+  <div class="w-[100%] flex flex-col items-center justify-center mt-8">
+    <div class="w-[85%] rounded-2xl bg-primary p-6">
+      <div class="grid grid-cols-6 pb-3 justify-center items-center">
+        <h2 class="col-span-2 font-nunito text-2xl text-text-black font-semibold">Karte</h2>
+         <button @click="getMapData"
+                  class="font-nunito text-base text-text-black font-bold bg-background border-4 border-call-to-action rounded-[38px] px-6 py-1 shadow-md hover:opacity-80 mb-2 col-start-6">
+            Aktualisieren
+          </button>
+
       </div>
-      <div class="px-10 pb-10">
+      <div>
         <div ref="mapContainer" class="rounded-md h-96"></div>
         <p class="font-nunito-sans text-base">
-          <span class="">Grüner Aktivitäten hast du bereits deinem Plan hinzugefügt.</span>
-          <br>
-          <span>Rote Aktivitäten hast du noch nicht hinzugefügt.</span>
+          <span class="">Grüne Aktivitäten sind bereits dem Plan hinzugefügt. </span>
+          <span>Rote Aktivitäten sind noch nicht im Plan enthalten.</span>
         </p>
+        <details class="font-nunito-sans" v-if="notFoundActivities">
+          <summary class="font-bold">Nicht lokalisierbare Aktivitäten</summary>
+          <p>
+            Diese Aktivitäten konnten wir leider nicht eindeutig zuordnen. Sie sind daher nicht auf der Karte ersichtlich.
+          </p>
+          <table class="table-auto border-collapse border border-b-placeholder-gray">
+            <tr>
+              <th class="table-auto border-collapse border border-b-placeholder-gray bg-disabled-input">Aktivität</th>
+              <th class="table-auto border-collapse border border-b-placeholder-gray bg-disabled-input">Adresse</th>
+              <th class="table-auto border-collapse border border-b-placeholder-gray px-2 bg-disabled-input">
+                Google-Maps
+              </th>
+            </tr>
+            <tr v-for="activity in notFoundActivities">
+              <td class="table-auto border-collapse border border-b-placeholder-gray p-1.5 bg-background">
+                {{ activity.name }}
+              </td>
+              <td class="table-auto border-collapse border border-b-placeholder-gray p-1.5 bg-background">
+                {{ activity.address }}
+              </td>
+              <td class="table-auto border-collapse border border-b-placeholder-gray p-1.5 underline bg-background"><a
+                  v-if="activity.maps" target="_blank" :href="`${activity.maps}`">Link</a></td>
+            </tr>
+          </table>
+        </details>
+        <p class="font-nunito-sans text-base">Die Karte basiert auf Eingaben bei der Reiseerstellung & neuen
+          Aktivitäten. Es kann daher zu falschen Darstellungen kommen.</p>
       </div>
     </div>
   </div>

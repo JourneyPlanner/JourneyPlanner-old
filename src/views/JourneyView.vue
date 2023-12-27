@@ -11,7 +11,7 @@ const AsyncJourney = defineAsyncComponent(() =>
 );
 
 const AsyncCalendar = defineAsyncComponent( () =>
-    import('@/components/Calender.vue')
+    import('@/components/JourneyCalendar.vue')
 );
 
 </script>
