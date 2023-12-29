@@ -24,20 +24,26 @@ const {data} = await supabase
 if (data) {
   data.forEach((row) => {
     let fromDate = new Date(row["from"]);
-    let fromDateDay = fromDate.getDay();
+    let fromDateDay = fromDate.getDate();
     let fromDateMonth = fromDate.getMonth() + 1;
     let fromDateYear = fromDate.getFullYear();
 
     let toDate = new Date(row["to"]);
-    let toDateDay = toDate.getDay();
+    let toDateDay = toDate.getDate();
     let toDateMonth = toDate.getMonth() + 1;
     let toDateYear = toDate.getFullYear();
 
+    if (fromDateMonth === toDateMonth) {
+      fromDateMonth = '';
+    } else {
+      fromDateMonth = fromDateMonth + '.';
+    }
+
     if (fromDateYear === toDateYear) {
-      row["from"] = fromDateDay + '.' + fromDateMonth + '.';
+      row["from"] = fromDateDay + '.' + fromDateMonth;
       row["to"] = toDateDay + '.' + toDateMonth + '.' + toDateYear;
     } else {
-      row["from"] = fromDateDay + '.' + fromDateMonth + '.' + fromDateYear;
+      row["from"] = fromDateDay + '.' + fromDateMonth + fromDateYear;
       row["to"] = toDateDay + '.' + toDateMonth + '.' + toDateYear;
     }
 
