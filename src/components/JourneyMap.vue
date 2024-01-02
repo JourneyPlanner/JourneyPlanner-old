@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import 'leaflet/dist/leaflet.css';
 
 import {LMap, LMarker, LTileLayer, LPopup, LTooltip, LIcon} from "@vue-leaflet/vue-leaflet";
@@ -136,7 +136,7 @@ async function handleActivities(activities) {
       <div>
         <div>
           <div class="rounded-md h-96">
-            <l-map ref="map" v-model:zoom="zoom" v-model:center="center">
+            <l-map ref="map" v-model:zoom="zoom" v-model:center="center" :use-global-leaflet="false">
               <l-tile-layer
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   layer-type="base"
