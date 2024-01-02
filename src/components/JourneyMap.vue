@@ -3,10 +3,10 @@ import {supabase} from "@/lib/supabaseClient";
 import {useRoute} from "vue-router";
 import L from "leaflet";
 import 'leaflet/dist/leaflet.css';
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watchEffect} from "vue";
 
-const map = ref();
-const mapContainer = ref();
+const map = ref(null);
+const mapContainer = ref(null);
 const notFoundActivities = ref([]);
 let markerGroup = null;
 
@@ -14,50 +14,59 @@ let markerGroup = null;
 const uuid = useRoute().params.uuid;
 const journeyPlace = ref();
 
-onMounted(() => {
-  getMapData()
+onMounted(async () => {
+  await getMapData();
 })
 
 /**
  * setMap if not set and then fill with data
  */
 async function getMapData() {
+  console.log(map.value)
   if (!map.value) {
-    setMap()
+    await setMap()
+    console.log(1)
   }
 
-  markerGroup.clearLayers();
+  if (map.value) {
+    markerGroup.clearLayers();
 
-  await getJourneyLocation();
-  await getJourneyLocationCoordinates(journeyPlace.value);
-  let activities = await getActivities();
-  await handleActivites(activities);
+    await getJourneyLocation();
+    await getJourneyLocationCoordinates(journeyPlace.value);
+    let activities = await getActivities();
+    await handleActivites(activities);
+  }
 
 }
 
 /**
  * set up leaflet map
  */
-function setMap() {
+async function setMap() {
   map.value = L.map(mapContainer.value).setView([48.2083, 16.3731], 2);
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
     attribution:
         '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(map.value);
+
   markerGroup = L.layerGroup().addTo(map.value);
 
-  map.value.on("zoomend", updateMarkerPositions);
-  map.value.on("moveend", updateMarkerPositions);
+  //map.value.on("zoomend", updateMarkerPositions);
+  //map.value.on("moveend", updateMarkerPositions);
 }
 
+/**
+ * on scroll zoom update marker posittions (to kinda fix a bug)
+ */
 function updateMarkerPositions() {
-  // Iterate through markers and update their positions
-  markerGroup.eachLayer((marker) => {
-    const latLng = marker.getLatLng();
-    const newLatLng = map.value.latLngToLayerPoint(latLng);
-    marker.setLatLng(map.value.layerPointToLatLng(newLatLng));
-  });
+
+    markerGroup.eachLayer((marker) => {
+      const latLng = marker.getLatLng();
+      const newLatLng = map.value.latLngToLayerPoint(latLng);
+      marker.setLatLng(map.value.layerPointToLatLng(newLatLng));
+    });
+
 }
 
 
@@ -126,8 +135,6 @@ async function handleActivites(activities) {
     shadowSize: [41, 41]
   })
 
-
-
   for (const activity of activities) {
     let activityName = activity.name;
     let activityAddress = activity.address;
@@ -143,8 +150,8 @@ async function handleActivites(activities) {
       return response.json();
     }).then(function (json) {
       if (json.features.length !== 0) {
-        let long = json.features[0].geometry.coordinates[0];
-        let lat = json.features[0].geometry.coordinates[1];
+        let long = parseFloat(json.features[0].geometry.coordinates[0]);
+        let lat = parseFloat(json.features[0].geometry.coordinates[1]);
 
         const icon = activity.added_to_calendar ? greenIcon : redIcon;
 
