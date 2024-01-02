@@ -21,6 +21,7 @@ export default {
   data() {
     return {
       currentUserRole: ref(),
+      noEvents: ref("true"),
       activities: ref(),
       showDataBool: false,
       nothing_To_Render: null,
@@ -35,11 +36,13 @@ export default {
       kosten: ref(""),
       beschreibung: ref(""),
       ausgewaeltesEvent: ref(""),
+      startingDate: ref(""),
       INITIAL_EVENTS: [],
       calendarPlugins: [interactionPlugin, momentTimezonePlugin],
       calendarOptions: {
         plugins: [dayGridPlugin, interactionPlugin, TimeGridPlugin, momentTimezonePlugin],
         initialView: 'timeGridWeek',
+        initialDate: '',
         initialEvents: [],
         locale: "de",
         height: "auto",
@@ -54,7 +57,6 @@ export default {
     };
   },
   async mounted() {
-    await this.initializeData();
     this.setupDraggable();
   },
   methods: {
@@ -82,6 +84,7 @@ export default {
     },
     async initializeData() {
       this.calendarOptions.initialEvents = toRaw(this.INITIAL_EVENTS);
+      this.calendarOptions.initialDate = this.startingDate;
     },
     async deleteFromCalendar(id) {
       const {error} = await supabase
@@ -98,9 +101,9 @@ export default {
       location.reload();
     }, async initializeDrop(event) {
       const startTime = event.event._instance.range.start.toISOString().split("T");
-      startTime[1] = startTime[1].substring(0,8);
+      startTime[1] = startTime[1].substring(0, 8);
       const endTime = event.event._instance.range.end.toISOString().split("T");
-      endTime[1] = endTime[1].substring(0,8);
+      endTime[1] = endTime[1].substring(0, 8);
 
       const {error} = await supabase
           .from('activity')
@@ -146,6 +149,27 @@ export default {
         return;
       }
 
+      const {data: data2, error: error2} = await supabase
+          .from('journey')
+          .select(`
+          from,
+          to
+        `)
+          .eq('pk_journey_uuid', this.journeyID.value);
+      const currentDate = new Date();
+      const journeyStartDate = new Date(data2[0].from);
+      const journeyEndDate = new Date(data2[0].to);
+      if (currentDate > journeyStartDate && currentDate < journeyEndDate) {
+        this.startingDate = currentDate;
+      } else {
+        this.startingDate = data2[0].from;
+      }
+
+      if (error2) {
+        console.error(error2);
+        return;
+      }
+
       if (data) {
         data.forEach((row) => {
           if (row.added_to_calendar) {
@@ -172,6 +196,8 @@ export default {
             }
 
             this.index++;
+          } else {
+            this.noEvents = false;
           }
         });
         if (this.INITIAL_EVENTS.length <= 0) {
@@ -180,6 +206,7 @@ export default {
 
         this.activities = data;
       }
+      await this.initializeData();
     },
     async getUserRole() {
       const {data: {user}} = await supabase.auth.getUser();
@@ -237,7 +264,7 @@ export default {
           <div class="relative flex flex-col justify-center items-center mt-5">
             <h1 class="font-nunito text-2xl font-bold"></h1>
             <div class="bg-primary rounded-[58px] pl-6 pt-3 pr-10 pb-6 w-[60%]">
-              <form class="flex flex-col font-nunito font-semibold text-xl" @submit.prevent="create">
+              <form class="flex flex-col font-nunito font-semibold text-xl">
                 <div class="flex flex-row gap-5 grid grid-cols-2">
                   <div>
                     <div class="flex flex-col">
@@ -299,10 +326,11 @@ export default {
                 <p class="col-span-2 font-nunito text-2xl text-text-black font-semibold"> Deine Aktivitäten</p>
                 <RouterLink :to='$route.fullPath + "/aktivitaet/neu"' class="col-start-6 bg-call-to-action
                 rounded-3xl flex text-text-black font-nunito text-center items-center justify-center text-xl font-bold">
-                  <AddActivityIllustration class="m-2 w-[20%]"></AddActivityIllustration> Erstellen
+                  <AddActivityIllustration class="m-2 w-[20%]"></AddActivityIllustration>
+                  Erstellen
                 </RouterLink>
               </div>
-              <div id="planned-tasks" class="flex bg-background p-1 planned-tasks min-w-32">
+              <div id="planned-tasks" class="flex flex-wrap bg-background p-1 planned-tasks text-center justify-center">
                 <div v-for="activity in activities" class="flex">
                   <div :id=activity.pk_activity_uuid v-if=!activity.added_to_calendar
                        class="fc-event bg-secondary flex flex-col px-3 py-2 rounded-2xl m-3"
@@ -312,6 +340,8 @@ export default {
                     <div>{{ formatTime(activity.estimated_duration / 60) }}h</div>
                   </div>
                 </div>
+                <p v-if="noEvents" class="font-nunito-sans text-base text-text-black py-3"> Noch keine Aktivitäten
+                  vorhanden.</p>
               </div>
               <p class="font-nunito text-base text-text-black font-semibold text-center"> Erstelle Aktivitäten
                 und ziehe sie in deinen Kalender, um deinen eigenen Plan zu erstellen!</p>
