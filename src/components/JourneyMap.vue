@@ -6,7 +6,6 @@ import {onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
 import {supabase} from "@/lib/supabaseClient";
 
-const map = ref();
 const zoom = ref(2);
 const center = ref([48.2083, 16.3731]);
 const markers = ref([]);
@@ -93,9 +92,6 @@ async function getActivities() {
  * @param activities all activities from a journey
  */
 async function handleActivities(activities) {
-  const notFoundArray = [];
-  const markersArray = [];
-
   for (const activity of activities) {
     let activityName = activity.name;
     let activityAddress = activity.address;
