@@ -253,8 +253,8 @@ export default {
   <div>
     <section class="content mt-4">
       <div class="container-fluid">
-        <Dialog :visible="showDataBool" :header="name"
-                :style="{ width: '60rem' }" @update:visible="handleClose()">
+        <Dialog :header="name" :style="{ width: '60rem' }"
+                :visible="showDataBool" @update:visible="handleClose()">
           <button v-if="currentUserRole === 1"
                   class="bg-delete rounded-3xl font-nunito text-xl font-bold p-1 px-2 shadow-md"
                   severity="danger"
@@ -268,28 +268,30 @@ export default {
                 <div class="flex flex-row gap-5 grid grid-cols-2">
                   <div>
                     <div class="flex flex-col">
-                      <label for="journey-dauer" class="pt-2">Dauer</label>
-                      <input disabled :placeholder=dauer
-                             class="rounded border-none bg-background pl-1.5 placeholder-text-black">
+                      <label class="pt-2" for="journey-dauer">Dauer</label>
+                      <input :placeholder=dauer class="rounded border-none bg-background pl-1.5 placeholder-text-black"
+                             disabled>
                     </div>
                     <div class="flex flex-col">
                       <a :href=link>
-                        <label for="journey-to" class="pt-2">Google-Maps</label>
-                        <input disabled :value=link
-                               class="w-[100%] rounded border-none bg-background pl-1.5 placeholder-text-black">
+                        <label class="pt-2" for="journey-to">Google-Maps</label>
+                        <input :value=link
+                               class="w-[100%] rounded border-none bg-background pl-1.5 placeholder-text-black"
+                               disabled>
                       </a>
                     </div>
                     <div class="flex flex-col">
-                      <label for="journey-to" class="pt-2">Kontakt</label>
-                      <input disabled :placeholder=kontakt
-                             class="rounded border-none bg-background pl-1.5 placeholder-text-black">
+                      <label class="pt-2" for="journey-to">Kontakt</label>
+                      <input :placeholder=kontakt
+                             class="rounded border-none bg-background pl-1.5 placeholder-text-black"
+                             disabled>
                     </div>
                   </div>
                   <div class="">
                     <div class="flex flex-col">
-                      <label for="journey-from" class="pt-2">Öffnungszeiten</label>
-                      <textarea disabled class="m-0 p-0 resize-none rounded
-                      border-none bg-background pl-1.5 pb-[42%] pt-0 whitespace-normal">
+                      <label class="pt-2" for="journey-from">Öffnungszeiten</label>
+                      <textarea class="m-0 p-0 resize-none rounded
+                      border-none bg-background pl-1.5 pb-[42%] pt-0 whitespace-normal" disabled>
                         {{oeffnungszeiten}}
                       </textarea>
                     </div>
@@ -297,21 +299,22 @@ export default {
                 </div>
                 <div class="flex flex-row gap-5 grid grid-cols-2">
                   <div class="flex flex-col">
-                    <label for="journey-from" class="pt-2">Adresse</label>
-                    <input disabled :placeholder=adresse
-                           class="rounded border-none bg-background pl-1.5 placeholder-text-black">
+                    <label class="pt-2" for="journey-from">Adresse</label>
+                    <input :placeholder=adresse class="rounded border-none bg-background pl-1.5 placeholder-text-black"
+                           disabled>
                   </div>
                   <div class="flex flex-col">
-                    <label for="journey-to" class="pt-2">Kosten</label>
-                    <input disabled :placeholder=kosten
-                           class="rounded border-none bg-background pl-1.5 placeholder-text-black">
+                    <label class="pt-2" for="journey-to">Kosten</label>
+                    <input :placeholder=kosten class="rounded border-none bg-background pl-1.5 placeholder-text-black"
+                           disabled>
                   </div>
                 </div>
-                <label for="journey-link" class="pt-2">Beschreibung</label>
+                <label class="pt-2" for="journey-link">Beschreibung</label>
                 <div class="flex flex-row justify-between gap-2">
-                 <textarea disabled id="journey-from" type="text"
-                           class="bg-background w-[100%] placeholder-text-black resize-none rounded pl-1.5
-                           border-none focus:outline-none focus:ring-2 focus:ring-call-to-action whitespace-normal">
+                 <textarea id="journey-from" class="bg-background w-[100%] placeholder-text-black resize-none rounded pl-1.5
+                           border-none focus:outline-none focus:ring-2 focus:ring-call-to-action whitespace-normal"
+                           disabled
+                           type="text">
                    {{beschreibung}}
                 </textarea>
                 </div>
@@ -325,17 +328,17 @@ export default {
               <div class="grid grid-cols-6 pb-3 justify-center items-center">
                 <h2 class="col-span-2 font-nunito text-2xl text-text-black font-semibold">Aktivitäten</h2>
                 <RouterLink :to='$route.fullPath + "/aktivitaet/neu"' class="col-start-6 bg-call-to-action
-                rounded-3xl flex text-text-black font-nunito text-center items-center justify-center text-xl font-bold">
-                  <AddActivityIllustration class="m-2 w-[20%]"></AddActivityIllustration>
+                rounded-3xl flex text-text-black font-nunito text-center items-center justify-center text-xl font-bold shadow-md hover:opacity-80">
+                  <AddActivityIllustration class="m-2 w-[20%]"/>
                   Erstellen
                 </RouterLink>
               </div>
               <div id="planned-tasks" class="flex flex-wrap bg-background p-1 planned-tasks text-center justify-center">
                 <div v-for="activity in activities" class="flex">
-                  <div :id=activity.pk_activity_uuid v-if=!activity.added_to_calendar
-                       class="fc-event bg-secondary flex flex-col px-3 py-2 rounded-2xl m-2 cursor-grab"
+                  <div v-if=!activity.added_to_calendar :id=activity.pk_activity_uuid
                        :data-event="JSON.stringify({title:activity.name,duration:formatTime(activity.estimated_duration/60)
-                       ,editable:true,defId:activity.pk_activity_uuid,timeZone: 'local'})">
+                       ,editable:true,defId:activity.pk_activity_uuid,timeZone: 'local'})"
+                       class="fc-event bg-secondary flex flex-col px-3 py-2 rounded-2xl m-2 cursor-grab">
                     <div class="font-semibold">{{ activity.name }}</div>
                     <div>{{ formatTime(activity.estimated_duration / 60) }}h</div>
                   </div>
@@ -351,9 +354,9 @@ export default {
               <div class="flex flex-row justify-between">
                 <h2 class="font-nunito font-semibold text-2xl">Kalender</h2>
               </div>
-              <FullCalendar class="px-4 bg-background rounded-md pt-3"
-                            v-if="INITIAL_EVENTS.length > 0 || nothing_To_Render"
+              <FullCalendar v-if="INITIAL_EVENTS.length > 0 || nothing_To_Render"
                             :options="calendarOptions"
+                            class="px-4 bg-background rounded-md pt-3"
               />
             </div>
           </div>
