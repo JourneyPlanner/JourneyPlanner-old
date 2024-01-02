@@ -89,12 +89,12 @@ async function download() {
 
 <template>
   <Toast/>
-  <div class="px-40 mt-10">
-    <div class="bg-primary rounded-[58px]">
-      <div class="flex flex-row justify-between">
-        <h2 class="font-nunito font-semibold text-3xl pl-10 pt-5">Erinnerungen</h2>
-        <button v-tooltip.top="'Alle Medien herunterladen'">
-          <IconDownload class="p-3 mr-8 hover:opacity-80" @click="download"/>
+  <div class="w-[100%] flex flex-col items-center justify-center mt-8">
+    <div class="w-[85%] rounded-2xl bg-primary px-6">
+      <div class="grid grid-cols-6 justify-center items-center">
+        <h2 class="col-span-2 font-nunito text-2xl text-text-black font-semibold">Erinnerungen</h2>
+        <button v-tooltip.top="'Alle Erinnerungen herunterladen'" class="col-start-7 py-1">
+          <IconDownload class="p-3 hover:opacity-80" @click="download"/>
         </button>
       </div>
       <JourneyEditor/>

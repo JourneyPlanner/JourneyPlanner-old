@@ -88,14 +88,18 @@ async function create() {
     } else {
       toast.add({
         severity: 'success',
-        summary: 'Reise erstellt',
+        summary: 'Aktivität erstellt',
         detail: 'Du wirst gleich weitergeleitet...',
         life: 1000
       });
       await sleep(1000);
-      await router.push('/dashboard?created=true');
+      await router.push('/reise/' + journeyID);
     }
   }
+}
+
+async function cancel() {
+  await router.push('/reise/' + journeyID);
 }
 </script>
 
@@ -126,7 +130,7 @@ input[type=number]{
       <div class="bg-primary rounded-[58px] pl-6 pt-3 pr-10 pb-6 w-[33%]">
         <form class="flex flex-col font-nunito font-semibold text-xl" @submit.prevent="create">
           <label for="journey-name" class="pb-0.5 pt-2">Name deiner Aktivität*</label>
-          <input id="journey-name" placeholder="Aktivitätenname" v-model="form.name" @blur="v$.name.$touch"
+          <input id="journey-name" placeholder="z.B. Name des Musuems" v-model="form.name" @blur="v$.name.$touch"
                  class="rounded border-none focus:outline-none focus:ring-2 focus:ring-call-to-action pl-1.5">
           <p v-if="v$.name.$error" class="text-delete text-base font-nunito-sans font-bold">Bitte gib deiner Aktivität
             einen
@@ -134,7 +138,7 @@ input[type=number]{
           <div class="flex flex-row gap-5 grid grid-cols-2">
             <div class="">
               <div class="flex flex-col">
-                <label for="journey-dauer" class="pt-2">Dauer*</label>
+                <label for="journey-dauer" class="pt-2">geschätzte Dauer*</label>
                 <input id="journey-dauer" type="number" pattern="[0-9]{3}" v-model="form.dauer" @blur="v$.dauer.$touch"
                        placeholder="Dauer in Minuten"
                        class="rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action ">
@@ -164,7 +168,7 @@ input[type=number]{
           </div>
           <div class="flex flex-row gap-5 grid grid-cols-2">
             <div class="flex flex-col">
-              <label for="journey-from" class="pt-2">Adresse</label>
+              <label for="journey-from" class="pt-2">Adresse**</label>
               <input id="journey-from" type="text" v-model="form.adresse" placeholder="Adresse"
                      class="rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action ">
             </div>
@@ -178,16 +182,17 @@ input[type=number]{
           <div class="flex flex-row justify-between gap-2">
             <textarea id="journey-link" type="text" placeholder="Füge eine kleine Beschreibung oder Notiz hinzu"
                       v-model="form.beschreibung"
-                      class="resize-none w-full bg-disabled-input rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action">
+                      class="resize-none w-full rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action">
             </textarea>
           </div>
           <div class="pt-1">
-            <p class="text-base font-medium">*Pflichtfelder</p>
+            <p class="text-base font-medium">* Pflichtfelder</p>
+            <p class="text-text-black text-base font-nunito-sans">** Benötigt falls sie auf der Karte angezeigt werden soll</p>
           </div>
           <div class="pt-4 flex flex-row justify-between">
-            <RouterLink to="/dashboard" class="bg-cancel rounded-[38px] px-3 py-1 shadow-md hover:opacity-80">
+            <button @click="cancel" class="bg-cancel rounded-[38px] px-3 py-1 shadow-md hover:opacity-80">
               Abbrechen
-            </RouterLink>
+            </button>
             <button type="submit" @submit.prevent="create()"
                     class="bg-call-to-action rounded-[38px] px-6 py-1 shadow-md disabled:opacity-80 hover:opacity-80">
               Erstellen

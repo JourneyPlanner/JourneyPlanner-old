@@ -128,7 +128,7 @@ function copyLink() {
                  @blur="v$.name.$touch">
           <p v-if="v$.name.$error" class="text-delete text-base font-nunito-sans font-bold">Bitte gib deiner Reise einen
             Namen</p>
-          <label class="pb-0.5 pt-2" for="journey-place">Stadt/Land/Gebiet</label>
+          <label class="pb-0.5 pt-2" for="journey-place">Stadt/Land</label>
           <input id="journey-place" v-model="form.place" class="rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action" placeholder="Stadt/Land/Gebiet"
                  tabindex="2"
                  @blur="v$.place.$touch">

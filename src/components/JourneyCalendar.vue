@@ -259,7 +259,7 @@ export default {
                   class="bg-delete rounded-3xl font-nunito text-xl font-bold p-1 px-2 shadow-md"
                   severity="danger"
                   type="button"
-                  @click="deleteFromCalendar(ausgewaeltesEvent)"> Entfernen
+                  @click="deleteFromCalendar(ausgewaeltesEvent)">Entfernen
           </button>
           <div class="relative flex flex-col justify-center items-center mt-5">
             <h1 class="font-nunito text-2xl font-bold"></h1>
@@ -322,8 +322,8 @@ export default {
         <div class="card">
           <div class="w-[100%] flex flex-col items-center justify-center">
             <div id="showDraggabeles" class="w-[85%] rounded-2xl bg-primary p-6">
-              <div class="grid grid-cols-6 py-3 justify-center items-center">
-                <p class="col-span-2 font-nunito text-2xl text-text-black font-semibold"> Deine Aktivitäten</p>
+              <div class="grid grid-cols-6 pb-3 justify-center items-center">
+                <h2 class="col-span-2 font-nunito text-2xl text-text-black font-semibold">Aktivitäten</h2>
                 <RouterLink :to='$route.fullPath + "/aktivitaet/neu"' class="col-start-6 bg-call-to-action
                 rounded-3xl flex text-text-black font-nunito text-center items-center justify-center text-xl font-bold">
                   <AddActivityIllustration class="m-2 w-[20%]"></AddActivityIllustration>
@@ -333,24 +333,29 @@ export default {
               <div id="planned-tasks" class="flex flex-wrap bg-background p-1 planned-tasks text-center justify-center">
                 <div v-for="activity in activities" class="flex">
                   <div :id=activity.pk_activity_uuid v-if=!activity.added_to_calendar
-                       class="fc-event bg-secondary flex flex-col px-3 py-2 rounded-2xl m-3"
+                       class="fc-event bg-secondary flex flex-col px-3 py-2 rounded-2xl m-2 cursor-grab"
                        :data-event="JSON.stringify({title:activity.name,duration:formatTime(activity.estimated_duration/60)
-                       ,editable:true,defId:activity.pk_activity_uuid,timeZone: 'local',})">
-                    <div>{{ activity.name }}</div>
+                       ,editable:true,defId:activity.pk_activity_uuid,timeZone: 'local'})">
+                    <div class="font-semibold">{{ activity.name }}</div>
                     <div>{{ formatTime(activity.estimated_duration / 60) }}h</div>
                   </div>
                 </div>
                 <p v-if="noEvents" class="font-nunito-sans text-base text-text-black py-3"> Noch keine Aktivitäten
                   vorhanden.</p>
               </div>
-              <p class="font-nunito text-base text-text-black font-semibold text-center"> Erstelle Aktivitäten
-                und ziehe sie in deinen Kalender, um deinen eigenen Plan zu erstellen!</p>
+              <p class="font-nunito text-base text-text-black font-semibold text-center pt-1"> Erstelle Aktivitäten
+                und ziehe sie in deinen Kalender, um deine Reise zu planen!</p>
             </div>
             <hr>
-            <FullCalendar class="px-4"
-                          v-if="INITIAL_EVENTS.length > 0 || nothing_To_Render"
-                          :options="calendarOptions"
-            />
+            <div class="w-[85%] rounded-2xl bg-primary p-6 mt-8">
+              <div class="flex flex-row justify-between">
+                <h2 class="font-nunito font-semibold text-2xl">Kalender</h2>
+              </div>
+              <FullCalendar class="px-4 bg-background rounded-md pt-3"
+                            v-if="INITIAL_EVENTS.length > 0 || nothing_To_Render"
+                            :options="calendarOptions"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -358,8 +363,7 @@ export default {
   </div>
 </template>
 
-
-<style>
+<style scoped>
 .planned-tasks > div {
   margin-bottom: 0.5em;
 }
