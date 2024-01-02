@@ -14,23 +14,23 @@ const notFoundActivities = ref([]);
 const uuid = useRoute().params.uuid;
 const journeyPlace = ref();
 
-const greenIcon = new L.Icon({
+const greenIcon = {
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
   shadowSize: [41, 41]
-})
+};
 
-const redIcon = new L.Icon({
+const redIcon = {
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
   shadowSize: [41, 41]
-})
+};
 
 onMounted(async () => {
   await getMapData();
@@ -145,9 +145,9 @@ async function handleActivities(activities) {
               ></l-tile-layer>
 
               <l-marker v-for="marker in markers" :lat-lng="marker.lat_long">
-                <l-icon :icon-url="marker.icon.options.iconUrl" :icon-size="marker.icon.options.iconSize"
-                        :icon-anchor="marker.icon.options.iconAnchor" :shadow-size="marker.icon.options.shadowSize"
-                        :shadow-url="marker.icon.options.shadowUrl" :popup-anchor="marker.icon.options.popupAnchor"/>
+                <l-icon :icon-url="marker.icon.iconUrl" :icon-size="marker.icon.iconSize"
+                        :icon-anchor="marker.icon.iconAnchor" :shadow-size="marker.icon.shadowSize"
+                        :shadow-url="marker.icon.shadowUrl" :popup-anchor="marker.icon.popupAnchor"/>
                 <l-popup>{{ marker.name }}</l-popup>
                 <l-tooltip>{{ marker.name }}</l-tooltip>
               </l-marker>
