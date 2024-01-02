@@ -106,7 +106,7 @@ async function fetchMedia() {
             v-if="images.length > 0"
             :key="`image-${imageIndex}`"
             :style="{ backgroundImage: 'url(' + image + ')', backgroundSize: 'cover' }"
-            class="image relative bg-cover bg-center rounded-md w-40 h-40 shadow-md hover:shadow-xl"
+            class="image relative bg-cover bg-center rounded-md w-40 h-40 shadow-md hover:shadow-xl cursor-zoom-in"
             @click="index = imageIndex"
         ></div>
 
