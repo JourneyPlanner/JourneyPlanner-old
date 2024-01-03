@@ -205,8 +205,10 @@ function deleteConfirmation() {
  */
 async function deleteJourney() {
   const { data: list, errorList } = await supabase.storage.from('upload').list(`${journeyID}`);
-  const filesToRemove = list.map((x) => `${journeyID}/${x.name}`);
-  const { data, errorRemove } = await supabase.storage.from('upload').remove(filesToRemove);
+  if (list.length > 0) {
+    const filesToRemove = list.map((x) => `${journeyID}/${x.name}`);
+    const { data, errorRemove } = await supabase.storage.from('upload').remove(filesToRemove);
+  }
 
   const { error } = await supabase
       .from('journey')
