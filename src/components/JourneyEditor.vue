@@ -67,7 +67,7 @@ async function saveEditor() {
 
 <template>
   <Toast/>
-  <div class="px-10 pb-10">
+  <div>
     <h3 class="font-nunito-sans text-xl font-bold text-text-black">Neuen Text schreiben</h3>
     <div class="flex flex-row justify-between">
       <div>

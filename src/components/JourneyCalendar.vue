@@ -1,5 +1,4 @@
 <script>
-//@ts-ignore
 import {supabase} from "@/lib/supabaseClient";
 import {useRoute} from "vue-router";
 import {ref, toRaw} from "vue";
@@ -23,7 +22,7 @@ export default {
     return {
       currentUserRole: ref(),
       activities: ref(),
-      showData: ref(false),
+      showDataBool: false,
       nothing_To_Render: null,
       index: 0,
       test: {},
@@ -74,7 +73,7 @@ export default {
           this.ausgewaeltesEvent = this.activities[i].pk_activity_uuid
         }
       }
-      this.showData = true;
+      this.showDataBool = true;
     },
     setupDraggable() {
       new Draggable(document.getElementById("planned-tasks"), {
@@ -95,13 +94,13 @@ export default {
       if (error) {
         console.log(error);
       }
-      this.showData = false;
+      this.showDataBool = false;
       location.reload();
     }, async initializeDrop(event) {
       const startTime = event.event._instance.range.start.toISOString().split("T");
-      startTime[1] = startTime[1].substring(0,8);
+      startTime[1] = startTime[1].substring(0, 8);
       const endTime = event.event._instance.range.end.toISOString().split("T");
-      endTime[1] = endTime[1].substring(0,8);
+      endTime[1] = endTime[1].substring(0, 8);
 
       const {error} = await supabase
           .from('activity')
@@ -213,7 +212,7 @@ export default {
     },
     handleClose() {
       return () => {
-        this.showData = false;
+        this.showDataBool = false;
       };
     }
   },
@@ -227,18 +226,18 @@ export default {
   <div>
     <section class="content mt-4">
       <div class="container-fluid">
-        <Dialog v-model:visible="showData" :header="name"
+        <Dialog :visible="showDataBool" :header="name"
                 :style="{ width: '60rem' }" @update:visible="handleClose()">
           <button v-if="currentUserRole === 1"
                   class="bg-delete rounded-3xl font-nunito text-xl font-bold p-1 px-2 shadow-md"
                   severity="danger"
                   type="button"
-                  @click="deleteFromCalendar(ausgewaeltesEvent)"> Entfernen
+                  @click="deleteFromCalendar(ausgewaeltesEvent)">Entfernen
           </button>
           <div class="relative flex flex-col justify-center items-center mt-5">
             <h1 class="font-nunito text-2xl font-bold"></h1>
             <div class="bg-primary rounded-[58px] pl-6 pt-3 pr-10 pb-6 w-[60%]">
-              <form class="flex flex-col font-nunito font-semibold text-xl" @submit.prevent="create">
+              <form class="flex flex-col font-nunito font-semibold text-xl">
                 <div class="flex flex-row gap-5 grid grid-cols-2">
                   <div>
                     <div class="flex flex-col">
@@ -296,32 +295,38 @@ export default {
         <div class="card">
           <div class="w-[100%] flex flex-col items-center justify-center">
             <div id="showDraggabeles" class="w-[85%] rounded-2xl bg-primary p-6">
-              <div class="grid grid-cols-6 py-3 justify-center items-center">
-                <p class="col-span-2 font-nunito text-2xl text-text-black font-semibold"> Deine Aktivitäten</p>
+              <div class="grid grid-cols-6 pb-3 justify-center items-center">
+                <h2 class="col-span-2 font-nunito text-2xl text-text-black font-semibold">Aktivitäten</h2>
                 <RouterLink :to='$route.fullPath + "/aktivitaet/neu"' class="col-start-6 bg-call-to-action
-                rounded-3xl flex text-text-black font-nunito text-center items-center justify-center text-xl font-bold">
-                  <AddActivityIllustration class="m-2 w-[20%]"></AddActivityIllustration> Erstellen
+                rounded-3xl flex text-text-black font-nunito text-center items-center justify-center text-xl font-bold shadow-md hover:opacity-80">
+                  <AddActivityIllustration class="m-2 w-[20%]"/>
+                  Erstellen
                 </RouterLink>
               </div>
-              <div id="planned-tasks" class="flex bg-background p-1 planned-tasks min-w-32">
+              <div id="planned-tasks" class="flex bg-background p-1 planned-tasks min-w-32 rounded-md">
                 <div v-for="activity in activities" class="flex">
                   <div :id=activity.pk_activity_uuid v-if=!activity.added_to_calendar
-                       class="fc-event bg-secondary flex flex-col px-3 py-2 rounded-2xl m-3"
+                       class="fc-event bg-secondary flex flex-col px-3 py-2 rounded-2xl m-2 cursor-grab"
                        :data-event="JSON.stringify({title:activity.name,duration:formatTime(activity.estimated_duration/60)
-                       ,editable:true,defId:activity.pk_activity_uuid,timeZone: 'local',})">
-                    <div>{{ activity.name }}</div>
+                       ,editable:true,defId:activity.pk_activity_uuid,timeZone: 'local'})">
+                    <div class="font-semibold">{{ activity.name }}</div>
                     <div>{{ formatTime(activity.estimated_duration / 60) }}h</div>
                   </div>
                 </div>
               </div>
-              <p class="font-nunito text-base text-text-black font-semibold text-center"> Erstelle Aktivitäten
-                und ziehe sie in deinen Kalender, um deinen eigenen Plan zu erstellen!</p>
+              <p class="font-nunito text-base text-text-black font-semibold text-center pt-1"> Erstelle Aktivitäten
+                und ziehe sie in deinen Kalender, um deine Reise zu planen!</p>
             </div>
             <hr>
-            <FullCalendar class="px-4"
-                          v-if="INITIAL_EVENTS.length > 0 || nothing_To_Render"
-                          :options="calendarOptions"
-            />
+            <div class="w-[85%] rounded-2xl bg-primary p-6 mt-8">
+              <div class="flex flex-row justify-between">
+                <h2 class="font-nunito font-semibold text-2xl">Kalender</h2>
+              </div>
+              <FullCalendar class="px-4 bg-background rounded-md pt-3"
+                            v-if="INITIAL_EVENTS.length > 0 || nothing_To_Render"
+                            :options="calendarOptions"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -329,8 +334,7 @@ export default {
   </div>
 </template>
 
-
-<style>
+<style scoped>
 .planned-tasks > div {
   margin-bottom: 0.5em;
 }

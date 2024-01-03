@@ -85,36 +85,40 @@ async function fetchMedia() {
 
 <template>
   <Toast/>
-  <div class="px-10 pb-10">
-    <h3 class="font-nunito-sans text-xl font-bold text-text-black">Bilder | Videos | Texte</h3>
+  <div class="my-8">
+    <div class="grid grid-cols-6 pb-3 justify-center items-center">
+      <h3 class="font-nunito-sans text-xl font-bold text-text-black col-span-2">Bilder | Videos | Texte</h3>
+      <button @click="fetchMedia"
+              class="font-nunito text-base text-text-black font-bold bg-background border-4 border-call-to-action rounded-[38px] px-6 py-1 shadow-md hover:opacity-80 mb-2 col-start-6">
+        Aktualisieren
+      </button>
+    </div>
+
     <div class="bg-background rounded-md">
       <div v-if="images.length === 0 && videos.length === 0 && texts.length === 0" class="flex justify-center pb-4">
         <p class="font-nunito-sans text-base text-text-black pt-4">Noch keine Erinnerungen vorhanden</p>
       </div>
 
-      <div v-else class="grid grid-cols-5 gap-2 pt-2 pb-2 px-2">
-
+      <div v-else class="grid grid-cols-7 gap-2 pt-2 pb-2 px-2">
         <VueGallery v-if="images.length > 0" :images="images" :index="index" @close="index = null"/>
         <div
             v-for="(image, imageIndex) in images"
             v-if="images.length > 0"
             :key="`image-${imageIndex}`"
             :style="{ backgroundImage: 'url(' + image + ')', backgroundSize: 'cover' }"
-            class="image relative bg-cover bg-center rounded-md w-48 h-48 shadow-md"
+            class="image relative bg-cover bg-center rounded-md w-40 h-40 shadow-md hover:shadow-xl cursor-zoom-in"
             @click="index = imageIndex"
         ></div>
 
         <div v-for="video in videos" :key="`video-${video}`">
-          <iframe :src="video" class="w-48 h-48 rounded-md bg-center shadow-md"></iframe>
+          <iframe :src="video" class="w-40 h-40 rounded-md bg-center shadow-md"></iframe>
         </div>
 
         <div v-for="file in texts" :key="`text-${file}`">
-          <p class="w-48 h-48 rounded-md bg-center shadow-md overflow-hidden no overflow-ellipsis font-nunito-sans p-2 mt-2">
+          <p class="w-40 h-40 rounded-md bg-center shadow-md overflow-hidden no overflow-ellipsis font-nunito-sans p-2 mt-2">
             {{ file }}</p>
         </div>
       </div>
     </div>
-    <p class="font-nunito-sans text-text-black">Alle Bilder, Videos, die kompletten Texte und andere Dateien können ganz
-      oben heruntergeladen werden.</p>
   </div>
 </template>

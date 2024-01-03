@@ -88,12 +88,6 @@ const router = createRouter({
             path: '/beitreten/:uuid',
             name: 'beitreten',
             component: () => import('../views/JoinJourneyView.vue')
-        },
-        {
-            path: '/reise/:uuid/calender',
-            name: 'calender',
-            component: () => import('../components/Calender.vue'),
-            meta: {requiresAuth: true}
         }
     ],
     scrollBehavior(to, form, savedPosition) {
