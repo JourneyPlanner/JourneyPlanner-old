@@ -41,9 +41,8 @@ const {data: usernamesData, error: usernamesError} = await supabase
     user(username),
     user_is_in(pk_user_uuid, function)
     `)
-    .eq('pk_journey_uuid', journeyID)
-console.log(usernamesData)
-    //.order('user_is_in.function', {ascending: true});
+    .eq('pk_journey_uuid', journeyID);
+    //.order('user_is_in.function', {ascending: true}); user_is_in(function)
 if (usernamesData) {
   usernamesData.forEach((row) => {
     for (let i = 0; i < row["user_is_in"].length; i++) {
