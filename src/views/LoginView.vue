@@ -1,9 +1,9 @@
-<script lang="ts" setup>
-import {reactive, ref} from "vue";
+<script setup>
+import {onMounted, reactive, ref} from "vue";
 //@ts-ignore
 import {supabase} from "@/lib/supabaseClient";
 import {useVuelidate} from '@vuelidate/core'
-import {required, email} from '@vuelidate/validators'
+import {email, required} from '@vuelidate/validators'
 import Footer from "@/components/Footer.vue";
 import PersonWalkingIllustration from "@/components/illustrations/PersonWalkingIllustration.vue";
 import BackToHomeButton from "@/components/buttons/BackToHomeButton.vue";
@@ -12,6 +12,7 @@ import {useRoute} from "vue-router";
 
 import Toast from 'primevue/toast';
 import {useToast} from 'primevue/usetoast';
+import MicrosoftLoginIllustration from "@/components/illustrations/MicrosoftLoginIllustration.vue";
 
 const registered = ref(false);
 const toast = useToast();
@@ -79,7 +80,55 @@ async function signIn() {
   }
 }
 
+/**
+ * handle sign in with Google
+ *
+ * @param response
+ * @returns {Promise<void>}
+ */
+window.handleSignInWithGoogle = async function handleSignInWithGoogle(response) {
+  const {data, error} = await supabase.auth.signInWithIdToken({
+    provider: 'google',
+    token: response.credential,
+    options: {
+      data: {
+        username: 'temp',
+      }
+    }
+  })
+  if (error) {
+    console.log(error);
+  } else {
+    await router.push("/dashboard");
+  }
+}
+
+/**
+ * handle sign in with Microsoft
+ *
+ * @returns {Promise<void>}
+ */
+async function handleSignInWithMicrosoft() {
+  const {data, error} = await supabase.auth.signInWithOAuth({
+    provider: 'azure',
+    options: {
+      scopes: 'email',
+    },
+  });
+  if (error) {
+    console.log(error);
+  } else {
+    await router.push("/dashboard");
+  }
+}
+
+onMounted(() => {
+  let recaptchaScript = document.createElement('script')
+  recaptchaScript.setAttribute('src', 'https://accounts.google.com/gsi/client')
+  document.head.appendChild(recaptchaScript)
+})
 </script>
+
 <template>
   <Toast/>
 
@@ -89,8 +138,8 @@ async function signIn() {
         <PersonWalkingIllustration class="h-[85vh] ml-[-25%] mt-[5%]"/>
       </div>
       <div id="firsHalf" class="xl:w-1/2 md:w-2/3 sm:w-[100%] items-center justify-center flex flex-col">
-        <Dialog v-model:visible="registered" modal header="Bestätige noch deine E-Mail-Adresse!"
-                :style="{ width: '50rem' }">
+        <Dialog v-model:visible="registered" :style="{ width: '50rem' }" header="Bestätige noch deine E-Mail-Adresse!"
+                modal>
           <p>
             Deine Registrierung ist fast abgeschlossen. Bitte bestätige noch deine E-Mail-Adresse.
             Solltest du keine Mail von uns bekommen haben, schaue bitte in deinem Spamordner nach.
@@ -99,11 +148,11 @@ async function signIn() {
           </p>
         </Dialog>
 
-        <Dialog v-model:visible="unauthorized" modal header="Bitte logge dich ein!"
-                :style="{ width: '50rem' }" class="font-nunito text-text-black text-xl">
+        <Dialog v-model:visible="unauthorized" :style="{ width: '50rem' }" class="font-nunito text-text-black text-xl"
+                header="Bitte logge dich ein!" modal>
           <p class="font-nunito-sans text-text-black">
             Bitte melde dich an oder
-            <RouterLink to="register" class="underline">erstelle ein Konto.</RouterLink>
+            <RouterLink class="underline" to="register">erstelle ein Konto.</RouterLink>
             <br>
             Solltest du auf Probleme stoßen, kannst du uns unter
             <a class="underline" href="mailto:contact@journeyplanner.io">contact@journeyplanner.io</a> erreichen.
@@ -119,17 +168,37 @@ async function signIn() {
               <input v-model="v$.contact.email.$model" class="font-nunito text-xl" placeholder="E-Mail eingeben">
               <p v-if="v$.contact.email.$error" class="text-delete text-base font-nunito">Nicht das richtige Format</p>
               <h2 class="text-xl font-nunito font-semibold">Passwort</h2>
-              <input v-model=v$.password.$model type="password" class="font-nunito text-xl"
-                     placeholder="Passwort eingeben" @keyup.enter="signIn">
+              <input v-model=v$.password.$model class="font-nunito text-xl" placeholder="Passwort eingeben"
+                     type="password" @keyup.enter="signIn">
               <div class="my-3">
-                <button :disabled="v$.$invalid" type="button"
-                        class="disabled:opacity-50 bg-call-to-action border-call-to-action rounded-3xl font-nunito text-xl font-bold p-1.5 px-6 hover:opacity-80 shadow-lg"
+                <button :disabled="v$.$invalid" class="disabled:opacity-50 bg-call-to-action border-call-to-action rounded-3xl font-nunito text-xl font-bold p-1.5 px-6 hover:opacity-80 shadow-lg"
+                        type="button"
                         @click="signIn">Login
                 </button>
                 <RouterLink
                     class="font-nunito text-base font-bold px-2 break-after-all underline underline-offset-2 lg:ml-14"
                     to="register">Noch kein Konto?
                 </RouterLink>
+              </div>
+              <div class="max-w-72 mb-2">
+                <div id="g_id_onload"
+                     data-callback="handleSignInWithGoogle"
+                     data-client_id="423199431986-u0servcgoperfqd07iaofml60qoeh3aa.apps.googleusercontent.com"
+                     data-context="signin"
+                     data-itp_support="true"
+                     data-ux_mode="popup">
+                </div>
+                <div class="g_id_signin"
+                     data-logo_alignment="left"
+                     data-shape="pill"
+                     data-size="large"
+                     data-text="signin_with"
+                     data-theme="outline"
+                     data-type="standard">
+                </div>
+              </div>
+              <div class="mb-4">
+                <MicrosoftLoginIllustration @click="handleSignInWithMicrosoft()"/>
               </div>
             </div>
           </form>
