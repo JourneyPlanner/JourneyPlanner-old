@@ -25,7 +25,7 @@ function hasHistory() {
                 class="underline font-nunito text-xl font-medium mr-3 mt-5">Zurück
         </button>
         |
-        <RouterLink to="dashboard" class="underline font-nunito text-xl font-medium ml-3">Dashboard</RouterLink>
+        <RouterLink to="/dashboard" class="underline font-nunito text-xl font-medium ml-3">Dashboard</RouterLink>
       </div>
     </div>
   </div>
