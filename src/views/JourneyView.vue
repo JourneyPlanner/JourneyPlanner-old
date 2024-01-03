@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import Footer from "@/components/Footer.vue";
 import {defineAsyncComponent} from "vue";
-import JourneyMedia from "@/components/JourneyMemories.vue";
+import JourneyMemories from "@/components/JourneyMemories.vue";
+const JourneyMap = defineAsyncComponent(() =>
+    import('@/components/JourneyMap.vue')
+);
 
-const AsyncDashboard = defineAsyncComponent(() =>
+const AsyncJourney = defineAsyncComponent(() =>
     import('@/components/AsyncJourney.vue')
 );
 
 const AsyncCalendar = defineAsyncComponent( () =>
-    import('@/components/Calender.vue')
+    import('@/components/JourneyCalendar.vue')
 );
 
 </script>
@@ -18,7 +21,7 @@ const AsyncCalendar = defineAsyncComponent( () =>
     <div class="bg-background flex flex-col min-h-screen">
       <Suspense>
         <template #default>
-          <AsyncDashboard/>
+          <AsyncJourney/>
         </template>
         <template #fallback>
           <div class="flex text-center justify-center">
@@ -36,7 +39,17 @@ const AsyncCalendar = defineAsyncComponent( () =>
           </div>
         </template>
       </Suspense>
-      <JourneyMedia/>
+      <Suspense>
+        <template #default>
+          <JourneyMap/>
+        </template>
+        <template #fallback>
+          <div class="flex text-center justify-center">
+            <p class="text-3xl font-medium font-nunito text-text-black">Lade Karte...</p>
+          </div>
+        </template>
+      </Suspense>
+      <JourneyMemories/>
       <Footer class="mt-auto"/>
     </div>
   </div>

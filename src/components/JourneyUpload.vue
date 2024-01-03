@@ -57,7 +57,7 @@ async function onUpload(event: any) {
 </script>
 
 <template>
-  <div class="px-10 pb-10">
+  <div class="mt-8">
     <Toast/>
     <h3 class="font-nunito-sans text-xl font-bold text-text-black">Hochladen</h3>
     <FileUpload :custom-upload="true" :mode="'advanced'" :multiple="true" @uploader="onUpload($event)">
