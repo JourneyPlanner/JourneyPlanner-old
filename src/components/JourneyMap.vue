@@ -131,8 +131,8 @@ async function handleActivities(activities) {
       </div>
       <div>
         <div>
-          <div class="rounded-md h-96">
-            <l-map ref="map" v-model:zoom="zoom" v-model:center="center" :use-global-leaflet="false">
+          <div class="rounded-md h-96 z-0">
+            <l-map ref="map" v-model:zoom="zoom" v-model:center="center" :use-global-leaflet="false" class="rounded-md z-0">
               <l-tile-layer
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   layer-type="base"
