@@ -8,6 +8,7 @@ import Footer from "@/components/Footer.vue";
 import FliegerIllustration from "@/components/illustrations/FliegerIllustration.vue";
 import BackToHomeButton from "@/components/buttons/BackToHomeButton.vue";
 import router from "@/router";
+import MicrosoftLoginIllustration from "@/components/illustrations/MicrosoftLoginIllustration.vue";
 
 const state = reactive({
   accepted: false,
@@ -84,6 +85,25 @@ window.handleSignInWithGoogle = async function handleSignInWithGoogle(response) 
   }
 }
 
+/**
+ * handle sign in with Microsoft
+ *
+ * @returns {Promise<void>}
+ */
+async function handleSignInWithMicrosoft() {
+  const {data, error} = await supabase.auth.signInWithOAuth({
+    provider: 'azure',
+    options: {
+      scopes: 'email',
+    },
+  });
+  if (error) {
+    console.log(error);
+  } else {
+    await router.push("/dashboard");
+  }
+}
+
 onMounted(() => {
   let recaptchaScript = document.createElement('script')
   recaptchaScript.setAttribute('src', 'https://accounts.google.com/gsi/client')
@@ -98,7 +118,7 @@ onMounted(() => {
         <BackToHomeButton class="absolute top-[2%] left-[2%]"/>
         <div class="xl:w-1/2 md:w-[80%] sm:w-[80%]">
           <h1 class="xl:text-3xl md:text-3xl sm:text-3xl pl-6.1538em font-nunito pt-[15%]">Registrierung</h1>
-          <form class="bg-primary rounded-2xl xl:w-[25vw] md:w-[50vw] sm:w-[75vw] ">
+          <form class="bg-primary rounded-2xl xl:w-[28vw] md:w-[55vw] sm:w-[80vw] ">
             <div class="inside flex flex-col pl-8 ">
               <h2 class="col-start-1 text-xl font-nunito font-semibold">Benutzername</h2>
               <input v-model="v$.username.$model"
@@ -146,21 +166,25 @@ onMounted(() => {
                     to="login">Schon registriert?
                 </RouterLink>
               </div>
-              <div id="g_id_onload"
-                   data-callback="handleSignInWithGoogle"
-                   data-client_id="423199431986-u0servcgoperfqd07iaofml60qoeh3aa.apps.googleusercontent.com"
-                   data-context="signin"
-                   data-itp_support="true"
-                   data-ux_mode="popup">
+              <div class="max-w-72 mb-2">
+                <div id="g_id_onload"
+                     data-callback="handleSignInWithGoogle"
+                     data-client_id="423199431986-u0servcgoperfqd07iaofml60qoeh3aa.apps.googleusercontent.com"
+                     data-context="signin"
+                     data-itp_support="true"
+                     data-ux_mode="popup">
+                </div>
+                <div class="g_id_signin"
+                     data-logo_alignment="left"
+                     data-shape="pill"
+                     data-size="large"
+                     data-text="signin_with"
+                     data-theme="outline"
+                     data-type="standard">
+                </div>
               </div>
-
-              <div class="g_id_signin"
-                   data-logo_alignment="left"
-                   data-shape="pill"
-                   data-size="large"
-                   data-text="signin_with"
-                   data-theme="outline"
-                   data-type="standard">
+              <div class="mb-4">
+                <MicrosoftLoginIllustration @click="handleSignInWithMicrosoft()"/>
               </div>
             </div>
           </form>
@@ -171,7 +195,7 @@ onMounted(() => {
         <FliegerIllustration class="h-[85vh] ml-[1%]"/>
       </div>
     </div>
-    <div class="xl:w-1/2 md:w-2/3 sm:w-[100%] items-center justify-center flex ">
+    <div class="xl:w-1/2 md:w-2/3 sm:w-[100%] items-center justify-center flex ml-5 -mr-0.5">
       <Footer class="bottom-0 w-full md:fixed"/>
     </div>
   </div>
