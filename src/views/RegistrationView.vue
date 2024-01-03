@@ -143,9 +143,9 @@ onMounted(() => {
                      placeholder="Passwort eingeben"
                      type="password" @keyup.enter="signUp">
               <p v-if="v$.passwordRepeat.$error" class="text-delete text-base font-nunito">Nicht ident zu Passwort</p>
-              <div class="check">
+              <div class="check mt-1">
                 <label class="font-nunito text-base">
-                  <input v-model="v$.accepted.$model" class="p-3" type="checkbox">
+                  <input v-model="v$.accepted.$model" class="w-4 h-4" type="checkbox">
                   Hiermit akzeptiere ich die
                   <RouterLink :to="{ name: 'datenschutz'}" class="underline underline-offset-2 ml-4 lg:ml-0"
                               target="_blank">
@@ -155,7 +155,7 @@ onMounted(() => {
               </div>
               <p v-if="v$.accepted.$error" class="text-delete text-base font-nunito">Bitte akzeptieren Sie die
                 Datenschutzerklärung</p>
-              <div class="my-3">
+              <div class="my-2">
                 <button :disabled="v$.$invalid"
                         class="disabled:opacity-50 registerButton bg-call-to-action rounded-3xl font-nunito text-xl font-bold p-1 px-2 hover:opacity-80"
                         type="button"
@@ -184,7 +184,7 @@ onMounted(() => {
                 </div>
               </div>
               <div class="mb-4">
-                <MicrosoftLoginIllustration @click="handleSignInWithMicrosoft()"/>
+                <MicrosoftLoginIllustration class="cursor-pointer" @click="handleSignInWithMicrosoft()"/>
               </div>
             </div>
           </form>
@@ -196,7 +196,7 @@ onMounted(() => {
       </div>
     </div>
     <div class="xl:w-1/2 md:w-2/3 sm:w-[100%] items-center justify-center flex ml-5 -mr-0.5">
-      <Footer class="bottom-0 w-full md:fixed"/>
+      <Footer class="bottom-0 w-full"/>
     </div>
   </div>
 </template>

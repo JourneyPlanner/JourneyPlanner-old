@@ -1,5 +1,5 @@
 <template>
-  <svg height="41" viewBox="0 0 215 41" width="215" xmlns="http://www.w3.org/2000/svg"><title>MS-SymbolLockup</title>
+  <svg height="41" viewBox="0 0 215 41" width="215" xmlns="http://www.w3.org/2000/svg">
     <rect fill="#fff" height="41" width="215"/>
     <path d="M214,1V40H1V1H214m1-1H0V41H215V0Z" fill="#8c8c8c"/>
     <path

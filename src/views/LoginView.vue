@@ -57,8 +57,8 @@ async function signIn() {
   if (error) {
     toast.add({
       severity: 'error',
-      summary: 'Fehler beim einloggen',
-      detail: 'Du hast einen Falschen Benutzernamen oder ein falsches Passwort angegben.',
+      summary: 'Fehler beim Anmelden',
+      detail: 'Du hast eine falsche E-Mail oder ein falsches Passwort angegeben.',
       life: 5000
     });
   } else {
@@ -171,7 +171,8 @@ onMounted(() => {
               <input v-model=v$.password.$model class="font-nunito text-xl" placeholder="Passwort eingeben"
                      type="password" @keyup.enter="signIn">
               <div class="my-3">
-                <button :disabled="v$.$invalid" class="disabled:opacity-50 bg-call-to-action border-call-to-action rounded-3xl font-nunito text-xl font-bold p-1.5 px-6 hover:opacity-80 shadow-lg"
+                <button :disabled="v$.$invalid"
+                        class="disabled:opacity-50 bg-call-to-action border-call-to-action rounded-3xl font-nunito text-xl font-bold p-1.5 px-6 hover:opacity-80 shadow-lg"
                         type="button"
                         @click="signIn">Login
                 </button>
@@ -198,7 +199,7 @@ onMounted(() => {
                 </div>
               </div>
               <div class="mb-4">
-                <MicrosoftLoginIllustration @click="handleSignInWithMicrosoft()"/>
+                <MicrosoftLoginIllustration class="cursor-pointer" @click="handleSignInWithMicrosoft()"/>
               </div>
             </div>
           </form>
