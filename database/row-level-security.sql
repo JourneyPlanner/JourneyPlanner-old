@@ -62,3 +62,8 @@ AS PERMISSIVE FOR ALL
 TO authenticated
 USING (1 = (select 1 from user_is_in where user_is_in.pk_journey_uuid = activity.fk_journey_uuid and auth.uid() = user_is_in.pk_user_uuid and user_is_in.function = 1))
 WITH CHECK (1 = (select 1 from user_is_in where user_is_in.pk_journey_uuid = activity.fk_journey_uuid and auth.uid() = user_is_in.pk_user_uuid and user_is_in.function = 1));
+
+CREATE POLICY "delete journey when reiseleiter" ON "public"."journey"
+AS PERMISSIVE FOR DELETE
+TO authenticated
+USING ((1 = ( SELECT 1 FROM user_is_in WHERE ((journey.pk_journey_uuid = user_is_in.pk_journey_uuid) AND (uid() = user_is_in.pk_user_uuid) AND (user_is_in.function = 1)))))
