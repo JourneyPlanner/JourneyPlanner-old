@@ -180,6 +180,9 @@ async function copyLink() {
   });
 }
 
+/**
+ * delete journey confirmation popup
+ */
 function deleteConfirmation() {
   confirm.require({
     message: 'Die Reise ist danach für niemanden mehr verfügbar und alle Daten in der Reise werden gelöscht (Aktivitäten, Kalender, Erinnerungen).',
@@ -195,6 +198,11 @@ function deleteConfirmation() {
   });
 }
 
+/**
+ * delete Journey
+ * memories and then journey (cascade deletes activities)
+ * @returns {Promise<void>}
+ */
 async function deleteJourney() {
   const { data: list, errorList } = await supabase.storage.from('upload').list(`${journeyID}`);
   const filesToRemove = list.map((x) => `${journeyID}/${x.name}`);
