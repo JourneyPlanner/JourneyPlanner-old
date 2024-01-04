@@ -244,7 +244,7 @@ async function deleteJourney() {
             {{ journey[0].name }}</h1>
         </div>
         <div v-if="currentUserIndex !== null" class="col-start-4 justify-center items-center grid grid-cols-6">
-          <RouterLink v-if="journey[0].user_is_in[currentUserIndex].function === 'Reiseleiter/in'"
+          <RouterLink v-if="usernames[currentUserIndex].function === 'Reiseleiter/in'"
                       class="col-start-3 hover:opacity-80"
                       to="/dashboard" v-tooltip.bottom="{
                value: 'Zum Dashboard',
@@ -253,7 +253,7 @@ async function deleteJourney() {
                  }}">
             <BackToDashboadIllustration class="px-3"/>
           </RouterLink>
-          <RouterLink v-if="journey[0].user_is_in[currentUserIndex].function === 'Reisende/r'"
+          <RouterLink v-if="usernames[currentUserIndex].function === 'Reisende/r'"
                       class="col-start-4 hover:opacity-80"
                       to="/dashboard" v-tooltip.bottom="{
                value: 'Zum Dashboard',
@@ -262,7 +262,7 @@ async function deleteJourney() {
                  }}">
             <BackToDashboadIllustration class="px-3"/>
           </RouterLink>
-          <button v-if="journey[0].user_is_in[currentUserIndex].function === 'Reiseleiter/in'" class="hover:opacity-80"
+          <button v-if="usernames[currentUserIndex].function === 'Reiseleiter/in'" class="hover:opacity-80"
                   to="/" @click="copyLink" v-tooltip.bottom="{
                value: 'Einladungslink kopieren',
                  style:{
@@ -306,7 +306,7 @@ async function deleteJourney() {
                  style:{
                    width: '30vw'
                  }}"> {{ usernames[index - 1].user.username }}</p>
-          <p v-if="journey[0].user_is_in[currentUserIndex].function === 'Reisende/r'"
+          <p v-if="usernames[currentUserIndex].function === 'Reisende/r'"
              class="text-base font-extrabold pb-3">
             {{ usernames[index - 1].function }}</p>
           <p v-else-if="currentUser.id === usernames[index - 1].pk_user_uuid"
