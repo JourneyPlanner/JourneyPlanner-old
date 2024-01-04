@@ -32,7 +32,7 @@ $$
 begin
     update public.user
     set username = new.raw_user_meta_data ->> 'username'
-    where pk_uuid = auth.uid();
+    where pk_uuid = new.id;
     return new;
 end;
 $$ language plpgsql security definer;
