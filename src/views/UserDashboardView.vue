@@ -20,9 +20,17 @@ const AsyncDashboard = defineAsyncComponent(() =>
       </div>
 
       <div class="flex flex-row mr-20">
-        <NewJourneyButton class="border-2 border-call-to-action hover:opacity-80 shadow-md"/>
+        <NewJourneyButton class="border-2 border-call-to-action hover:opacity-80 shadow-md" v-tooltip.bottom="{
+               value: 'Neue Reise erstellen',
+                 style:{
+                   width: '30vw'
+                 }}"/>
 
-        <RouterLink to="einstellungen">
+        <RouterLink to="einstellungen" v-tooltip.left="{
+               value: 'Einstellungen',
+                 style:{
+                   width: '30vw'
+                 }}">
           <SettingsIcon class="mt-9 ml-5 w-14 hover:opacity-80"/>
         </RouterLink>
       </div>

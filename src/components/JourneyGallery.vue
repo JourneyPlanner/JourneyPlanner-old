@@ -89,7 +89,11 @@ async function fetchMedia() {
     <div class="grid grid-cols-6 pb-3 justify-center items-center">
       <h3 class="font-nunito-sans text-xl font-bold text-text-black col-span-2">Bilder | Videos | Texte</h3>
       <button @click="fetchMedia"
-              class="font-nunito text-base text-text-black font-bold bg-background border-4 border-call-to-action rounded-[38px] px-6 py-1 shadow-md hover:opacity-80 mb-2 col-start-6">
+              class="font-nunito text-base text-text-black font-bold bg-background border-4 border-call-to-action rounded-[38px] px-6 py-1 shadow-md hover:opacity-80 mb-2 col-start-6" v-tooltip.bottom="{
+               value: 'Erinnerungen aktualisieren',
+                 style:{
+                   width: '30vw'
+                 }}">
         Aktualisieren
       </button>
     </div>

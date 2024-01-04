@@ -8,6 +8,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import TimeGridPlugin from '@fullcalendar/timegrid';
 import AddActivityIllustration from "@/components/illustrations/AddActivityIllustration.vue";
 import momentTimezonePlugin from '@fullcalendar/moment-timezone';
+import IconDelete from "@/components/icons/IconDelete.vue";
 
 
 export default {
@@ -15,6 +16,7 @@ export default {
     this.initializeJourneyID();
   },
   components: {
+    IconDelete,
     AddActivityIllustration,
     FullCalendar
   },
@@ -226,43 +228,47 @@ export default {
   <div>
     <section class="content mt-4">
       <div class="container-fluid">
-        <Dialog :visible="showDataBool" :header="name"
-                :style="{ width: '60rem' }" @update:visible="handleClose()">
-          <button v-if="currentUserRole === 1"
-                  class="bg-delete rounded-3xl font-nunito text-xl font-bold p-1 px-2 shadow-md"
-                  severity="danger"
-                  type="button"
-                  @click="deleteFromCalendar(ausgewaeltesEvent)">Entfernen
-          </button>
-          <div class="relative flex flex-col justify-center items-center mt-5">
-            <h1 class="font-nunito text-2xl font-bold"></h1>
-            <div class="bg-primary rounded-[58px] pl-6 pt-3 pr-10 pb-6 w-[60%]">
-              <form class="flex flex-col font-nunito font-semibold text-xl">
+        <Dialog :visible="showDataBool" :close-on-escape="true" :header="' '"
+                :style="{ width: '50rem' }" @update:visible="handleClose()">
+          <div class="relative flex flex-col justify-center items-center">
+            <div class="flex flex-row justify-between">
+              <h1 class="font-nunito text-xl font-bold text-text-black mr-2">{{ name }}</h1>
+              <button v-if="currentUserRole === 1"
+                      class="bg-delete rounded-3xl font-nunito text-base text-text-black font-bold py-1 px-2 shadow-md flex flex-row hover:opacity-80"
+                      severity="danger"
+                      type="button"
+                      @click="deleteFromCalendar(ausgewaeltesEvent)">
+                <IconDelete class="text-black"/>
+                <span>Aus Plan entfernen</span>
+              </button>
+            </div>
+            <div class="bg-primary rounded-[58px] pl-6 pt-3 pr-10 pb-6 mt-2 w-[60%]">
+              <form class="flex flex-col font-nunito font-semibold text-xl text-text-black">
                 <div class="flex flex-row gap-5 grid grid-cols-2">
                   <div>
                     <div class="flex flex-col">
                       <label for="journey-dauer" class="pt-2">Dauer</label>
                       <input disabled :placeholder=dauer
-                             class="rounded border-none bg-background pl-1.5 placeholder-text-black">
+                             class="rounded border-none pl-1.5 placeholder-text-black bg-disabled-input">
                     </div>
                     <div class="flex flex-col">
                       <a :href=link>
                         <label for="journey-to" class="pt-2">Google-Maps</label>
                         <input disabled :value=link
-                               class="w-[100%] rounded border-none bg-background pl-1.5 placeholder-text-black">
+                               class="w-[100%] rounded border-none bg-disabled-input pl-1.5 placeholder-text-black">
                       </a>
                     </div>
                     <div class="flex flex-col">
                       <label for="journey-to" class="pt-2">Kontakt</label>
                       <input disabled :placeholder=kontakt
-                             class="rounded border-none bg-background pl-1.5 placeholder-text-black">
+                             class="rounded border-none bg-disabled-input pl-1.5 placeholder-text-black">
                     </div>
                   </div>
                   <div class="">
                     <div class="flex flex-col">
                       <label for="journey-from" class="pt-2">Öffnungszeiten</label>
                       <textarea disabled class="m-0 p-0 resize-none rounded
-                      border-none bg-background pl-1.5 pb-[42%] pt-0 whitespace-normal">
+                      border-none bg-disabled-input pl-1.5 pb-[42%] pt-0 whitespace-normal">
                         {{oeffnungszeiten}}
                       </textarea>
                     </div>
@@ -272,18 +278,18 @@ export default {
                   <div class="flex flex-col">
                     <label for="journey-from" class="pt-2">Adresse</label>
                     <input disabled :placeholder=adresse
-                           class="rounded border-none bg-background pl-1.5 placeholder-text-black">
+                           class="rounded border-none bg-disabled-input pl-1.5 placeholder-text-black">
                   </div>
                   <div class="flex flex-col">
                     <label for="journey-to" class="pt-2">Kosten</label>
                     <input disabled :placeholder=kosten
-                           class="rounded border-none bg-background pl-1.5 placeholder-text-black">
+                           class="rounded border-none bg-disabled-input pl-1.5 placeholder-text-black">
                   </div>
                 </div>
                 <label for="journey-link" class="pt-2">Beschreibung</label>
                 <div class="flex flex-row justify-between gap-2">
                  <textarea disabled id="journey-from" type="text"
-                           class="bg-background w-[100%] placeholder-text-black resize-none rounded pl-1.5
+                           class="bg-disabled-input w-[100%] placeholder-text-black resize-none rounded pl-1.5
                            border-none focus:outline-none focus:ring-2 focus:ring-call-to-action whitespace-normal">
                    {{beschreibung}}
                 </textarea>
@@ -298,7 +304,11 @@ export default {
               <div class="grid grid-cols-6 pb-3 justify-center items-center">
                 <h2 class="col-span-2 font-nunito text-2xl text-text-black font-semibold">Aktivitäten</h2>
                 <RouterLink :to='$route.fullPath + "/aktivitaet/neu"' class="col-start-6 bg-call-to-action
-                rounded-3xl flex text-text-black font-nunito text-center items-center justify-center text-xl font-bold shadow-md hover:opacity-80">
+                rounded-3xl flex text-text-black font-nunito text-center items-center justify-center text-xl font-bold shadow-md hover:opacity-80" v-tooltip.bottom="{
+               value: 'Aktivität erstellen',
+                 style:{
+                   width: '30vw'
+                 }}">
                   <AddActivityIllustration class="m-2 w-[20%]"/>
                   Erstellen
                 </RouterLink>
@@ -315,17 +325,19 @@ export default {
                 </div>
               </div>
               <p class="font-nunito text-base text-text-black font-semibold text-center pt-1"> Erstelle Aktivitäten
-                und ziehe sie in deinen Kalender, um deine Reise zu planen!</p>
+                und ziehe sie in deinen Plan, um deine Reise zu gestalten!</p>
             </div>
             <hr>
             <div class="w-[85%] rounded-2xl bg-primary p-6 mt-8">
               <div class="flex flex-row justify-between">
-                <h2 class="font-nunito font-semibold text-2xl">Kalender</h2>
+                <h2 class="font-nunito font-semibold text-2xl">Plan</h2>
               </div>
               <FullCalendar class="px-4 bg-background rounded-md pt-3"
                             v-if="INITIAL_EVENTS.length > 0 || nothing_To_Render"
                             :options="calendarOptions"
               />
+              <p class="font-nunito text-base text-text-black font-semibold text-center pt-1">Wird automatisch
+                gespeichert! Aktivität anklicken, um alle Informationen zu sehen.</p>
             </div>
           </div>
         </div>
