@@ -21,7 +21,7 @@ export default {
   data() {
     return {
       currentUserRole: ref(),
-      noEvents: ref("true"),
+      noEvents: ref(true),
       activities: ref(),
       showDataBool: false,
       nothing_To_Render: null,
@@ -35,7 +35,7 @@ export default {
       adresse: ref(""),
       kosten: ref(""),
       beschreibung: ref(""),
-      ausgewaeltesEvent: ref(""),
+      ausgewaehltesEvent: ref(""),
       startingDate: ref(""),
       INITIAL_EVENTS: [],
       calendarPlugins: [interactionPlugin, momentTimezonePlugin],
@@ -60,7 +60,6 @@ export default {
     this.setupDraggable();
   },
   methods: {
-    useRoute,
     showData(info) {
       for (let i = 0; i < this.activities.length; i++) {
         if (this.activities[i].pk_activity_uuid === info.event.extendedProps.defId) {
@@ -72,7 +71,7 @@ export default {
           this.adresse = this.activities[i].address;
           this.kosten = this.activities[i].cost;
           this.beschreibung = this.activities[i].description;
-          this.ausgewaeltesEvent = this.activities[i].pk_activity_uuid
+          this.ausgewaehltesEvent = this.activities[i].pk_activity_uuid
         }
       }
       this.showDataBool = true;
@@ -259,7 +258,7 @@ export default {
                   class="bg-delete rounded-3xl font-nunito text-xl font-bold p-1 px-2 shadow-md"
                   severity="danger"
                   type="button"
-                  @click="deleteFromCalendar(ausgewaeltesEvent)"> Entfernen
+                  @click="deleteFromCalendar(ausgewaehltesEvent)"> Entfernen
           </button>
           <div class="relative flex flex-col justify-center items-center mt-5">
             <h1 class="font-nunito text-2xl font-bold"></h1>
@@ -298,7 +297,7 @@ export default {
                 <div class="flex flex-row gap-5 grid grid-cols-2">
                   <div class="flex flex-col">
                     <label for="journey-from" class="pt-2">Adresse</label>
-                    <input disabled :placeholder=adresse
+                    <input disabled :value=adresse
                            class="rounded border-none bg-background pl-1.5 placeholder-text-black">
                   </div>
                   <div class="flex flex-col">
@@ -330,7 +329,8 @@ export default {
                   Erstellen
                 </RouterLink>
               </div>
-              <div id="planned-tasks" class="flex flex-wrap bg-background p-1 planned-tasks text-center justify-center">
+              <div id="planned-tasks"
+                   class="flex flex-wrap bg-background p-1 planned-tasks">
                 <div v-for="activity in activities" class="flex">
                   <div :id=activity.pk_activity_uuid v-if=!activity.added_to_calendar
                        class="fc-event bg-secondary flex flex-col px-3 py-2 rounded-2xl m-3"
@@ -340,8 +340,10 @@ export default {
                     <div>{{ formatTime(activity.estimated_duration / 60) }}h</div>
                   </div>
                 </div>
-                <p v-if="noEvents" class="font-nunito-sans text-base text-text-black py-3"> Noch keine Aktivitäten
-                  vorhanden.</p>
+                <div v-if="noEvents" class="text-center justify-center w-[100%]">
+                  <p class="font-nunito-sans text-base text-text-black py-3"> Noch keine Aktivitäten
+                    vorhanden.</p>
+                </div>
               </div>
               <p class="font-nunito text-base text-text-black font-semibold text-center"> Erstelle Aktivitäten
                 und ziehe sie in deinen Kalender, um deinen eigenen Plan zu erstellen!</p>
