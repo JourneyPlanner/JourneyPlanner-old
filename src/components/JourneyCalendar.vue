@@ -263,7 +263,7 @@ export default {
                       class="bg-delete rounded-3xl font-nunito text-base text-text-black font-bold py-1 px-2 shadow-md flex flex-row hover:opacity-80"
                       severity="danger"
                       type="button"
-                      @click="deleteFromCalendar(ausgewaeltesEvent)">
+                      @click="deleteFromCalendar(ausgewaehltesEvent)">
                 <IconDelete class="text-black"/>
                 <span>Aus Plan entfernen</span>
               </button>
