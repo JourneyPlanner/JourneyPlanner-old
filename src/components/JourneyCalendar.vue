@@ -23,6 +23,7 @@ export default {
   data() {
     return {
       currentUserRole: ref(),
+      noEvents: ref(true),
       activities: ref(),
       showDataBool: false,
       nothing_To_Render: null,
@@ -36,12 +37,14 @@ export default {
       adresse: ref(""),
       kosten: ref(""),
       beschreibung: ref(""),
-      ausgewaeltesEvent: ref(""),
+      ausgewaehltesEvent: ref(""),
+      startingDate: ref(""),
       INITIAL_EVENTS: [],
       calendarPlugins: [interactionPlugin, momentTimezonePlugin],
       calendarOptions: {
         plugins: [dayGridPlugin, interactionPlugin, TimeGridPlugin, momentTimezonePlugin],
         initialView: 'timeGridWeek',
+        initialDate: '',
         initialEvents: [],
         locale: "de",
         height: "auto",
@@ -56,11 +59,9 @@ export default {
     };
   },
   async mounted() {
-    await this.initializeData();
     this.setupDraggable();
   },
   methods: {
-    useRoute,
     showData(info) {
       for (let i = 0; i < this.activities.length; i++) {
         if (this.activities[i].pk_activity_uuid === info.event.extendedProps.defId) {
@@ -72,7 +73,7 @@ export default {
           this.adresse = this.activities[i].address;
           this.kosten = this.activities[i].cost;
           this.beschreibung = this.activities[i].description;
-          this.ausgewaeltesEvent = this.activities[i].pk_activity_uuid
+          this.ausgewaehltesEvent = this.activities[i].pk_activity_uuid
         }
       }
       this.showDataBool = true;
@@ -84,6 +85,7 @@ export default {
     },
     async initializeData() {
       this.calendarOptions.initialEvents = toRaw(this.INITIAL_EVENTS);
+      this.calendarOptions.initialDate = this.startingDate;
     },
     async deleteFromCalendar(id) {
       const {error} = await supabase
@@ -148,6 +150,27 @@ export default {
         return;
       }
 
+      const {data: data2, error: error2} = await supabase
+          .from('journey')
+          .select(`
+          from,
+          to
+        `)
+          .eq('pk_journey_uuid', this.journeyID.value);
+      const currentDate = new Date();
+      const journeyStartDate = new Date(data2[0].from);
+      const journeyEndDate = new Date(data2[0].to);
+      if (currentDate > journeyStartDate && currentDate < journeyEndDate) {
+        this.startingDate = currentDate;
+      } else {
+        this.startingDate = data2[0].from;
+      }
+
+      if (error2) {
+        console.error(error2);
+        return;
+      }
+
       if (data) {
         data.forEach((row) => {
           if (row.added_to_calendar) {
@@ -174,6 +197,8 @@ export default {
             }
 
             this.index++;
+          } else {
+            this.noEvents = false;
           }
         });
         if (this.INITIAL_EVENTS.length <= 0) {
@@ -182,6 +207,7 @@ export default {
 
         this.activities = data;
       }
+      await this.initializeData();
     },
     async getUserRole() {
       const {data: {user}} = await supabase.auth.getUser();
@@ -237,7 +263,7 @@ export default {
                       class="bg-delete rounded-3xl font-nunito text-base text-text-black font-bold py-1 px-2 shadow-md flex flex-row hover:opacity-80"
                       severity="danger"
                       type="button"
-                      @click="deleteFromCalendar(ausgewaeltesEvent)">
+                      @click="deleteFromCalendar(ausgewaehltesEvent)">
                 <IconDelete class="text-black"/>
                 <span>Aus Plan entfernen</span>
               </button>
@@ -277,7 +303,7 @@ export default {
                 <div class="flex flex-row gap-5 grid grid-cols-2">
                   <div class="flex flex-col">
                     <label for="journey-from" class="pt-2">Adresse</label>
-                    <input disabled :placeholder=adresse
+                    <input disabled :value=adresse
                            class="rounded border-none bg-disabled-input pl-1.5 placeholder-text-black">
                   </div>
                   <div class="flex flex-col">
@@ -286,7 +312,7 @@ export default {
                            class="rounded border-none bg-disabled-input pl-1.5 placeholder-text-black">
                   </div>
                 </div>
-                <label for="journey-link" class="pt-2">Beschreibung</label>
+                <label class="pt-2" for="journey-link">Beschreibung</label>
                 <div class="flex flex-row justify-between gap-2">
                  <textarea disabled id="journey-from" type="text"
                            class="bg-disabled-input w-[100%] placeholder-text-black resize-none rounded pl-1.5
@@ -313,15 +339,20 @@ export default {
                   Erstellen
                 </RouterLink>
               </div>
-              <div id="planned-tasks" class="flex bg-background p-1 planned-tasks min-w-32 rounded-md">
+              <div id="planned-tasks"
+                   class="flex flex-wrap bg-background p-1 planned-tasks">
                 <div v-for="activity in activities" class="flex">
-                  <div :id=activity.pk_activity_uuid v-if=!activity.added_to_calendar
-                       class="fc-event bg-secondary flex flex-col px-3 py-2 rounded-2xl m-2 cursor-grab"
+                  <div v-if=!activity.added_to_calendar :id=activity.pk_activity_uuid
                        :data-event="JSON.stringify({title:activity.name,duration:formatTime(activity.estimated_duration/60)
-                       ,editable:true,defId:activity.pk_activity_uuid,timeZone: 'local'})">
+                       ,editable:true,defId:activity.pk_activity_uuid,timeZone: 'local'})"
+                       class="fc-event bg-secondary flex flex-col px-3 py-2 rounded-2xl m-2 cursor-grab">
                     <div class="font-semibold">{{ activity.name }}</div>
                     <div>{{ formatTime(activity.estimated_duration / 60) }}h</div>
                   </div>
+                </div>
+                <div v-if="noEvents" class="text-center justify-center w-[100%]">
+                  <p class="font-nunito-sans text-base text-text-black py-3"> Noch keine Aktivitäten
+                    vorhanden.</p>
                 </div>
               </div>
               <p class="font-nunito text-base text-text-black font-semibold text-center pt-1"> Erstelle Aktivitäten
@@ -332,9 +363,9 @@ export default {
               <div class="flex flex-row justify-between">
                 <h2 class="font-nunito font-semibold text-2xl">Plan</h2>
               </div>
-              <FullCalendar class="px-4 bg-background rounded-md pt-3"
-                            v-if="INITIAL_EVENTS.length > 0 || nothing_To_Render"
+              <FullCalendar v-if="INITIAL_EVENTS.length > 0 || nothing_To_Render"
                             :options="calendarOptions"
+                            class="px-4 bg-background rounded-md pt-3"
               />
               <p class="font-nunito text-base text-text-black font-semibold text-center pt-1">Wird automatisch
                 gespeichert! Aktivität anklicken, um alle Informationen zu sehen.</p>
