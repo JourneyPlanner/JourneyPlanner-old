@@ -340,7 +340,7 @@ export default {
                 </RouterLink>
               </div>
               <div id="planned-tasks"
-                   class="flex flex-wrap bg-background p-1 planned-tasks">
+                   class="flex flex-wrap bg-background p-1 planned-tasks rounded-md">
                 <div v-for="activity in activities" class="flex">
                   <div v-if=!activity.added_to_calendar :id=activity.pk_activity_uuid
                        :data-event="JSON.stringify({title:activity.name,duration:formatTime(activity.estimated_duration/60)

@@ -19,82 +19,90 @@ const journey = ref();
 const showSidebar = ref(false);
 const usernames = ref();
 const currentUserRole = ref();
-let i = 0;
 
 const journeyID = useRoute().params.uuid;
+let currentUser = null;
 
-const {data: {user}} = await supabase.auth.getUser();
-const currentUser = user;
 
-const {data: currentUserFunction, error: currentUserFunctionError} = await supabase
-    .from('user_is_in')
-    .select(`
+await getUsernameData();
+await getJourneyData();
+
+async function getUsernameData() {
+  const {data: {user}} = await supabase.auth.getUser();
+  currentUser = user;
+
+  const {data: currentUserFunction, error: currentUserFunctionError} = await supabase
+      .from('user_is_in')
+      .select(`
           function
         `)
-    .eq('pk_user_uuid', user.id)
-    .eq('pk_journey_uuid', journeyID);
-currentUserRole.value = currentUserFunction[0].function;
+      .eq('pk_user_uuid', user.id)
+      .eq('pk_journey_uuid', journeyID);
+  currentUserRole.value = currentUserFunction[0].function;
 
-const {data: usernamesData, error: usernamesError} = await supabase
-    .from('user_is_in')
-    .select(`
+  const {data: usernamesData, error: usernamesError} = await supabase
+      .from('user_is_in')
+      .select(`
     user(username),
     pk_user_uuid, function)
     `)
-    .eq('pk_journey_uuid', journeyID)
-    .order('function', {ascending: true});
+      .eq('pk_journey_uuid', journeyID)
+      .order('function', {ascending: false});
 
-if (usernamesError) {
-  console.log(usernamesError);
+  if (usernamesError) {
+    console.log(usernamesError);
+  }
+
+  usernamesData.forEach((row) => {
+    if (row["pk_user_uuid"] === currentUser.id) {
+      currentUserRole.value = row["function"];
+    }
+  });
+
+  usernames.value = usernamesData;
 }
 
-usernamesData.forEach((row) => {
-  if (row["pk_user_uuid"] === currentUser.id) {
-    currentUserRole.value = row["function"];
-  }
-});
-
-usernames.value = usernamesData;
-
-const {data, error} = await supabase
-    .from('journey')
-    .select(`
+async function getJourneyData() {
+  const {data, error} = await supabase
+      .from('journey')
+      .select(`
       pk_journey_uuid,
       name,
       from,
       to
       `).eq('pk_journey_uuid', journeyID);
-if (error) {
-  console.log(error);
-}
-if (data) {
-  data.forEach((row) => {
-    let fromDate = new Date(row["from"]);
-    let fromDateDay = fromDate.getDate();
-    let fromDateMonth = fromDate.getMonth() + 1;
-    let fromDateYear = fromDate.getFullYear();
+  if (error) {
+    console.log(error);
+  }
+  if (data) {
+    data.forEach((row) => {
+      let fromDate = new Date(row["from"]);
+      let fromDateDay = fromDate.getDate();
+      let fromDateMonth = fromDate.getMonth() + 1;
+      let fromDateYear = fromDate.getFullYear();
 
-    let toDate = new Date(row["to"]);
-    let toDateDay = toDate.getDate();
-    let toDateMonth = toDate.getMonth() + 1;
-    let toDateYear = toDate.getFullYear();
+      let toDate = new Date(row["to"]);
+      let toDateDay = toDate.getDate();
+      let toDateMonth = toDate.getMonth() + 1;
+      let toDateYear = toDate.getFullYear();
 
-    if (fromDateMonth === toDateMonth) {
-      fromDateMonth = '';
-    } else {
-      fromDateMonth = fromDateMonth + '.';
-    }
+      if (fromDateMonth === toDateMonth) {
+        fromDateMonth = '';
+      } else {
+        fromDateMonth = fromDateMonth + '.';
+      }
 
-    if (fromDateYear === toDateYear) {
-      row["from"] = fromDateDay + '.' + fromDateMonth;
-      row["to"] = toDateDay + '.' + toDateMonth + '.' + toDateYear;
-    } else {
-      row["from"] = fromDateDay + '.' + fromDateMonth + fromDateYear;
-      row["to"] = toDateDay + '.' + toDateMonth + '.' + toDateYear;
-    }
+      if (fromDateYear === toDateYear) {
+        row["from"] = fromDateDay + '.' + fromDateMonth;
+        row["to"] = toDateDay + '.' + toDateMonth + '.' + toDateYear;
+      } else {
+        row["from"] = fromDateDay + '.' + fromDateMonth + fromDateYear;
+        row["to"] = toDateDay + '.' + toDateMonth + '.' + toDateYear;
+      }
 
-  });
-  journey.value = data;
+    });
+    journey.value = data;
+  }
 }
 
 function openNav() {
@@ -118,32 +126,33 @@ async function toTourGuide(user_uuid) {
         .update({function: 1})
         .eq('pk_user_uuid', user_uuid)
         .eq('pk_journey_uuid', journeyID);
-    location.reload();
+    if (error) {
+      console.log(error);
+    }
+
+    await getUsernameData();
   }
-  if (error) {
-    console.log(error);
-  }
+
 }
 
 /**
  * set user to regular
  *
  * @param user_uuid {string}
- * @param index {number}
  * @returns {Promise<void>}
  */
-async function toRegular(user_uuid, index) {
+async function toRegular(user_uuid) {
   if (currentUser.id !== user_uuid) {
     const {error} = await supabase
         .from('user_is_in')
         .update({function: 0})
         .eq('pk_user_uuid', user_uuid)
         .eq('pk_journey_uuid', journeyID);
-    //TODO journey.value[0].user_is_in[index].function = 'Reisende/r';
-    location.reload();
-  }
-  if (error) {
-    console.log(error);
+    if (error) {
+      console.log(error);
+    }
+    await getUsernameData();
+
   }
 }
 
@@ -282,36 +291,53 @@ async function deleteJourney() {
         <h2 class="font-nunito text-xl text-right font-bold mr-4 ml-4">Reisemitglieder</h2>
         <div v-for="(index) in usernames.length"
              class="font-nunito text-2xl text-text-black font-semibold overflow-hidden whitespace-nowrap overflow-ellipsis px-5 text-right w-[18vw]">
-          {{ index }}
+          <!-- Username -->
           <p class="font-semibold overflow-hidden whitespace-nowrap overflow-ellipsis" v-tooltip.left="{
                value: usernames[index - 1].user.username,
                  style:{
                    width: '30vw'
-                 }}">{{ usernames[index - 1].user.username }}</p> <!-- USERNAME -->
+                 }}">{{ usernames[index - 1].user.username }}</p>
+
+          <!-- if current user is just member -->
           <div v-if="currentUserRole === 0">
             <p v-if="usernames[index - 1].function === 0"
                class="text-base font-extrabold pb-3">
-              Reisende/r</p> <!-- REISENDE/R -->
+              Reisende/r</p>
             <p v-else-if="usernames[index - 1].function === 1"
                class="text-base font-extrabold pb-3">Reiseleiter/in</p>
           </div>
+
+          <!-- if current user is journey guide  -->
           <div v-if="currentUserRole === 1" class="flex text-right justify-end text-base pb-3">
-            <div v-if="usernames[index - 1].pk_user_uuid !== currentUser.id" class="flex cursor-pointer" v-tooltip.top="{
+            <!-- for all users except current user -->
+            <div v-if="usernames[index - 1].pk_user_uuid !== currentUser.id" class="flex" v-tooltip.top="{
                value: 'Rolle ändern',
                  style:{
                    width: '30vw'
                  }}">
-              <p :class="usernames[index - 1].function === 1 ? 'font-extrabold' : 'font-regular'"
-                 class="px-2" @click="toTourGuide(usernames[index - 1].pk_user_uuid, (index - 1))">
+
+              <!-- Reiseleiter/in -->
+              <!-- if user is currently Reiseleiter/in -->
+              <p class="font-extrabold px-2"
+                 v-if="usernames[index - 1].function === 1">
                 Reiseleiter/in </p>
-              <p :class="usernames[index - 1].function === 0 ? 'font-extrabold' : 'font-regular'"
-                 class="text-base pb-3" @click="toRegular(usernames[index - 1].pk_user_uuid, (index - 1))">
+              <!-- if user is currently Reisende/r and could be promoted -->
+              <p v-else
+                 class="px-2 font-regular cursor-pointer" @click="toTourGuide(usernames[index - 1].pk_user_uuid)">
+                Reiseleiter/in </p>
+
+
+              <!-- Reisende/r -->
+              <!-- if user is currently Reisende/r -->
+              <p v-if="usernames[index - 1].function === 0" class="pb-3 font-extrabold">Reisende/r </p>
+              <!-- if user is currently Reiseleiter/in and could be downgraded -->
+              <p v-else class="pb-3 font-regular cursor-pointer" @click="toRegular(usernames[index - 1].pk_user_uuid)">
                 Reisende/r </p>
             </div>
+
+            <!-- for current user -->
             <div v-else>
-              <p :class="usernames[index - 1].function === 1 ? 'font-extrabold' : 'font-regular'"
-                 class="px-2">
-                Reiseleiter/in </p>
+              <p class="px-2 font-extrabold">Reiseleiter/in </p>
             </div>
           </div>
         </div>
