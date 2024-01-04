@@ -80,7 +80,11 @@ async function saveEditor() {
       </div>
       <button :disabled="!editorContent.trim()"
               class="font-nunito text-base font-bold bg-call-to-action rounded-[38px] px-6 py-1 shadow-md disabled:opacity-80 hover:opacity-80 mb-2"
-              @click="saveEditor">
+              @click="saveEditor" v-tooltip.bottom="{
+               value: 'Text speichern',
+                 style:{
+                   width: '30vw'
+                 }}">
         Speichern
       </button>
     </div>

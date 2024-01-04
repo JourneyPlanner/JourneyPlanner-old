@@ -12,5 +12,6 @@ COPY authenticated_origin_pull_ca.pem /etc/nginx/certs/
 COPY journeyplanner.io.* /etc/nginx/certs/
 COPY JourneyPlanner/conf/nginx.conf /etc/nginx/nginx.conf
 COPY --from=build-stage /app/dist /var/www/journeyplanner.io/html
+COPY JourneyPlanner/conf/microsoft-identity-association.json /var/www/journeyplanner.io/html/.well-known/microsoft-identity-association.json
 EXPOSE 443
 CMD ["nginx", "-g", "daemon off;"]

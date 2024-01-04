@@ -124,15 +124,21 @@ async function handleActivities(activities) {
       <div class="grid grid-cols-6 pb-3 justify-center items-center">
         <h2 class="col-span-2 font-nunito text-2xl text-text-black font-semibold">Karte</h2>
         <button @click="getMapData"
-                class="font-nunito text-base text-text-black font-bold bg-background border-4 border-call-to-action rounded-[38px] px-6 py-1 shadow-md hover:opacity-80 mb-2 col-start-6">
+                class="font-nunito text-base text-text-black font-bold bg-background border-4 border-call-to-action rounded-[38px] px-6 py-1 shadow-md hover:opacity-80 mb-2 col-start-6"
+                v-tooltip.bottom="{
+               value: 'Karte aktualisieren',
+                 style:{
+                   width: '30vw'
+                 }}">
           Aktualisieren
         </button>
 
       </div>
       <div>
         <div>
-          <div class="rounded-md h-96">
-            <l-map ref="map" v-model:zoom="zoom" v-model:center="center" :use-global-leaflet="false">
+          <div class="rounded-md h-96 z-0">
+            <l-map ref="map" v-model:zoom="zoom" v-model:center="center" :use-global-leaflet="false"
+                   class="rounded-md z-0">
               <l-tile-layer
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   layer-type="base"
@@ -155,6 +161,8 @@ async function handleActivities(activities) {
             <span class="">Grüne Aktivitäten sind bereits dem Plan hinzugefügt. </span>
             <span>Rote Aktivitäten sind noch nicht im Plan enthalten.</span>
           </p>
+          <p class="font-nunito-sans text-base">Die Karte basiert auf Eingaben bei der Reiseerstellung & neuen
+            Aktivitäten. Es kann daher zu falschen Darstellungen kommen.</p>
           <details class="font-nunito-sans" v-if="notFoundActivities.length > 0">
             <summary class="font-bold">Nicht lokalisierbare Aktivitäten</summary>
             <p>
@@ -181,9 +189,6 @@ async function handleActivities(activities) {
               </tr>
             </table>
           </details>
-          <p class="font-nunito-sans text-base">Die Karte basiert auf Eingaben bei der Reiseerstellung & neuen
-            Aktivitäten. Es kann daher zu falschen Darstellungen kommen.</p>
-
         </div>
       </div>
     </div>

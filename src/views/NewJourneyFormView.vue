@@ -124,25 +124,25 @@ function copyLink() {
       <div class="bg-primary rounded-[58px] pl-6 pt-3 pr-10 pb-6">
         <form class="flex flex-col font-nunito font-semibold text-xl" @submit.prevent="create">
           <label class="pb-0.5 pt-2" for="journey-name">Name deiner Reise</label>
-          <input id="journey-name" v-model="form.name" class="rounded border-none focus:outline-none focus:ring-2 focus:ring-call-to-action pl-1.5" placeholder="Reisename" tabindex="1"
+          <input id="journey-name" v-model="form.name" class="rounded border-none focus:outline-none focus:ring-2 focus:ring-call-to-action pl-1.5" placeholder="Reisename" 
                  @blur="v$.name.$touch">
           <p v-if="v$.name.$error" class="text-delete text-base font-nunito-sans font-bold">Bitte gib deiner Reise einen
             Namen</p>
-          <label class="pb-0.5 pt-2" for="journey-place">Stadt/Land</label>
-          <input id="journey-place" v-model="form.place" class="rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action" placeholder="Stadt/Land/Gebiet"
-                 tabindex="2"
+          <label class="pb-0.5 pt-2" for="journey-place">Stadt oder Land</label>
+          <input id="journey-place" v-model="form.place" class="rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action" placeholder="Stadt/Land"
+                 
                  @blur="v$.place.$touch">
           <p v-if="v$.place.$error" class="text-delete text-base font-nunito font-bold">Bitte gib dein Reiseziel ein</p>
           <div class="flex flex-row gap-5">
             <div class="flex flex-col">
               <label class="pt-2" for="journey-from">von</label>
-              <input id="journey-from" v-model="form.from" class="rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action" tabindex="3" type="date"
+              <input id="journey-from" v-model="form.from" class="rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action"  type="date"
                      @blur="v$.from.$touch">
               <p v-if="v$.from.$error" class="text-delete text-base font-nunito font-bold">Bitte gib ein Datum an</p>
             </div>
             <div class="flex flex-col">
               <label class="pt-2" for="journey-to">bis</label>
-              <input id="journey-to" v-model="form.to" class="rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action" tabindex="4" type="date"
+              <input id="journey-to" v-model="form.to" class="rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action"  type="date"
                      @blur="v$.to.$touch">
             </div>
           </div>
@@ -153,20 +153,32 @@ function copyLink() {
           <div class="flex flex-row justify-between gap-2">
             <input id="journey-link" v-model="form.link" class="w-full bg-disabled-input rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action"
                    disabled>
-            <div class="" tabindex="5">
-              <InviteButton class="p-1 hover:opacity-[85%]" @click="copyLink"/>
+            <div class="" >
+              <InviteButton class="p-1 hover:opacity-[85%]" @click="copyLink" v-tooltip.right="{
+               value: 'Einladungslink kopieren',
+                 style:{
+                   width: '30vw'
+                 }}"/>
             </div>
           </div>
           <span
               class="font-nunito-sans text-base mt-1">Mit diesem Link kannst du andere zu deiner Reise einladen.</span>
           <div class="pt-4 flex flex-row justify-between">
-            <RouterLink class="bg-cancel rounded-[38px] px-3 py-1 shadow-md hover:opacity-80" tabindex="7"
-                        to="/dashboard">
+            <RouterLink class="bg-cancel rounded-[38px] px-3 py-1 shadow-md hover:opacity-80" 
+                        to="/dashboard" v-tooltip.left="{
+               value: 'Zum Dashboard',
+                 style:{
+                   width: '30vw'
+                 }}">
               Abbrechen
             </RouterLink>
-            <button class="bg-call-to-action rounded-[38px] px-6 py-1 shadow-md disabled:opacity-80 hover:opacity-80" tabindex="6"
+            <button class="bg-call-to-action rounded-[38px] px-6 py-1 shadow-md disabled:opacity-80 hover:opacity-80" 
                     type="submit"
-                    @submit.prevent="create()">
+                    @submit.prevent="create()" v-tooltip.right="{
+               value: 'Reise erstellen',
+                 style:{
+                   width: '30vw'
+                 }}">
               Erstellen
             </button>
           </div>
