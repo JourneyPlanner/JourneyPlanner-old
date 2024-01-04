@@ -46,17 +46,17 @@ const {data: usernamesData, error: usernamesError} = await supabase
     .order('function', {ascending: true});
 if (usernamesData) {
   usernamesData.forEach((row) => {
-      if (row["pk_user_uuid"] === currentUser.id) {
-        currentUserIndex.value = i;
-      }
-      if (row["function"] === 0) {
-        row["function"] = 'Reisende/r';
-      } else if (row["function"] === 1) {
-        row["function"] = 'Reiseleiter/in'
-      } else {
-        row["function"] = 'undefined';
-      }
-      i++;
+    if (row["pk_user_uuid"] === currentUser.id) {
+      currentUserIndex.value = i;
+    }
+    if (row["function"] === 0) {
+      row["function"] = 'Reisende/r';
+    } else if (row["function"] === 1) {
+      row["function"] = 'Reiseleiter/in'
+    } else {
+      row["function"] = 'undefined';
+    }
+    i++;
   });
 }
 if (usernamesError) {
@@ -158,7 +158,6 @@ async function toRegular(user_uuid, index) {
         .update({function: 0})
         .eq('pk_user_uuid', user_uuid)
         .eq('pk_journey_uuid', journeyID);
-    journey.value[0].user_is_in[index].function = 'Reisende/r';
     location.reload();
   }
   if (error) {
