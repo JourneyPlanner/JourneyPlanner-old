@@ -19,6 +19,7 @@ const journey = ref();
 const showSidebar = ref(false);
 const usernames = ref();
 const currentUserRole = ref();
+let i = 0;
 
 const journeyID = useRoute().params.uuid;
 
@@ -36,27 +37,26 @@ const currentUser = user;
 const currentUserIndex = ref();
 
 const {data: usernamesData, error: usernamesError} = await supabase
-    .from('journey')
+    .from('user_is_in')
     .select(`
     user(username),
-    user_is_in(pk_user_uuid, function)
+    pk_user_uuid, function)
     `)
-    .eq('pk_journey_uuid', journeyID);
-    //.order('user_is_in.function', {ascending: true}); user_is_in(function)
+    .eq('pk_journey_uuid', journeyID)
+    .order('function', {ascending: true});
 if (usernamesData) {
   usernamesData.forEach((row) => {
-    for (let i = 0; i < row["user_is_in"].length; i++) {
-      if (row["user_is_in"][i]["pk_user_uuid"] === currentUser.id) {
+      if (row["pk_user_uuid"] === currentUser.id) {
         currentUserIndex.value = i;
       }
-      if (row["user_is_in"][i]["function"] === 0) {
-        row["user_is_in"][i]["function"] = 'Reisende/r';
-      } else if (row["user_is_in"][i]["function"] === 1) {
-        row["user_is_in"][i]["function"] = 'Reiseleiter/in'
+      if (row["function"] === 0) {
+        row["function"] = 'Reisende/r';
+      } else if (row["function"] === 1) {
+        row["function"] = 'Reiseleiter/in'
       } else {
-        row["user_is_in"][i]["function"] = 'undefined';
+        row["function"] = 'undefined';
       }
-    }
+      i++;
   });
 }
 if (usernamesError) {
@@ -115,7 +115,6 @@ if (data) {
   });
   journey.value = data;
 }
-
 function openNav() {
   showSidebar.value = true;
 }
@@ -300,28 +299,28 @@ async function deleteJourney() {
           </div>
         </div>
         <h2 class="font-nunito text-xl text-right font-bold mr-4 ml-4">Reisemitglieder</h2>
-        <div v-for="(index) in usernames[0].user.length"
+        <div v-for="(index) in usernames.length"
              class="font-nunito text-2xl text-text-black font-semibold overflow-hidden whitespace-nowrap overflow-ellipsis px-5 text-right w-[18vw]">
           <p class="font-semibold overflow-hidden whitespace-nowrap overflow-ellipsis" v-tooltip.left="{
-               value: usernames[0].user[index - 1].username,
+               value: usernames[index - 1].user.username,
                  style:{
                    width: '30vw'
-                 }}"> {{ usernames[0].user[index - 1].username }}</p>
+                 }}"> {{ usernames[index - 1].user.username }}</p>
           <p v-if="journey[0].user_is_in[currentUserIndex].function === 'Reisende/r'"
              class="text-base font-extrabold pb-3">
-            {{ usernames[0].user_is_in[index - 1].function }}</p>
-          <p v-else-if="currentUser.id === usernames[0].user_is_in[index - 1].pk_user_uuid"
-             class="text-base font-extrabold pb-3">{{ usernames[0].user_is_in[index - 1].function }}</p>
+            {{ usernames[index - 1].function }}</p>
+          <p v-else-if="currentUser.id === usernames[index - 1].pk_user_uuid"
+             class="text-base font-extrabold pb-3">{{ usernames[index - 1].function }}</p>
           <div v-else class="flex text-right justify-end text-base pb-3 cursor-pointer" v-tooltip.top="{
                value: 'Rolle ändern',
                  style:{
                    width: '30vw'
                  }}">
-            <p :class="usernames[0].user_is_in[index - 1].function === 'Reiseleiter/in' ? 'font-extrabold' : 'font-regular'"
-               class="px-2" @click="toTourGuide(usernames[0].user_is_in[index - 1].pk_user_uuid, (index - 1))">
+            <p :class="usernames[index - 1].function === 'Reiseleiter/in' ? 'font-extrabold' : 'font-regular'"
+               class="px-2" @click="toTourGuide(usernames[index - 1].pk_user_uuid, (index - 1))">
               Reiseleiter/in </p>
-            <p :class="usernames[0].user_is_in[index - 1].function === 'Reisende/r' ? 'font-extrabold' : 'font-regular'"
-               class="text-base pb-3" @click="toRegular(usernames[0].user_is_in[index - 1].pk_user_uuid, (index - 1))">
+            <p :class="usernames[index - 1].function === 'Reisende/r' ? 'font-extrabold' : 'font-regular'"
+               class="text-base pb-3" @click="toRegular(usernames[index - 1].pk_user_uuid, (index - 1))">
               Reisende/r </p>
           </div>
         </div>
