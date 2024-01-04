@@ -19,7 +19,7 @@ const journey = ref();
 const showSidebar = ref(false);
 const usernames = ref();
 const currentUserRole = ref();
-const i = 0;
+let i = 0;
 
 const journeyID = useRoute().params.uuid;
 
@@ -44,14 +44,8 @@ const {data: usernamesData, error: usernamesError} = await supabase
     `)
     .eq('pk_journey_uuid', journeyID)
     .order('function', {ascending: true});
-    //.order('user_is_in.function', {ascending: true}); user_is_in(function)
-console.log(usernamesData[0]);
 if (usernamesData) {
   usernamesData.forEach((row) => {
-
-      console.log(row);
-      console.log(usernamesData);
-      console.log(row["function"]);
       if (row["pk_user_uuid"] === currentUser.id) {
         currentUserIndex.value = i;
       }
@@ -62,13 +56,13 @@ if (usernamesData) {
       } else {
         row["function"] = 'undefined';
       }
+      i++;
   });
 }
 if (usernamesError) {
   console.log(usernamesError);
 }
 usernames.value = usernamesData;
-console.log(usernames.value);
 
 const {data, error} = await supabase
     .from('journey')
@@ -121,8 +115,6 @@ if (data) {
   });
   journey.value = data;
 }
-console.log(journey.value);
-console.log();
 function openNav() {
   showSidebar.value = true;
 }
