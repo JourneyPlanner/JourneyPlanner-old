@@ -43,6 +43,11 @@ export default {
       calendarPlugins: [interactionPlugin, momentTimezonePlugin],
       calendarOptions: {
         plugins: [dayGridPlugin, interactionPlugin, TimeGridPlugin, momentTimezonePlugin],
+        headerToolbar: {
+          start: 'title prev,next today',
+          center: '',
+          end: 'dayGridYear dayGridMonth timeGridWeek dayGridDay'
+        },
         initialView: 'timeGridWeek',
         initialDate: '',
         initialEvents: [],
