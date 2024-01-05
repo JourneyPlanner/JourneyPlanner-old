@@ -23,6 +23,7 @@ export default {
   data() {
     return {
       currentUserRole: ref(),
+      eventCount: ref(0),
       noEvents: ref(true),
       activities: ref(),
       showDataBool: false,
@@ -122,6 +123,10 @@ export default {
         console.log(error);
       }
       event.draggedEl.parentNode.removeChild(event.draggedEl);
+      this.eventCount--;
+      if (this.eventCount <= 0){
+        this.noEvents = true;
+      }
     },
     async initializeJourneyID() {
       const route = useRoute();
@@ -205,6 +210,7 @@ export default {
             this.index++;
           } else {
             this.noEvents = false;
+            this.eventCount++;
           }
         });
         if (this.INITIAL_EVENTS.length <= 0) {
@@ -358,7 +364,7 @@ export default {
                   </div>
                 </div>
                 <div v-if="noEvents" class="text-center justify-center w-[100%]">
-                  <p class="font-nunito-sans text-base text-text-black py-3"> Noch keine Aktivitäten
+                  <p class="font-nunito-sans text-base text-text-black py-3"> Keine Aktivitäten
                     vorhanden.</p>
                 </div>
               </div>
