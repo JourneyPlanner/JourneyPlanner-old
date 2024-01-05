@@ -43,10 +43,19 @@ import Footer from "@/components/Footer.vue";
         umgehend
         entfernen.</p>
       <p><b>Blattlinie:</b> Tool für Reiseplanung</p>
-      <p class="font-nunito-sans font-light mt-2">Quelle: <b><a class="font-nunito-sans" href="https://www.rechtstexte-generator.at/dsgvo-generator-oesterreich/">Datenschutz
+      <p class="font-nunito-sans font-light mt-2">Quelle: <b><a class="font-nunito-sans"
+                                                                href="https://www.rechtstexte-generator.at/dsgvo-generator-oesterreich/">Datenschutz
         DSGVO
         Generator</a></b> in Kooperation mit <b><a
           href="https://www.ortner-rechtsanwalt.at/rechtsanwalt-fuer-arbeitsrecht/">Rechtsanwalt Arbeitsrecht</a></b>
+      </p>
+      <p class="font-nunito-sans mt-5">
+        Favicon Grafiken von <a target="_blank" href="https://twemoji.twitter.com/" class="underline">Twemoji</a>.
+        Copyright 2020 Twitter, Inc and other contributors. Graphics licensed under <a target="_blank"
+                                                                                       href="https://creativecommons.org/licenses/by/4.0/"
+                                                                                       class="underline">CC-BY 4.0</a>.<br>
+        Icons & Schriftarten von <a target="_blank" href="https://fonts.google.com/" class="underline">Google Fonts</a>.<br>
+        Grafiken/Illustrationen von <a target="_blank" href="https://undraw.co/" class="underline">undraw</a>.
       </p>
     </div>
   </div>
