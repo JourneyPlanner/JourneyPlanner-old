@@ -46,7 +46,7 @@ export default {
         headerToolbar: {
           start: 'title prev,next today',
           center: '',
-          end: 'dayGridYear dayGridMonth timeGridWeek dayGridDay'
+          end: 'dayGridYear dayGridMonth timeGridWeek timeGridDay'
         },
         initialView: 'timeGridWeek',
         initialDate: '',
@@ -121,6 +121,7 @@ export default {
       if (error) {
         console.log(error);
       }
+      event.draggedEl.parentNode.removeChild(event.draggedEl);
     },
     async initializeJourneyID() {
       const route = useRoute();
@@ -335,7 +336,8 @@ export default {
               <div class="grid grid-cols-6 pb-3 justify-center items-center">
                 <h2 class="col-span-2 font-nunito text-2xl text-text-black font-semibold">Aktivitäten</h2>
                 <RouterLink :to='$route.fullPath + "/aktivitaet/neu"' class="col-start-6 bg-call-to-action
-                rounded-3xl flex text-text-black font-nunito text-center items-center justify-center text-xl font-bold shadow-md hover:opacity-80" v-tooltip.bottom="{
+                rounded-3xl flex text-text-black font-nunito text-center items-center justify-center text-xl font-bold shadow-md hover:opacity-80"
+                            v-tooltip.bottom="{
                value: 'Aktivität erstellen',
                  style:{
                    width: '30vw'
@@ -370,7 +372,7 @@ export default {
               </div>
               <FullCalendar v-if="INITIAL_EVENTS.length > 0 || nothing_To_Render"
                             :options="calendarOptions"
-                            class="px-4 bg-background rounded-md pt-3"
+                            class="px-4 bg-background rounded-md py-3"
               />
               <p class="font-nunito text-base text-text-black font-semibold text-center pt-1">Wird automatisch
                 gespeichert! Aktivität anklicken, um alle Informationen zu sehen.</p>
