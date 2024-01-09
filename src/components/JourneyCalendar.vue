@@ -72,7 +72,7 @@ export default {
       for (let i = 0; i < this.activities.length; i++) {
         if (this.activities[i].pk_activity_uuid === info.event.extendedProps.defId) {
           this.name = this.activities[i].name;
-          this.dauer = this.activities[i].estimated_duration / 60 + "h";
+          this.dauer = (this.activities[i].estimated_duration / 60).toFixed(2) + "h";
           this.oeffnungszeiten = this.activities[i].opening_hours;
           this.link = this.activities[i].google_maps_link;
           this.kontakt = this.activities[i].contact;
@@ -267,12 +267,12 @@ export default {
     <section class="content mt-4">
       <div class="container-fluid">
         <Dialog :visible="showDataBool" :close-on-escape="true" :header="' '"
-                :style="{ width: '50rem' }" @update:visible="handleClose()">
+                :style="{ width: '60rem' }" @update:visible="handleClose()">
           <div class="relative flex flex-col justify-center items-center">
-            <div class="flex flex-row justify-between">
+            <div class="flex flex-col flex-row justify-between">
               <h1 class="font-nunito text-xl font-bold text-text-black mr-2">{{ name }}</h1>
               <button v-if="currentUserRole === 1"
-                      class="bg-delete rounded-3xl font-nunito text-base text-text-black font-bold py-1 px-2 shadow-md flex flex-row hover:opacity-80"
+                      class="bg-delete w-1 rounded-3xl font-nunito text-base items-center justify-center text-text-black font-bold py-1 px-2 shadow-md flex flex-row hover:opacity-80"
                       severity="danger"
                       type="button"
                       @click="deleteFromCalendar(ausgewaehltesEvent)">
@@ -280,13 +280,13 @@ export default {
                 <span>Aus Plan entfernen</span>
               </button>
             </div>
-            <div class="bg-primary rounded-[58px] pl-6 pt-3 pr-10 pb-6 mt-2 w-[60%]">
+            <div class="bg-primary rounded-[58px] pl-6 pt-3 pr-10 pb-6 mt-2 w-[90%]">
               <form class="flex flex-col font-nunito font-semibold text-xl text-text-black">
                 <div class="flex flex-row gap-5 grid grid-cols-2">
                   <div>
                     <div class="flex flex-col">
                       <label for="journey-dauer" class="pt-2">Dauer</label>
-                      <input disabled :placeholder=dauer
+                      <input disabled :value=dauer
                              class="rounded border-none pl-1.5 placeholder-text-black bg-disabled-input">
                     </div>
                     <div class="flex flex-col">
