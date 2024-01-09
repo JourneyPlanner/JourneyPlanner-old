@@ -161,7 +161,7 @@ onMounted(() => {
 
         <BackToHomeButton class="absolute top-[2%] w-2/12 left-[82vw] pr-4"/>
         <div class="form xl:w-1/2 md:w-[80%] sm:w-[80%]">
-          <h1 class="xl:text-3xl md:text-3xl sm:text-3xl pl-6.1538em font-nunito pt-[15%]">Login</h1>
+          <h1 class="xl:text-3xl md:text-3xl sm:text-3xl pl-6.1538em font-nunito pt-[15%]">Anmelden</h1>
           <form class="bg-primary rounded-2xl xl:w-[25vw] md:w-[50vw] sm:w-[75vw]">
             <div class="inside flex flex-col pl-8 ">
               <h2 class="col-start-1 text-xl font-nunito font-semibold">E-Mail</h2>
@@ -170,14 +170,14 @@ onMounted(() => {
               <h2 class="text-xl font-nunito font-semibold">Passwort</h2>
               <input v-model=v$.password.$model class="font-nunito text-xl" placeholder="Passwort eingeben"
                      type="password" @keyup.enter="signIn">
-              <div class="my-3">
+              <div class="my-3 flex flex-row justify-between">
                 <button :disabled="v$.$invalid"
                         class="disabled:opacity-50 bg-call-to-action border-call-to-action rounded-3xl font-nunito text-xl font-bold p-1.5 px-6 hover:opacity-80 shadow-lg"
                         type="button"
-                        @click="signIn">Login
+                        @click="signIn">Anmelden
                 </button>
                 <RouterLink
-                    class="font-nunito text-base font-bold px-2 break-after-all underline underline-offset-2 lg:ml-14"
+                    class="font-nunito text-base font-bold px-2 break-after-all mt-2.5 2xl:mr-10 underline underline-offset-2"
                     to="register">Noch kein Konto?
                 </RouterLink>
               </div>
