@@ -10,6 +10,7 @@ import AddActivityIllustration from "@/components/illustrations/AddActivityIllus
 import momentTimezonePlugin from '@fullcalendar/moment-timezone';
 import IconDelete from "@/components/icons/IconDelete.vue";
 import IconEdit from "@/components/icons/IconEdit.vue";
+import IconRemoveFromCalender from "@/components/icons/IconRemoveFromCalender.vue";
 
 
 export default {
@@ -17,6 +18,7 @@ export default {
     this.initializeJourneyID();
   },
   components: {
+    IconRemoveFromCalender,
     IconEdit,
     IconDelete,
     AddActivityIllustration,
@@ -241,9 +243,6 @@ export default {
       if (this.currentUserRole === 0) {
         document.getElementById("showDraggabeles").style.display = "none";
       }
-    },
-    async editActivity() {
-
     }
   },
   computed: {
@@ -290,8 +289,16 @@ export default {
                         severity="danger"
                         type="button"
                         @click="deleteFromCalendar(ausgewaehltesEvent)">
-                  <IconDelete class="text-text-black"/>
+                  <IconRemoveFromCalender class="text-text-black"/>
                   <span>Aus Plan entfernen</span>
+                </button>
+                <button v-if="currentUserRole === 1"
+                        class="bg-delete w-56 rounded-3xl font-nunito text-base items-center justify-center text-text-black font-bold py-1 px-2 shadow-md flex flex-row hover:opacity-80"
+                        severity="danger"
+                        type="button"
+                        @click="">
+                  <IconDelete class="text-text-black"/>
+                  <span>Löschen</span>
                 </button>
               </div>
             </div>
