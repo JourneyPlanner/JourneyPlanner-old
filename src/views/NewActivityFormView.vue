@@ -195,7 +195,7 @@ input[type=number] {
           </div>
           <div class="pt-1">
             <p class="text-base font-medium">* Pflichtfelder</p>
-            <p class="text-text-black text-base font-nunito-sans">** Benötigt falls sie auf der Karte angezeigt werden
+            <p class="text-text-black text-base font-nunito-sans">** Benötigt, falls sie auf der Karte angezeigt werden
               soll</p>
           </div>
           <div class="pt-4 flex flex-row justify-between">
