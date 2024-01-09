@@ -7,7 +7,7 @@ import {useToast} from 'primevue/usetoast';
 import {computed} from 'vue';
 import {reactive} from 'vue';
 import {useVuelidate} from '@vuelidate/core';
-import {required} from '@vuelidate/validators';
+import {minValue, required} from '@vuelidate/validators';
 //@ts-ignore
 import {supabase} from "@/lib/supabaseClient";
 import router from "@/router";
@@ -24,16 +24,17 @@ const form = reactive({
   beschreibung: '',
   adresse: '',
   kosten: '',
-  dauer: '',
+  dauer: 0,
   oefnungszeiten: '',
   link: '',
+  additionalLink: '',
   kontakt: ''
 })
 
 const rules = computed(() => {
       return {
-        name: {required,},
-        dauer: {required},
+        name: {required},
+        dauer: {required, minValue: minValue(1)},
       }
     }
 );
@@ -63,37 +64,47 @@ async function create() {
     });
     return;
   } else {
-    const {error} = await supabase
-        .from('activity')
-        .insert([
-          {
-            name: form.name,
-            estimated_duration: form.dauer,
-            opening_hours: form.oefnungszeiten,
-            google_maps_link: form.link,
-            contact: form.kontakt,
-            address: form.adresse,
-            cost: form.kosten,
-            fk_journey_uuid: journeyID,
-            description: form.beschreibung
-          },
-        ])
-    if (error) {
+    if (form.dauer < 0) {
       toast.add({
         severity: 'error',
-        summary: 'Fehler beim Reise erstellen',
-        detail: 'Es ist ein Fehler aufgetreteten. Probiere es noch einmal oder kontaktiere uns unter contact@journeyplanner.io',
-        life: 3000
+        summary: 'Fehler beim Aktivität erstellen',
+        detail: 'Es ist nicht zulässig, eine negative Dauer anzugeben.',
+        life: 6000
       });
     } else {
-      toast.add({
-        severity: 'success',
-        summary: 'Aktivität erstellt',
-        detail: 'Du wirst gleich weitergeleitet...',
-        life: 1000
-      });
-      await sleep(1000);
-      await router.push('/reise/' + journeyID);
+      const {error} = await supabase
+          .from('activity')
+          .insert([
+            {
+              name: form.name,
+              link: form.additionalLink,
+              estimated_duration: form.dauer,
+              opening_hours: form.oefnungszeiten,
+              google_maps_link: form.link,
+              contact: form.kontakt,
+              address: form.adresse,
+              cost: form.kosten,
+              fk_journey_uuid: journeyID,
+              description: form.beschreibung
+            },
+          ])
+      if (error) {
+        toast.add({
+          severity: 'error',
+          summary: 'Fehler beim Aktivität erstellen',
+          detail: 'Es ist ein Fehler aufgetreteten. Probiere es noch einmal oder kontaktiere uns unter contact@journeyplanner.io',
+          life: 3000
+        });
+      } else {
+        toast.add({
+          severity: 'success',
+          summary: 'Aktivität erstellt',
+          detail: 'Du wirst gleich weitergeleitet...',
+          life: 1000
+        });
+        await sleep(1000);
+        await router.push('/reise/' + journeyID);
+      }
     }
   }
 }
@@ -109,7 +120,8 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-input[type=number]{
+
+input[type=number] {
   -moz-appearance: textfield;
 }
 </style>
@@ -142,7 +154,7 @@ input[type=number]{
                 <input id="journey-dauer" type="number" pattern="[0-9]{3}" v-model="form.dauer" @blur="v$.dauer.$touch"
                        placeholder="Dauer in Minuten"
                        class="rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action ">
-                <p v-if="v$.dauer.$error" class="text-delete text-base font-nunito-sans font-bold">Bitte gib eine Dauer
+                <p v-if="v$.dauer.$error" class="text-delete text-base font-nunito-sans font-bold">Bitte gib eine Dauer > 0
                   an</p>
               </div>
               <div class="flex flex-col">
@@ -168,8 +180,8 @@ input[type=number]{
           </div>
           <div class="flex flex-row gap-5 grid grid-cols-2">
             <div class="flex flex-col">
-              <label for="journey-from" class="pt-2">Adresse**</label>
-              <input id="journey-from" type="text" v-model="form.adresse" placeholder="Adresse"
+              <label for="journey-from" class="pt-2">Link</label>
+              <input id="journey-from" type="text" v-model="form.additionalLink" placeholder="Zusätzlicher Link"
                      class="rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action ">
             </div>
             <div class="flex flex-col">
@@ -177,6 +189,11 @@ input[type=number]{
               <input id="journey-to" type="text" inputmode="numeric" placeholder="Kosten" v-model="form.kosten"
                      class="rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action">
             </div>
+          </div>
+          <div class="flex flex-col">
+            <label for="journey-from" class="pt-2">Adresse**</label>
+            <input id="journey-from" type="text" v-model="form.adresse" placeholder="Adresse"
+                   class="rounded pl-1.5 border-none focus:outline-none focus:ring-2 focus:ring-call-to-action ">
           </div>
           <label for="journey-link" class="pt-2">Beschreibung</label>
           <div class="flex flex-row justify-between gap-2">
@@ -187,7 +204,8 @@ input[type=number]{
           </div>
           <div class="pt-1">
             <p class="text-base font-medium">* Pflichtfelder</p>
-            <p class="text-text-black text-base font-nunito-sans">** Benötigt falls sie auf der Karte angezeigt werden soll</p>
+            <p class="text-text-black text-base font-nunito-sans">** Benötigt falls sie auf der Karte angezeigt werden
+              soll</p>
           </div>
           <div class="pt-4 flex flex-row justify-between">
             <button @click="cancel" class="bg-cancel rounded-[38px] px-3 py-1 shadow-md hover:opacity-80">
