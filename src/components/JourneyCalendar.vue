@@ -9,6 +9,7 @@ import TimeGridPlugin from '@fullcalendar/timegrid';
 import AddActivityIllustration from "@/components/illustrations/AddActivityIllustration.vue";
 import momentTimezonePlugin from '@fullcalendar/moment-timezone';
 import IconDelete from "@/components/icons/IconDelete.vue";
+import IconEdit from "@/components/icons/IconEdit.vue";
 
 
 export default {
@@ -16,6 +17,7 @@ export default {
     this.initializeJourneyID();
   },
   components: {
+    IconEdit,
     IconDelete,
     AddActivityIllustration,
     FullCalendar
@@ -79,7 +81,7 @@ export default {
           this.adresse = this.activities[i].address;
           this.kosten = this.activities[i].cost;
           this.beschreibung = this.activities[i].description;
-          this.ausgewaehltesEvent = this.activities[i].pk_activity_uuid
+          this.ausgewaehltesEvent = this.activities[i].pk_activity_uuid;
         }
       }
       this.showDataBool = true;
@@ -106,7 +108,8 @@ export default {
       }
       this.showDataBool = false;
       location.reload();
-    }, async initializeDrop(event) {
+    },
+    async initializeDrop(event) {
       const startTime = event.event._instance.range.start.toISOString().split("T");
       startTime[1] = startTime[1].substring(0, 8);
       const endTime = event.event._instance.range.end.toISOString().split("T");
@@ -238,6 +241,9 @@ export default {
       if (this.currentUserRole === 0) {
         document.getElementById("showDraggabeles").style.display = "none";
       }
+    },
+    async editActivity() {
+
     }
   },
   computed: {
@@ -269,15 +275,22 @@ export default {
         <Dialog :visible="showDataBool" :close-on-escape="true" :header="' '"
                 :style="{ width: '60rem' }" @update:visible="handleClose()">
           <div class="relative flex flex-col justify-center items-center">
-            <div class="flex flex-col flex-row justify-between">
-              <h1 class="font-nunito text-xl font-bold text-text-black mr-2">{{ name }}</h1>
-              <div class="flex items-center justify-center class w-[100%]">
+            <div class="flex flex-col justify-between">
+              <h1 class="font-nunito text-center text-xl font-bold text-text-black mr-2">{{ name }}</h1>
+              <div class="flex items-center gap-5 justify-center class w-[100%]">
+                <button v-if="currentUserRole === 1"
+                        class="bg-call-to-action w-56 rounded-3xl font-nunito text-base items-center justify-center text-text-black font-bold py-1 px-2 shadow-md flex flex-row hover:opacity-80"
+                        type="button"
+                        @click="">
+                  <IconEdit class="text-text-black"/>
+                  <span>Speichern</span>
+                </button>
                 <button v-if="currentUserRole === 1"
                         class="bg-delete w-56 rounded-3xl font-nunito text-base items-center justify-center text-text-black font-bold py-1 px-2 shadow-md flex flex-row hover:opacity-80"
                         severity="danger"
                         type="button"
                         @click="deleteFromCalendar(ausgewaehltesEvent)">
-                  <IconDelete class="text-black"/>
+                  <IconDelete class="text-text-black"/>
                   <span>Aus Plan entfernen</span>
                 </button>
               </div>
@@ -288,29 +301,37 @@ export default {
                   <div>
                     <div class="flex flex-col">
                       <label for="journey-dauer" class="pt-2">Dauer</label>
-                      <input disabled :value=dauer
-                             class="rounded border-none pl-1.5 placeholder-text-black bg-disabled-input">
+                      <input :disabled="currentUserRole !== 1" :value=dauer
+                             class="rounded border-none pl-1.5 placeholder-text-black"
+                             :class="currentUserRole === 1 ? '' : 'bg-disabled-input'"
+                      >
                     </div>
                     <div class="flex flex-col">
                       <label for="journey-to" class="pt-2">Google-Maps</label>
                       <a :href=link v-if='link != ""'>
-                        <input disabled :value=link
-                               class="w-[100%] rounded border-none cursor-pointer underline bg-disabled-input pl-1.5 placeholder-text-black">
+                        <input :disabled="currentUserRole !== 1" :value=link
+                               class="w-[100%] rounded border-none cursor-pointer underline pl-1.5 placeholder-text-black"
+                               :class="currentUserRole === 1 ? '' : 'bg-disabled-input'"
+                        >
                       </a>
-                      <input v-else disabled :value=link
-                             class="w-[100%] rounded border-none bg-disabled-input pl-1.5 placeholder-text-black">
+                      <input v-else :disabled="currentUserRole !== 1" :value=link
+                             class="w-[100%] rounded border-none pl-1.5 placeholder-text-black"
+                             :class="currentUserRole === 1 ? '' : 'bg-disabled-input'"
+                      >
                     </div>
                     <div class="flex flex-col">
                       <label for="journey-to" class="pt-2">Kontakt</label>
-                      <input disabled :value=kontakt
-                             class="rounded border-none bg-disabled-input pl-1.5 placeholder-text-black">
+                      <input :disabled="currentUserRole !== 1" :value=kontakt
+                             class="rounded border-none pl-1.5 placeholder-text-black"
+                             :class="currentUserRole === 1 ? '' : 'bg-disabled-input'">
                     </div>
                   </div>
                   <div class="">
                     <div class="flex flex-col">
                       <label for="journey-from" class="pt-2">Öffnungszeiten</label>
-                      <textarea disabled class="m-0 p-0 resize-none rounded
-                      border-none bg-disabled-input pl-1.5 pb-[42%] pt-0 whitespace-normal">
+                      <textarea :disabled="currentUserRole !== 1" class="m-0 p-0 resize-none rounded
+                      border-none pl-1.5 pb-[42%] pt-0 whitespace-normal"
+                                :class="currentUserRole === 1 ? '' : 'bg-disabled-input'">
                         {{oeffnungszeiten}}
                       </textarea>
                     </div>
@@ -319,20 +340,23 @@ export default {
                 <div class="flex flex-row gap-5 grid grid-cols-2">
                   <div class="flex flex-col">
                     <label for="journey-from" class="pt-2">Adresse</label>
-                    <input disabled :value=adresse
-                           class="rounded border-none bg-disabled-input pl-1.5 placeholder-text-black">
+                    <input :disabled="currentUserRole !== 1" :value=adresse
+                           class="rounded border-none pl-1.5 placeholder-text-black"
+                           :class="currentUserRole === 1 ? '' : 'bg-disabled-input'">
                   </div>
                   <div class="flex flex-col">
                     <label for="journey-to" class="pt-2">Kosten</label>
-                    <input disabled :value=kosten
-                           class="rounded border-none bg-disabled-input pl-1.5 placeholder-text-black">
+                    <input :disabled="currentUserRole !== 1" :value=kosten
+                           class="rounded border-none pl-1.5 placeholder-text-black"
+                           :class="currentUserRole === 1 ? '' : 'bg-disabled-input'">
                   </div>
                 </div>
                 <label class="pt-2" for="journey-link">Beschreibung</label>
                 <div class="flex flex-row justify-between gap-2">
-                 <textarea disabled id="journey-from" type="text"
-                           class="bg-disabled-input w-[100%] placeholder-text-black resize-none rounded pl-1.5
-                           border-none focus:outline-none focus:ring-2 focus:ring-call-to-action whitespace-normal">
+                 <textarea :disabled="currentUserRole !== 1" id="journey-from" type="text"
+                           class="w-[100%] placeholder-text-black resize-none rounded pl-1.5
+                           border-none focus:outline-none focus:ring-2 focus:ring-call-to-action whitespace-normal"
+                           :class="currentUserRole === 1 ? '' : 'bg-disabled-input'">
                    {{beschreibung}}
                 </textarea>
                 </div>
