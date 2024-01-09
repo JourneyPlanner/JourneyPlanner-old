@@ -124,7 +124,7 @@ export default {
       }
       event.draggedEl.parentNode.removeChild(event.draggedEl);
       this.eventCount--;
-      if (this.eventCount <= 0){
+      if (this.eventCount <= 0) {
         this.noEvents = true;
       }
     },
@@ -271,14 +271,16 @@ export default {
           <div class="relative flex flex-col justify-center items-center">
             <div class="flex flex-col flex-row justify-between">
               <h1 class="font-nunito text-xl font-bold text-text-black mr-2">{{ name }}</h1>
-              <button v-if="currentUserRole === 1"
-                      class="bg-delete w-1 rounded-3xl font-nunito text-base items-center justify-center text-text-black font-bold py-1 px-2 shadow-md flex flex-row hover:opacity-80"
-                      severity="danger"
-                      type="button"
-                      @click="deleteFromCalendar(ausgewaehltesEvent)">
-                <IconDelete class="text-black"/>
-                <span>Aus Plan entfernen</span>
-              </button>
+              <div class="flex items-center justify-center class w-[100%]">
+                <button v-if="currentUserRole === 1"
+                        class="bg-delete w-56 rounded-3xl font-nunito text-base items-center justify-center text-text-black font-bold py-1 px-2 shadow-md flex flex-row hover:opacity-80"
+                        severity="danger"
+                        type="button"
+                        @click="deleteFromCalendar(ausgewaehltesEvent)">
+                  <IconDelete class="text-black"/>
+                  <span>Aus Plan entfernen</span>
+                </button>
+              </div>
             </div>
             <div class="bg-primary rounded-[58px] pl-6 pt-3 pr-10 pb-6 mt-2 w-[90%]">
               <form class="flex flex-col font-nunito font-semibold text-xl text-text-black">
@@ -290,15 +292,17 @@ export default {
                              class="rounded border-none pl-1.5 placeholder-text-black bg-disabled-input">
                     </div>
                     <div class="flex flex-col">
-                      <a :href=link>
-                        <label for="journey-to" class="pt-2">Google-Maps</label>
+                      <label for="journey-to" class="pt-2">Google-Maps</label>
+                      <a :href=link v-if='link != ""'>
                         <input disabled :value=link
-                               class="w-[100%] rounded border-none bg-disabled-input pl-1.5 placeholder-text-black">
+                               class="w-[100%] rounded border-none cursor-pointer underline bg-disabled-input pl-1.5 placeholder-text-black">
                       </a>
+                      <input v-else disabled :value=link
+                             class="w-[100%] rounded border-none bg-disabled-input pl-1.5 placeholder-text-black">
                     </div>
                     <div class="flex flex-col">
                       <label for="journey-to" class="pt-2">Kontakt</label>
-                      <input disabled :placeholder=kontakt
+                      <input disabled :value=kontakt
                              class="rounded border-none bg-disabled-input pl-1.5 placeholder-text-black">
                     </div>
                   </div>
@@ -320,7 +324,7 @@ export default {
                   </div>
                   <div class="flex flex-col">
                     <label for="journey-to" class="pt-2">Kosten</label>
-                    <input disabled :placeholder=kosten
+                    <input disabled :value=kosten
                            class="rounded border-none bg-disabled-input pl-1.5 placeholder-text-black">
                   </div>
                 </div>
