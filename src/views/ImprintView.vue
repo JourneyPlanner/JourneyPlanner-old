@@ -18,7 +18,7 @@ import Footer from "@/components/Footer.vue";
       </p>
       <p><b>Webseitenbetreiber:</b> Mattias Burkard</p>
       <p><b>Anschrift:</b> Krüklstraße 3, 2410 Hainburg an der Donau</p>
-      <p><b>Kontaktdaten:</b> <br> Telefon: +43 681 20301077 <br> Email: raven.burkard@journeyplanner.io <br></p>
+      <p><b>Kontaktdaten:</b> <br> Telefon: +43 681 20301077 <br> E-Mail: raven.burkard@journeyplanner.io <br></p>
 
       <p><b>Anwendbare Rechtsvorschrift:</b> www.ris.bka.gv.at <br></p>
       <p><b>Online Streitbeilegung:</b> Verbraucher, welche in Österreich oder in einem sonstigen Vertragsstaat der
