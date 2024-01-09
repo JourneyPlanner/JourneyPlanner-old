@@ -24,7 +24,7 @@ const form = reactive({
   beschreibung: '',
   adresse: '',
   kosten: '',
-  dauer: 0,
+  dauer: null,
   oefnungszeiten: '',
   link: '',
   additionalLink: '',
@@ -64,14 +64,6 @@ async function create() {
     });
     return;
   } else {
-    if (form.dauer < 0) {
-      toast.add({
-        severity: 'error',
-        summary: 'Fehler beim Aktivität erstellen',
-        detail: 'Es ist nicht zulässig, eine negative Dauer anzugeben.',
-        life: 6000
-      });
-    } else {
       const {error} = await supabase
           .from('activity')
           .insert([
@@ -106,7 +98,6 @@ async function create() {
         await router.push('/reise/' + journeyID);
       }
     }
-  }
 }
 
 async function cancel() {
@@ -147,7 +138,7 @@ input[type=number] {
           <p v-if="v$.name.$error" class="text-delete text-base font-nunito-sans font-bold">Bitte gib deiner Aktivität
             einen
             Namen</p>
-          <div class="flex flex-row gap-5 grid grid-cols-2">
+          <div class="gap-5 grid grid-cols-2">
             <div class="">
               <div class="flex flex-col">
                 <label for="journey-dauer" class="pt-2">geschätzte Dauer*</label>
