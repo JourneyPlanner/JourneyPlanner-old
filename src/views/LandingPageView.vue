@@ -17,29 +17,29 @@ import Footer from "../components/Footer.vue";
 </script>
 
 <template>
-  <div class="absolute overflow-x-hidden md:-top-24 xl:-top-36 md:right-0 ">
+  <div class="absolute overflow-x-hidden md:-top-24 lg:-top-36 md:right-0 hidden lg:block">
     <VespaIllustration/>
   </div>
   <div class="relative">
     <div id="start"/>
-    <NavBar class="sticky top-0.5"/>
+    <NavBar class="lg:sticky lg:top-0.5"/>
 
-    <div class="ml-16 mt-10">
-      <h1 class="font-nunito text-4xl text-text-black font-bold">
-        JourneyPlanner
+    <div class="ml-5 lg:ml-16 lg:mt-10">
+      <h1 class="font-nunito text-2xl xl:text-4xl lg:text-text-black font-black xl:font-bold break-words">
+        Journey<wbr>Planner
       </h1>
-      <h2 class="font-nunito text-2xl text-text-black font-semibold">
-        Reiseplanung leicht gemacht
+      <h2 class="font-nunito text-xl xl:text-2xl text-text-black font-bold lg:font-semibold">
+        Reiseplanung leicht gemacht!
       </h2>
-      <p class="font-nunito-sans text-xl text-text-black  w-3/6 flex flex-wrap mt-3">
+      <p class="font-nunito-sans text-xl lg:text-xl text-text-black md:w-3/6 xl:w-3/6 flex flex-wrap mt-3">
         Deine ultimative Plattform zur mühelosen Organisation von unvergesslichen Abenteuern!
         <br>
         Gestalte deine Reise, teile deinen Plan und gehe gemeinsam auf Entdeckungsreise.
         <br>
         Bereit für dein nächstes Abenteuer?
       </p>
-      <div class="grid grid-cols-2 grid-rows-1 gap-4 w-1/4 mt-4 ">
-        <div class="mr-5">
+      <div class="grid grid-cols-2 grid-rows-1 gap-4 sm:w-1/4 mt-4 mr-5">
+        <div>
           <LoginButton/>
         </div>
         <div>
@@ -47,13 +47,15 @@ import Footer from "../components/Footer.vue";
         </div>
       </div>
     </div>
-    <h1 id="functions" class="mb-56 mt-36"/>
-    <h1 class="font-nunito font-bold text-3xl text-text-black ml-16 mt-20">
-      Funktionen
-    </h1>
-    <div class="grid grid-cols-3 grid-rows-1 gap-12">
+    <div id="functions" class="lg:grid lg:grid-cols-3 lg:gap-12 lg:mt-40 mx-5">
 
-      <FunctionCard class="ml-20">
+      <h1 class="font-nunito font-bold text-3xl text-text-black text-center lg:text-left mt-5 lg:mt-20">
+        Funktionen
+      </h1>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 grid-rows-3 lg:grid-rows-1 lg:gap-12 mx-5">
+
+      <FunctionCard class="row-start-1">
         <template #icon>
           <IconCalender/>
         </template>
@@ -67,7 +69,7 @@ import Footer from "../components/Footer.vue";
         </template>
       </FunctionCard>
 
-      <FunctionCard class="mx-10">
+      <FunctionCard class="row-start-2 lg:row-start-1">
         <template #icon>
           <IconShare/>
         </template>
@@ -79,7 +81,7 @@ import Footer from "../components/Footer.vue";
         </template>
       </FunctionCard>
 
-      <FunctionCard class="mr-20">
+      <FunctionCard class="row-start-3 lg:row-start-1">
         <template #icon>
           <IconExperience/>
         </template>
@@ -91,13 +93,16 @@ import Footer from "../components/Footer.vue";
         </template>
       </FunctionCard>
     </div>
-    <h1 id="team" class="font-nunito font-bold text-3xl text-text-black ml-16 mt-24">
-      Über das Team
-    </h1>
+    <div id="team" class="lg:grid lg:grid-cols-3 lg:gap-12 lg:mt-10 mx-5">
 
-    <div class="grid grid-cols-4 grid-rows-1 mb-24 mt-4 ">
+      <h1 class="font-nunito font-bold text-3xl text-text-black text-center lg:text-left mt-5 ">
+        Das Team
+      </h1>
+    </div>
 
-      <MemberCard class="ml-16 mr-4">
+    <div class="grid grid-cols-1 lg:grid-cols-4 grid-rows-3 lg:grid-rows-1 gap-5 lg:gap-12 mx-5">
+
+      <MemberCard class="">
         <template #icon>
           <Raven/>
         </template>
@@ -109,7 +114,7 @@ import Footer from "../components/Footer.vue";
         </template>
       </MemberCard>
 
-      <MemberCard class="mx-8 ml-12">
+      <MemberCard class="">
         <template #icon>
           <Roman/>
         </template>
@@ -121,7 +126,7 @@ import Footer from "../components/Footer.vue";
         </template>
       </MemberCard>
 
-      <MemberCard class="mx-8 mr-12">
+      <MemberCard class="">
         <template #icon>
           <Stefi/>
         </template>
@@ -133,7 +138,7 @@ import Footer from "../components/Footer.vue";
         </template>
       </MemberCard>
 
-      <MemberCard class="mr-16 ml-4">
+      <MemberCard class="">
         <template #icon>
           <Severin/>
         </template>
@@ -145,7 +150,7 @@ import Footer from "../components/Footer.vue";
         </template>
       </MemberCard>
     </div>
-    <Footer/>
+    <Footer class="lg:pt-10"/>
 
   </div>
 </template>
