@@ -30,10 +30,18 @@ create or replace function public.handle_user_update()
     returns trigger as
 $$
 begin
-    update public.user
-    set username = new.raw_user_meta_data ->> 'username'
-    where pk_uuid = new.id;
-    return new;
+    -- delete if exists, then insert
+    -- this is a hotfix, the sane way of doing this (update) was somehow broken
+    delete from public.user where pk_uuid = old.id;
+    if new.raw_user_meta_data ->> 'username' is not null then
+        insert into public.user (pk_uuid, username)
+        values (new.id, new.raw_user_meta_data ->> 'username');
+        return new;
+    else
+        insert into public.user (pk_uuid, username)
+        values (new.id, new.raw_user_meta_data ->> 'name');
+        return new;
+    end if;
 end;
 $$ language plpgsql security definer;
 
