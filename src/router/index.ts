@@ -61,6 +61,11 @@ const router = createRouter({
             component: NotFoundView
         },
         {
+            path: '/reise/nicht-gefunden',
+            name: 'reiseNichtGefunden',
+            component: NotFoundView
+        },
+        {
             path: '/einstellungen',
             name: 'einstellungen',
             component: () => import('../views/SettingsView.vue'),
