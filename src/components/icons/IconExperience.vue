@@ -1,5 +1,5 @@
 <template>
-  <svg xmlns="http://www.w3.org/2000/svg" width="130" height="130" viewBox="0 0 172 174">
+  <svg xmlns="http://www.w3.org/2000/svg" class="w-20 lg:w-32" viewBox="0 0 172 174">
     <g transform="translate(-1488 -1188)">
       <ellipse cx="86" cy="87" rx="86" ry="87" transform="translate(1488 1188)" fill="#d8eaf3"/>
       <path
