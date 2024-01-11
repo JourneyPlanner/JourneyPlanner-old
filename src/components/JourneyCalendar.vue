@@ -474,6 +474,7 @@ export default {
                       <label for="journey-dauer" class="pt-2">Dauer (h)</label>
                       <input :disabled="currentUserRole !== 1"
                              v-model="form.dauer"
+                             type="number"
                              class="rounded border-none pl-1.5 placeholder-text-black"
                              :class="currentUserRole === 1 ? '' : 'bg-disabled-input'"
                       >
@@ -616,5 +617,15 @@ export default {
 <style scoped>
 .planned-tasks > div {
   margin-bottom: 0.5em;
+}
+
+ input::-webkit-outer-spin-button,
+ input::-webkit-inner-spin-button {
+   -webkit-appearance: none;
+   margin: 0;
+ }
+
+input[type=number] {
+  -moz-appearance: textfield;
 }
 </style>
