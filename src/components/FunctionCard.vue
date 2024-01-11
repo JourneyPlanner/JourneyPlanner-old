@@ -1,5 +1,5 @@
 <template >
-  <div class="flex flex-col items-center bg-primary rounded-[46px] pt-6 mt-3 p-2 pb-3 justify-between mx-5 shadow-md">
+  <div class="flex flex-col items-center bg-primary md:bg-secondary lg:bg-primary rounded-[46px] pt-6 mt-3 p-2 pb-3 justify-between mr-5 lg:mx-5 shadow-md"> <!-- mx-5 md:mx-2 lg:mx-5 -->
     <i>
       <slot name="icon"></slot>
     </i>
