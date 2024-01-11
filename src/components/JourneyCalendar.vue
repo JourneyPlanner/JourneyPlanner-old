@@ -192,17 +192,17 @@ export default {
           this.activities[i].cal_from = startTime[1];
         }
       }
-  },
-  async initializeJourneyID() {
-    const route = useRoute();
-    this.journeyID = ref(route.params.uuid);
-    await this.loadData();
-  },
-  async loadData() {
-    await this.getUserRole();
-    const {data, error} = await supabase
-        .from('activity')
-        .select(`
+    },
+    async initializeJourneyID() {
+      const route = useRoute();
+      this.journeyID = ref(route.params.uuid);
+      await this.loadData();
+    },
+    async loadData() {
+      await this.getUserRole();
+      const {data, error} = await supabase
+          .from('activity')
+          .select(`
           pk_activity_uuid,
           estimated_duration,
           fk_journey_uuid,
@@ -220,222 +220,221 @@ export default {
           cal_from,
           cal_to
         `)
-        .eq('fk_journey_uuid', this.journeyID.value);
+          .eq('fk_journey_uuid', this.journeyID.value);
 
-    if (error) {
-      console.error(error);
-      return;
-    }
+      if (error) {
+        console.error(error);
+        return;
+      }
 
-    const {data: data2, error: error2} = await supabase
-        .from('journey')
-        .select(`
+      const {data: data2, error: error2} = await supabase
+          .from('journey')
+          .select(`
           from,
           to
         `)
-        .eq('pk_journey_uuid', this.journeyID.value);
-    const currentDate = new Date();
-    const journeyStartDate = new Date(data2[0].from);
-    const journeyEndDate = new Date(data2[0].to);
-    if (currentDate > journeyStartDate && currentDate < journeyEndDate) {
-      this.startingDate = currentDate;
-    } else {
-      this.startingDate = data2[0].from;
-    }
-
-    if (error2) {
-      console.error(error2);
-      return;
-    }
-
-    if (data) {
-      data.forEach((row) => {
-        if (row.added_to_calendar) {
-          if (this.currentUserRole === 1) {
-            this.INITIAL_EVENTS[this.index] = {
-              id: this.index,
-              title: row.name,
-              start: row.cal_date_start + 'T' + row.cal_from,
-              end: row.cal_date_end + 'T' + row.cal_to,
-              editable: true,
-              timeZone: "local",
-              defId: row.pk_activity_uuid
-            };
-          } else if (this.currentUserRole === 0) {
-            this.INITIAL_EVENTS[this.index] = {
-              id: this.index,
-              title: row.name,
-              start: row.cal_date_start + 'T' + row.cal_from,
-              end: row.cal_date_end + 'T' + row.cal_to,
-              editable: false,
-              timeZone: "local",
-              defId: row.pk_activity_uuid
-            };
-          }
-
-          this.index++;
-        } else {
-          this.noEvents = false;
-          this.eventCount++;
-        }
-      });
-      if (this.INITIAL_EVENTS.length <= 0) {
-        this.nothing_To_Render = true;
+          .eq('pk_journey_uuid', this.journeyID.value);
+      const currentDate = new Date();
+      const journeyStartDate = new Date(data2[0].from);
+      const journeyEndDate = new Date(data2[0].to);
+      if (currentDate > journeyStartDate && currentDate < journeyEndDate) {
+        this.startingDate = currentDate;
+      } else {
+        this.startingDate = data2[0].from;
       }
 
-      this.activities = data;
-    }
-    await this.initializeData();
-  },
-  async getUserRole() {
-    const {data: {user}} = await supabase.auth.getUser();
-    const {data, error} = await supabase
-        .from('user_is_in')
-        .select(`
+      if (error2) {
+        console.error(error2);
+        return;
+      }
+
+      if (data) {
+        data.forEach((row) => {
+          if (row.added_to_calendar) {
+            if (this.currentUserRole === 1) {
+              this.INITIAL_EVENTS[this.index] = {
+                id: this.index,
+                title: row.name,
+                start: row.cal_date_start + 'T' + row.cal_from,
+                end: row.cal_date_end + 'T' + row.cal_to,
+                editable: true,
+                timeZone: "local",
+                defId: row.pk_activity_uuid
+              };
+            } else if (this.currentUserRole === 0) {
+              this.INITIAL_EVENTS[this.index] = {
+                id: this.index,
+                title: row.name,
+                start: row.cal_date_start + 'T' + row.cal_from,
+                end: row.cal_date_end + 'T' + row.cal_to,
+                editable: false,
+                timeZone: "local",
+                defId: row.pk_activity_uuid
+              };
+            }
+
+            this.index++;
+          } else {
+            this.noEvents = false;
+            this.eventCount++;
+          }
+        });
+        if (this.INITIAL_EVENTS.length <= 0) {
+          this.nothing_To_Render = true;
+        }
+
+        this.activities = data;
+      }
+      await this.initializeData();
+    },
+    async getUserRole() {
+      const {data: {user}} = await supabase.auth.getUser();
+      const {data, error} = await supabase
+          .from('user_is_in')
+          .select(`
           function
         `)
-        .eq('pk_user_uuid', user.id)
-        .eq('pk_journey_uuid', this.journeyID.value);
+          .eq('pk_user_uuid', user.id)
+          .eq('pk_journey_uuid', this.journeyID.value);
 
-    if (error) {
-      console.error(error);
-    }
-    this.currentUserRole = data[0].function;
-    if (this.currentUserRole === 0) {
-      document.getElementById("showDraggabeles").style.display = "none";
-    }
-  },
-  async saveChanges() {
-    if (this.form.dauer == null || this.form.dauer <= 0) {
-      this.toast.add({
-        severity: 'warn',
-        summary: 'Felder ausfüllen',
-        detail: 'Bitte fülle alle Felder richtig aus',
-        life: 4000
-      });
-    } else {
-      let durationIncrease = new Date(this.form.cal_date_start + "T" + this.form.cal_from);
-      let newDate = moment(durationIncrease).add(this.form.dauer, 'h');
-      let cal_date_end = newDate.get('year') + "-" + (newDate.get('month') + 1) + "-" + newDate.get('date');
-      let cal_to = newDate.get('hour').toString().padStart(2, "0") + ":" + (newDate.get('minute')).toString().padStart(2, "0") + ":" + newDate.get('second').toString().padStart(2, "0");
-      if (this.added_to_calendar) {
-        const {error} = await supabase
-            .from('activity')
-            .update([
-              {
-                name: this.form.name,
-                estimated_duration: this.form.dauer * 60,
-                opening_hours: this.form.oefnungszeiten,
-                google_maps_link: this.form.link,
-                contact: this.form.kontakt,
-                address: this.form.adresse,
-                cal_date_end: cal_date_end,
-                link: this.form.additionalLink,
-                cal_to: cal_to,
-                cost: this.form.kosten,
-                fk_journey_uuid: this.journeyID.value,
-                description: this.form.beschreibung
-              },
-            ])
-            .eq('pk_activity_uuid', this.form.pk_activity_uuid)
-        if (error) {
-          this.toast.add({
-            severity: 'error',
-            summary: 'Fehler beim Aktivität erstellen',
-            detail: 'Es ist ein Fehler aufgetreteten. Probiere es noch einmal oder kontaktiere uns unter contact@journeyplanner.io',
-            life: 3000
-          });
-        } else {
-          this.toast.add({
-            severity: 'success',
-            summary: 'Aktivität verändert',
-            detail: 'Aktivität wurde erfolgreich verändert...',
-            life: 1000
-          });
-        }
+      if (error) {
+        console.error(error);
+      }
+      this.currentUserRole = data[0].function;
+      if (this.currentUserRole === 0) {
+        document.getElementById("showDraggabeles").style.display = "none";
+      }
+    },
+    async saveChanges() {
+      if (this.form.dauer == null || this.form.dauer <= 0.017) {
+        this.toast.add({
+          severity: 'warn',
+          summary: 'Felder ausfüllen',
+          detail: 'Bitte fülle alle Felder richtig aus',
+          life: 4000
+        });
       } else {
-        const {error} = await supabase
-            .from('activity')
-            .update([
-              {
-                name: this.form.name,
-                estimated_duration: this.form.dauer * 60,
-                opening_hours: this.form.oefnungszeiten,
-                google_maps_link: this.form.link,
-                contact: this.form.kontakt,
-                link: this.form.additionalLink,
-                address: this.form.adresse,
-                cost: this.form.kosten,
-                fk_journey_uuid: this.journeyID.value,
-                description: this.form.beschreibung
-              },
-            ])
-            .eq('pk_activity_uuid', this.form.pk_activity_uuid)
-        if (error) {
-          this.toast.add({
-            severity: 'error',
-            summary: 'Fehler beim Aktivität erstellen',
-            detail: 'Es ist ein Fehler aufgetreteten. Probiere es noch einmal oder kontaktiere uns unter contact@journeyplanner.io',
-            life: 3000
-          });
+        let durationIncrease = new Date(this.form.cal_date_start + "T" + this.form.cal_from);
+        let newDate = moment(durationIncrease).add(this.form.dauer, 'h');
+        let cal_date_end = newDate.get('year') + "-" + (newDate.get('month') + 1) + "-" + newDate.get('date');
+        let cal_to = newDate.get('hour').toString().padStart(2, "0") + ":" + (newDate.get('minute')).toString().padStart(2, "0") + ":" + newDate.get('second').toString().padStart(2, "0");
+        if (this.added_to_calendar) {
+          const {error} = await supabase
+              .from('activity')
+              .update([
+                {
+                  name: this.form.name,
+                  estimated_duration: Math.round(this.form.dauer * 60),
+                  opening_hours: this.form.oefnungszeiten,
+                  google_maps_link: this.form.link,
+                  contact: this.form.kontakt,
+                  address: this.form.adresse,
+                  cal_date_end: cal_date_end,
+                  link: this.form.additionalLink,
+                  cal_to: cal_to,
+                  cost: this.form.kosten,
+                  fk_journey_uuid: this.journeyID.value,
+                  description: this.form.beschreibung
+                },
+              ])
+              .eq('pk_activity_uuid', this.form.pk_activity_uuid)
+          if (error) {
+            this.toast.add({
+              severity: 'error',
+              summary: 'Fehler beim speichern der Aktivität',
+              detail: 'Es ist ein Fehler aufgetreteten. Probiere es noch einmal oder kontaktiere uns unter contact@journeyplanner.io',
+              life: 3000
+            });
+          } else {
+            this.toast.add({
+              severity: 'success',
+              summary: 'Aktivität verändert',
+              detail: 'Aktivität wurde erfolgreich verändert...',
+              life: 1000
+            });
+          }
         } else {
-          this.toast.add({
-            severity: 'success',
-            summary: 'Aktivität verändert',
-            detail: 'Aktivität wurde erfolgreich verändert...',
-            life: 1000
-          });
+          const {error} = await supabase
+              .from('activity')
+              .update([
+                {
+                  name: this.form.name,
+                  estimated_duration: this.form.dauer * 60,
+                  opening_hours: this.form.oefnungszeiten,
+                  google_maps_link: this.form.link,
+                  contact: this.form.kontakt,
+                  link: this.form.additionalLink,
+                  address: this.form.adresse,
+                  cost: this.form.kosten,
+                  fk_journey_uuid: this.journeyID.value,
+                  description: this.form.beschreibung
+                },
+              ])
+              .eq('pk_activity_uuid', this.form.pk_activity_uuid)
+          if (error) {
+            console.log(error);
+            this.toast.add({
+              severity: 'error',
+              summary: 'Fehler beim speichern der Aktivität',
+              detail: 'Es ist ein Fehler aufgetreteten. Probiere es noch einmal oder kontaktiere uns unter contact@journeyplanner.io',
+              life: 3000
+            });
+          } else {
+            this.toast.add({
+              severity: 'success',
+              summary: 'Aktivität verändert',
+              detail: 'Aktivität wurde erfolgreich verändert...',
+              life: 1000
+            });
+          }
         }
+        location.reload();
+      }
+    },
+    async deleteActivity() {
+      const {error} = await supabase
+          .from('activity')
+          .delete()
+          .eq('pk_activity_uuid', this.form.pk_activity_uuid);
+
+      if (error) {
+        this.toast.add({
+          severity: 'error',
+          summary: 'Fehler beim löschen',
+          detail: 'Es ist ein Fehler aufgetreteten. Probiere es noch einmal oder kontaktiere uns unter contact@journeyplanner.io',
+          life: 3000
+        });
+      } else {
+        this.toast.add({
+          severity: 'success',
+          summary: 'Aktivität gelöscht',
+          detail: 'Aktivität wurde erfolgreich gelöscht...',
+          life: 1000
+        });
       }
       location.reload();
-    }
-  },
-  async deleteActivity() {
-    const {error} = await supabase
-        .from('activity')
-        .delete()
-        .eq('pk_activity_uuid', this.form.pk_activity_uuid);
-
-    if (error) {
-      this.toast.add({
-        severity: 'error',
-        summary: 'Fehler beim löschen',
-        detail: 'Es ist ein Fehler aufgetreteten. Probiere es noch einmal oder kontaktiere uns unter contact@journeyplanner.io',
-        life: 3000
-      });
-    } else {
-      this.toast.add({
-        severity: 'success',
-        summary: 'Aktivität gelöscht',
-        detail: 'Aktivität wurde erfolgreich gelöscht...',
-        life: 1000
-      });
-    }
-    location.reload();
-  },
-}
-,
-computed: {
-  formatTime(decimalTime)
-  {
-    return (decimalTime) => {
-      const hour = Math.floor(decimalTime);
-      const minute = Math.round((decimalTime - hour) * 60);
-
-      // Format the time as HH:mm
-      return `${hour}:${minute < 10 ? '0' : ''}${minute}`;
-    };
+    },
   }
-,
-  handleClose()
-  {
-    return () => {
-      this.showDataBool = false;
-    };
+  ,
+  computed: {
+    formatTime(decimalTime) {
+      return (decimalTime) => {
+        const hour = Math.floor(decimalTime);
+        const minute = Math.round((decimalTime - hour) * 60);
+
+        // Format the time as HH:mm
+        return `${hour}:${minute < 10 ? '0' : ''}${minute}`;
+      };
+    }
+    ,
+    handleClose() {
+      return () => {
+        this.showDataBool = false;
+      };
+    }
+    ,
   }
-,
-}
-,
+  ,
 }
 ;
 
