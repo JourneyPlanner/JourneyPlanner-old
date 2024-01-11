@@ -27,7 +27,7 @@ export default {
       'call-to-action': '#f8d351',
       'placeholder-gray': '#212121',
       'disabled-input': '#ECEAEA',
-      'cancel': '#858585',
+      'cancel': '#829094',
       'delete': '#F06543'
     }
   },

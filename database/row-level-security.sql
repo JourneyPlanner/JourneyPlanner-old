@@ -129,4 +129,3 @@ CREATE POLICY "full access to media files for journey admins 1l5u1vl_3" ON stora
                                      WHERE ((((storage.foldername(name))[1])::uuid) = user_is_in.pk_journey_uuid)
                                        AND (uid() = user_is_in.pk_user_uuid)
                                        AND (user_is_in.function = 1))));
-

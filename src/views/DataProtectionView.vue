@@ -4,7 +4,7 @@ import Footer from "@/components/Footer.vue";
 </script>
 
 <template>
-  <div class="grid grid-cols-2 grid-rows-1 sm:grid-cols-3">
+  <div class="grid grid-cols-2 grid-rows-1 sm:grid-cols-3 font-nunito-sans text-text-black">
 
     <h2 class="font-nunito font-semibold text-xl text-center ml-5 mt-5
           sm:font-bold sm:col-start-2 sm:text-xl md:text-2xl">Datenschutzerklärung</h2>
@@ -12,7 +12,7 @@ import Footer from "@/components/Footer.vue";
       <BackButton class="col-start-3 mt-3 xl:col-start-2"/>
     </div>
   </div>
-  <div class="ml-5 mt-10 mr-1 sm:ml-20 sm:mr-10 lg:mx-60">
+  <div class="font-nunito-sans text-text-black ml-5 mt-10 mr-1 sm:ml-20 sm:mr-10 lg:mx-60">
     <p class="font-nunito-sans text-base">
       Personenbezogene Daten (nachfolgend zumeist nur „Daten“ genannt) werden von
       uns nur im Rahmen der Erforderlichkeit
@@ -48,7 +48,7 @@ import Footer from "@/components/Footer.vue";
     </p>
     <br>
 
-    <h3 class="text-xl font-semibold">I. Informationen über uns als Verantwortliche</h3>
+    <h3 class="font-nunito-sans text-xl font-semibold">I. Informationen über uns als Verantwortliche</h3>
     <br>
     <p class="font-nunito-sans text-base">
       Verantwortlicher Anbieter dieses Internetauftritts im datenschutzrechtlichen Sinne ist:
@@ -64,7 +64,7 @@ import Footer from "@/components/Footer.vue";
       E-Mail: raven.burkard@journeyplanner.io
     </p>
     <br>
-    <h3 class="text-xl font-semibold">II. Rechte der Nutzer und Betroffenen</h3>
+    <h3 class="font-nunito-sans text-xl font-semibold">II. Rechte der Nutzer und Betroffenen</h3>
     <br>
     <p class="font-nunito-sans text-base">
       Mit Blick auf die nachfolgend noch näher beschriebene Datenverarbeitung haben die Nutzer und Betroffenen das Recht
@@ -108,7 +108,7 @@ import Footer from "@/components/Footer.vue";
       </strong>
     </p>
     <br>
-    <h3 class="text-xl font-semibold">III. Informationen zur Datenverarbeitung</h3>
+    <h3 class="font-nunito-sans text-xl font-semibold">III. Informationen zur Datenverarbeitung</h3>
     <br>
     <p class="font-nunito-sans text-base">
       Ihre bei Nutzung unseres Internetauftritts verarbeiteten Daten werden gelöscht
@@ -150,7 +150,7 @@ import Footer from "@/components/Footer.vue";
     </p>
     <br>
     <h4
-      class="font-semibold">Nutzerbeiträge, Kommentare und Bewertungen</h4>
+      class="font-nunito-sans font-semibold">Nutzerbeiträge, Kommentare und Bewertungen</h4>
     <p class="font-nunito-sans text-base">Wir bieten Ihnen an, auf unseren Internetseiten Fragen, Antworten, Meinungen
       oder Bewertungen, nachfolgend nur „Beiträge genannt, zu veröffentlichen. Sofern Sie dieses Angebot in Anspruch
       nehmen, verarbeiten und veröffentlichen wir Ihren Beitrag, Datum und Uhrzeit der Einreichung sowie das von
@@ -171,7 +171,7 @@ import Footer from "@/components/Footer.vue";
       berechtigtes Interesse liegt in der ggf. notwendigen Rechtsverteidigung.
     </p>
     <br>
-    <h4 class="font-semibold">Serverdaten</h4>
+    <h4 class="font-nunito-sans font-semibold">Serverdaten</h4>
     <p class="font-nunito-sans text-base">
       Aus technischen Gründen, insbesondere zur Gewährleistung eines sicheren und
       stabilen Internetauftritts, werden Daten durch Ihren Internet-Browser an uns bzw. an unseren Webspace-Provider
@@ -194,7 +194,7 @@ import Footer from "@/components/Footer.vue";
       der Löschung ausgenommen.
     </p>
     <br>
-    <h4 class="font-semibold">CloudFlare</h4>
+    <h4 class="font-nunito-sans font-semibold">CloudFlare</h4>
     <p class="font-nunito-sans text-base">
       Zur Absicherung unseres Internetauftritts sowie zur Optimierung der Ladezeiten setzen wir den Dienst CloudFlare als
       sog. CDN (Content-Delivery-Network) ein. Es handelt sich hierbei um einen Dienst der Cloudflare Inc., 101 Townsend
@@ -237,7 +237,7 @@ import Footer from "@/components/Footer.vue";
       Rechten und Möglichkeiten zum Schutz Ihrer Privatsphäre an.
     </p>
     <br>
-    <h4 class="font-semibold">OpenStreetMap</h4>
+    <h4 class="font-nunito-sans font-semibold">OpenStreetMap</h4>
     <p class="font-nunito-sans text-base">
       Für Anfahrtsbeschreibungen setzen wir OpenStreetMap, einen Dienst der OpenStreetMap Foundation, St John’s
       Innovation Centre, Cowley Road, Cambridge, CB 4 0 WS, United Kingdom, nachfolgend nur „OpenStreetMap“ genannt,
