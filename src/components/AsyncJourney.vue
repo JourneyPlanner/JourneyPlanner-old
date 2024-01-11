@@ -40,8 +40,12 @@ async function getUsernameData() {
       .order('function', {ascending: false});
 
   if (userFunctionsError) {
+    if (userFunctionsError.code === "22P02") {
+      await router.push('/reise/nicht-gefunden');
+    }
     console.log(userFunctionsError);
   }
+
 
   const {data: usernamesData, error: usernamesError} = await supabase
       .from('user')
