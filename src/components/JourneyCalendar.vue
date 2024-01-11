@@ -112,7 +112,7 @@ export default {
           this.form.dauer = (this.activities[i].estimated_duration / 60).toFixed(2);
           this.form.oeffnungszeiten = this.activities[i].opening_hours;
 
-          if (this.activities[i].google_maps_link != "") {
+          if (this.activities[i].google_maps_link !== "") {
             if (!(this.activities[i].google_maps_link.substring(0, 4) === "http")) {
               this.activities[i].google_maps_link = "https://" + this.activities[i].google_maps_link;
             }
@@ -306,13 +306,12 @@ export default {
           detail: 'Bitte fülle alle Felder richtig aus',
           life: 4000
         });
-        return;
       } else {
         let durationIncrease = new Date(this.form.cal_date_start + "T" + this.form.cal_from);
         let newDate = moment(durationIncrease).add(this.form.dauer, 'h');
         let cal_date_end = newDate.get('year') + "-" + (newDate.get('month') + 1) + "-" + newDate.get('date');
         let cal_to = newDate.get('hour').toString().padStart(2, "0") + ":" + (newDate.get('minute')).toString().padStart(2, "0") + ":" + newDate.get('second').toString().padStart(2, "0");
-        if (this.form.added_to_calendar) {
+        if (this.added_to_calendar) {
           const {error} = await supabase
               .from('activity')
               .update([
@@ -324,6 +323,7 @@ export default {
                   contact: this.form.kontakt,
                   address: this.form.adresse,
                   cal_date_end: cal_date_end,
+                  link: this.form.additionalLink,
                   cal_to: cal_to,
                   cost: this.form.kosten,
                   fk_journey_uuid: this.journeyID.value,
@@ -356,6 +356,7 @@ export default {
                   opening_hours: this.form.oefnungszeiten,
                   google_maps_link: this.form.link,
                   contact: this.form.kontakt,
+                  link: this.form.additionalLink,
                   address: this.form.adresse,
                   cost: this.form.kosten,
                   fk_journey_uuid: this.journeyID.value,
@@ -404,8 +405,7 @@ export default {
         });
       }
       location.reload();
-    }
-    ,
+    },
   },
   computed: {
     formatTime(decimalTime) {
@@ -448,7 +448,7 @@ export default {
                   <IconSave class="text-text-black"/>
                   <span>Speichern</span>
                 </button>
-                <button v-if="currentUserRole === 1"
+                <button v-if="currentUserRole === 1 && added_to_calendar"
                         class="bg-delete w-56 rounded-3xl font-nunito text-base items-center justify-center text-text-black font-bold py-1 px-2 shadow-md flex flex-row hover:opacity-80"
                         severity="danger"
                         type="button"
@@ -468,7 +468,7 @@ export default {
             </div>
             <div class="bg-primary rounded-[58px] pl-6 pt-3 pr-10 pb-6 mt-2 w-[90%]">
               <form class="flex flex-col font-nunito font-semibold text-xl text-text-black">
-                <div class="flex flex-row gap-5 grid grid-cols-2">
+                <div class=" gap-5 grid grid-cols-2">
                   <div>
                     <div class="flex flex-col">
                       <label for="journey-dauer" class="pt-2">Dauer (h)</label>
@@ -480,7 +480,7 @@ export default {
                     </div>
                     <div class="flex flex-col">
                       <label for="journey-to" class="pt-2">Google-Maps</label>
-                      <a :href=form.link target="_blank" v-if='form.link != ""'>
+                      <a :href=form.link target="_blank" v-if='form.link !== ""'>
                         <input :disabled="currentUserRole !== 1"
                                v-model="form.link"
                                class="w-[100%] rounded border-none cursor-pointer underline pl-1.5 placeholder-text-black"
@@ -508,12 +508,12 @@ export default {
                       border-none pl-1.5 pb-[42%] pt-0 whitespace-normal"
                                 v-model="form.oefnungszeiten"
                                 :class="currentUserRole === 1 ? '' : 'bg-disabled-input'">
-                        {{oeffnungszeiten}}
+                        {{form.oeffnungszeiten}}
                       </textarea>
                     </div>
                   </div>
                 </div>
-                <div class="flex flex-row gap-5 grid grid-cols-2">
+                <div class="gap-5 grid grid-cols-2">
                   <div class="flex flex-col">
                     <label for="journey-from" class="pt-2">Link</label>
                     <a :href=form.additionalLink target="_blank" v-if='form.additionalLink != null'>
@@ -551,7 +551,7 @@ export default {
                            class="w-[100%] placeholder-text-black resize-none rounded pl-1.5
                            border-none focus:outline-none focus:ring-2 focus:ring-call-to-action whitespace-normal"
                            :class="currentUserRole === 1 ? '' : 'bg-disabled-input'">
-                   {{beschreibung}}
+                   {{form.beschreibung}}
                 </textarea>
                 </div>
               </form>
