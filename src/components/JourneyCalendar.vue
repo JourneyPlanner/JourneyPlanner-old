@@ -341,7 +341,7 @@ export default {
           if (error) {
             this.toast.add({
               severity: 'error',
-              summary: 'Fehler beim speichern der Aktivität',
+              summary: 'Fehler beim Speichern der Aktivität',
               detail: 'Es ist ein Fehler aufgetreteten. Probiere es noch einmal oder kontaktiere uns unter contact@journeyplanner.io',
               life: 3000
             });
@@ -375,7 +375,7 @@ export default {
             console.log(error);
             this.toast.add({
               severity: 'error',
-              summary: 'Fehler beim speichern der Aktivität',
+              summary: 'Fehler beim Speichern der Aktivität',
               detail: 'Es ist ein Fehler aufgetreteten. Probiere es noch einmal oder kontaktiere uns unter contact@journeyplanner.io',
               life: 3000
             });
