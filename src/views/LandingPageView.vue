@@ -63,7 +63,7 @@ import Footer from "../components/Footer.vue";
         <template #text>
           Erstelle deine nächste Reise,
           füge Aktivitäten
-          hinzu & mach dir deinen eigenen Plan
+          hinzu & mache dir deinen eigenen Plan
         </template>
       </FunctionCard>
 
@@ -75,7 +75,7 @@ import Footer from "../components/Footer.vue";
           Teilen
         </template>
         <template #text>
-          Füge Freunde hinzu, mach sie zu Reiseleitern & plant eure Reise gemeinsam
+          Füge Freunde hinzu, mache sie zu Reiseleitern & plant eure Reise gemeinsam
         </template>
       </FunctionCard>
 
