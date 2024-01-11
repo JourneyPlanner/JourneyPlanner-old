@@ -113,7 +113,6 @@ export default {
 
           if (this.activities[i].google_maps_link != "") {
             if (!(this.activities[i].google_maps_link.substring(0, 4) === "http")) {
-              console.log(this.activities[i].google_maps_link.substring(0, 4));
               this.activities[i].google_maps_link = "https://" + this.activities[i].google_maps_link;
             }
           }
@@ -319,9 +318,6 @@ export default {
         let newDate = moment(durationIncrease).add(this.form.dauer, 'h');
         let cal_date_end = newDate.get('year') + "-" + (newDate.get('month') + 1) + "-" + newDate.get('date');
         let cal_to = newDate.get('hour').toString().padStart(2, "0") + ":" + (newDate.get('minute')).toString().padStart(2, "0") + ":" + newDate.get('second').toString().padStart(2, "0");
-        console.log(cal_date_end);
-        console.log(cal_to);
-
         const {error} = await supabase
             .from('activity')
             .update([
