@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-primary rounded-[32px] overflow-hidden py-8 my-1 shadow-md hover:bg-secondary">
+  <div class="bg-primary rounded-[32px] overflow-hidden py-8 my-1 shadow-md hover:bg-secondary sm:h-56 lg:h-full">
     <div class="font-nunito font-bold text-2xl text-text-black px-3 overflow-hidden whitespace-nowrap overflow-ellipsis">
       <slot name="journey-name"></slot>
     </div>

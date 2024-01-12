@@ -61,7 +61,7 @@ if (data) {
 </script>
 
 <template>
-  <div id="journeys" class="grid grid-cols-1 lg:grid-cols-4 gap-2 lg:gap-4 mx-5 lg:ml-16 lg:mr-36">
+  <div id="journeys" class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-2 lg:gap-4 mx-5 lg:ml-16 lg:mr-36">
     <RouterLink v-for="journey in journeys" :to="{ path: '/reise/'+ journey.pk_journey_uuid }"
                 v-tooltip.top="journey.name">
       <UserDashboardJourneyItem>
@@ -73,7 +73,7 @@ if (data) {
 
     <RouterLink to="/reise/neu" v-tooltip.top="'Neue Reise erstellen'">
       <div
-          class="bg-call-to-action rounded-[32px] py-12 mt-1 flex items-center justify-center shadow-md hover:opacity-80">
+          class="bg-call-to-action rounded-[32px] mt-1 flex items-center justify-center shadow-md hover:opacity-80 py-12 sm:h-56 lg:h-full">
         <IconNewJourney class="h-20 w-20 fill-text-black mb-2 mt-1.5"/>
       </div>
     </RouterLink>

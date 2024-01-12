@@ -13,13 +13,13 @@ const AsyncDashboard = defineAsyncComponent(() =>
 
 <template>
   <div class="flex flex-col min-h-screen">
-    <header class="flex flex-col lg:flex-row justify-between ml-5 lg:ml-16">
+    <header class="flex flex-col sm:flex-row justify-between ml-5 lg:ml-16">
       <div class="flex flex-row">
         <HomeMarkerIcon class="mt-3.5 mr-5"/>
-        <h1 class="font-nunito font-medium text-2xl mt-4 lg:mt-0 lg:text-4xl text-text-black">Deine Reisen</h1>
+        <h1 class="font-nunito font-medium text-2xl sm:text-3xl lg:text-4xl mt-4 lg:mt-0 text-text-black">Deine Reisen</h1>
       </div>
 
-      <div class="flex flex-row justify-between">
+      <div class="flex flex-row h-24 justify-between sm:mt-4">
         <NewJourneyButton class="border-2 border-call-to-action hover:opacity-80 shadow-md"
                           v-tooltip.bottom="{
                value: 'Neue Reise erstellen',
@@ -33,7 +33,7 @@ const AsyncDashboard = defineAsyncComponent(() =>
                    width: '30vw'
                  }}">
 
-          <SettingsIcon class="mt-3 lg:mt-9 mx-5 w-10 lg:w-14 hover:opacity-80 lg:mr-20 mb-4"/>
+          <SettingsIcon class="mt-3 lg:mt-5 mx-5 w-10 lg:w-14 hover:opacity-80 lg:mr-20 mb-4"/>
         </RouterLink>
       </div>
     </header>
