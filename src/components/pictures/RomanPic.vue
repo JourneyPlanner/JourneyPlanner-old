@@ -1,5 +1,5 @@
 <template>
-  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="240" height="240"
+  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="w-28 lg:w-56"
        viewBox="0 0 289 289">
     <defs>
       <pattern id="roman" width="1" height="1" viewBox="9.789 13.368 275.632 275.632">

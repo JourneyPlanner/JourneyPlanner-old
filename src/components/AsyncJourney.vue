@@ -31,35 +31,41 @@ async function getUsernameData() {
   const {data: {user}} = await supabase.auth.getUser();
   currentUser = user;
 
-  const {data: currentUserFunction, error: currentUserFunctionError} = await supabase
+  const {data: userFunctionsData, error: userFunctionsError} = await supabase
       .from('user_is_in')
       .select(`
-          function
-        `)
-      .eq('pk_user_uuid', user.id)
-      .eq('pk_journey_uuid', journeyID);
-  currentUserRole.value = currentUserFunction[0].function;
-
-  const {data: usernamesData, error: usernamesError} = await supabase
-      .from('user_is_in')
-      .select(`
-    user(username),
-    pk_user_uuid, function)
-    `)
+      pk_user_uuid, function
+      `)
       .eq('pk_journey_uuid', journeyID)
       .order('function', {ascending: false});
+
+  if (userFunctionsError) {
+    if (userFunctionsError.code === "22P02") {
+      await router.push('/reise/nicht-gefunden');
+    }
+    console.log(userFunctionsError);
+  }
+
+
+  const {data: usernamesData, error: usernamesError} = await supabase
+      .from('user')
+      .select(`
+      pk_uuid, username
+      `).in('pk_uuid', userFunctionsData.map((x) => x.pk_user_uuid));
 
   if (usernamesError) {
     console.log(usernamesError);
   }
 
-  usernamesData.forEach((row) => {
-    if (row["pk_user_uuid"] === currentUser.id) {
-      currentUserRole.value = row["function"];
+  const combinedUserData = usernamesData.map((x) => {
+    return {
+      user: x,
+      function: userFunctionsData.find((y) => y.pk_user_uuid === x.pk_uuid).function
     }
   });
 
-  usernames.value = usernamesData;
+  currentUserRole.value = userFunctionsData.find((x) => x.pk_user_uuid === currentUser.id).function;
+  usernames.value = combinedUserData;
 }
 
 async function getJourneyData() {
@@ -235,29 +241,29 @@ async function deleteJourney() {
         </div>
         <div class="col-start-4 justify-center items-center grid grid-cols-6">
           <RouterLink v-if="currentUserRole === 1"
-                      class="col-start-3 hover:opacity-80"
-                      to="/dashboard" v-tooltip.bottom="{
+                      v-tooltip.bottom="{
                value: 'Zum Dashboard',
                  style:{
                    width: '30vw'
-                 }}">
+                 }}"
+                      class="col-start-3 hover:opacity-80" to="/dashboard">
             <BackToDashboadIllustration class="px-3"/>
           </RouterLink>
           <RouterLink v-if="currentUserRole === 0"
-                      class="col-start-4 hover:opacity-80"
-                      to="/dashboard" v-tooltip.bottom="{
+                      v-tooltip.bottom="{
                value: 'Zum Dashboard',
                  style:{
                    width: '30vw'
-                 }}">
+                 }}"
+                      class="col-start-4 hover:opacity-80" to="/dashboard">
             <BackToDashboadIllustration class="px-3"/>
           </RouterLink>
-          <button v-if="currentUserRole === 1" class="hover:opacity-80"
-                  to="/" @click="copyLink" v-tooltip.bottom="{
+          <button v-if="currentUserRole === 1" v-tooltip.bottom="{
                value: 'Einladungslink kopieren',
                  style:{
                    width: '30vw'
-                 }}">
+                 }}"
+                  class="hover:opacity-80" to="/" @click="copyLink">
             <AddPeopleIllustration class="px-3"/>
           </button>
           <MenuIllustration class="px-3 cursor-pointer hover:opacity-80" @click="openNav()"/>
@@ -266,23 +272,23 @@ async function deleteJourney() {
       <div v-if="showSidebar"
            class="h-[100%] fixed z-10 top-0 right-0 bg-secondary overflow-x-hidden transition duration-500">
         <div class="flex flex-row justify-between">
-          <a class="w-16 px-3 text-2xl mt-1.5 hover:opacity-80" href="javascript:void(0)" @click="closeNav()"
-             v-tooltip.bottom="{
+          <a v-tooltip.bottom="{
                value: 'Schließen',
                  style:{
                    width: '30vw'
-                 }}">&times;</a>
+                 }}" class="w-16 px-3 text-2xl mt-1.5 hover:opacity-80" href="javascript:void(0)"
+             @click="closeNav()">&times;</a>
           <div class="mt-5">
             <ConfirmDialog :draggable="false" class="w-96"/>
             <button v-if="currentUserRole === 1"
-                    class="bg-delete rounded-2xl px-2 py-1 mr-4 font-nunito text-base font-bold shadow-md flex flex-row hover:opacity-80"
-                    severity="danger"
-                    type="button"
-                    @click="deleteConfirmation" v-tooltip.bottom="{
+                    v-tooltip.bottom="{
                value: 'Reise löschen',
                  style:{
                    width: '30vw'
-                 }}">
+                 }}"
+                    class="bg-delete rounded-2xl px-2 py-1 mr-4 font-nunito text-base font-bold shadow-md flex flex-row hover:opacity-80"
+                    severity="danger"
+                    type="button" @click="deleteConfirmation">
               <IconDelete class="text-black"/>
               <span class="">Reise löschen</span>
             </button>
@@ -292,11 +298,12 @@ async function deleteJourney() {
         <div v-for="(index) in usernames.length"
              class="font-nunito text-2xl text-text-black font-semibold overflow-hidden whitespace-nowrap overflow-ellipsis px-5 text-right w-[18vw]">
           <!-- Username -->
-          <p class="font-semibold overflow-hidden whitespace-nowrap overflow-ellipsis" v-tooltip.left="{
+          <p v-tooltip.left="{
                value: usernames[index - 1].user.username,
                  style:{
                    width: '30vw'
-                 }}">{{ usernames[index - 1].user.username }}</p>
+                 }}" class="font-semibold overflow-hidden whitespace-nowrap overflow-ellipsis">
+            {{ usernames[index - 1].user.username }}</p>
 
           <!-- if current user is just member -->
           <div v-if="currentUserRole === 0">
@@ -310,20 +317,20 @@ async function deleteJourney() {
           <!-- if current user is journey guide  -->
           <div v-if="currentUserRole === 1" class="flex text-right justify-end text-base pb-3">
             <!-- for all users except current user -->
-            <div v-if="usernames[index - 1].pk_user_uuid !== currentUser.id" class="flex" v-tooltip.top="{
+            <div v-if="usernames[index - 1].user.pk_uuid !== currentUser.id" v-tooltip.top="{
                value: 'Rolle ändern',
                  style:{
                    width: '30vw'
-                 }}">
+                 }}" class="flex">
 
               <!-- Reiseleiter/in -->
               <!-- if user is currently Reiseleiter/in -->
-              <p class="font-extrabold px-2"
-                 v-if="usernames[index - 1].function === 1">
+              <p v-if="usernames[index - 1].function === 1"
+                 class="font-extrabold px-2">
                 Reiseleiter/in </p>
               <!-- if user is currently Reisende/r and could be promoted -->
               <p v-else
-                 class="px-2 font-regular cursor-pointer" @click="toTourGuide(usernames[index - 1].pk_user_uuid)">
+                 class="px-2 font-regular cursor-pointer" @click="toTourGuide(usernames[index - 1].user.pk_uuid)">
                 Reiseleiter/in </p>
 
 
@@ -331,7 +338,7 @@ async function deleteJourney() {
               <!-- if user is currently Reisende/r -->
               <p v-if="usernames[index - 1].function === 0" class="pb-3 font-extrabold">Reisende/r </p>
               <!-- if user is currently Reiseleiter/in and could be downgraded -->
-              <p v-else class="pb-3 font-regular cursor-pointer" @click="toRegular(usernames[index - 1].pk_user_uuid)">
+              <p v-else class="pb-3 font-regular cursor-pointer" @click="toRegular(usernames[index - 1].user.pk_uuid)">
                 Reisende/r </p>
             </div>
 
