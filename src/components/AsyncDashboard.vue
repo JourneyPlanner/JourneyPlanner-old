@@ -61,7 +61,7 @@ if (data) {
 </script>
 
 <template>
-  <div id="journeys" class="grid grid-cols-4 gap-4 ml-16 mr-36">
+  <div id="journeys" class="grid grid-cols-1 lg:grid-cols-4 gap-2 lg:gap-4 mx-5 lg:ml-16 lg:mr-36">
     <RouterLink v-for="journey in journeys" :to="{ path: '/reise/'+ journey.pk_journey_uuid }"
                 v-tooltip.top="journey.name">
       <UserDashboardJourneyItem>
