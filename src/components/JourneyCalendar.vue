@@ -38,7 +38,7 @@ export default {
         adresse: '',
         kosten: '',
         dauer: null,
-        oefnungszeiten: '',
+        oeffnungszeiten: '',
         link: '',
         kontakt: '',
         additionalLink: '',
@@ -110,7 +110,6 @@ export default {
         if (isActivityIndex) {
           this.form.name = this.activities[i].name;
           this.form.dauer = (this.activities[i].estimated_duration / 60).toFixed(2);
-          this.form.oeffnungszeiten = this.activities[i].opening_hours;
 
           if (this.activities[i].google_maps_link !== "") {
             if (!(this.activities[i].google_maps_link.substring(0, 4) === "http")) {
@@ -131,7 +130,7 @@ export default {
           this.form.beschreibung = this.activities[i].description;
           this.ausgewaehltesEvent = this.activities[i].pk_activity_uuid;
           this.added_to_calendar = this.activities[i].added_to_calendar;
-          this.form.oefnungszeiten = this.activities[i].opening_hours;
+          this.form.oeffnungszeiten = this.activities[i].opening_hours;
           this.form.cal_from = this.activities[i].cal_from;
           this.form.cal_date_start = this.activities[i].cal_date_start;
           this.form.cal_to = this.activities[i].cal_to;
@@ -332,7 +331,7 @@ export default {
                 {
                   name: this.form.name,
                   estimated_duration: Math.round(this.form.dauer * 60),
-                  opening_hours: this.form.oefnungszeiten,
+                  opening_hours: this.form.oeffnungszeiten,
                   google_maps_link: this.form.link,
                   contact: this.form.kontakt,
                   address: this.form.adresse,
@@ -367,7 +366,7 @@ export default {
                 {
                   name: this.form.name,
                   estimated_duration: this.form.dauer * 60,
-                  opening_hours: this.form.oefnungszeiten,
+                  opening_hours: this.form.oeffnungszeiten,
                   google_maps_link: this.form.link,
                   contact: this.form.kontakt,
                   link: this.form.additionalLink,
@@ -526,7 +525,7 @@ export default {
                       <label for="journey-from" class="pt-2">Öffnungszeiten</label>
                       <textarea :disabled="currentUserRole !== 1" class="m-0 p-0 resize-none rounded
                       border-none pl-1.5 pb-[42%] pt-0 whitespace-normal"
-                                v-model="form.oefnungszeiten"
+                                v-model="form.oeffnungszeiten"
                                 :class="currentUserRole === 1 ? '' : 'bg-disabled-input'">
                         {{form.oeffnungszeiten}}
                       </textarea>
