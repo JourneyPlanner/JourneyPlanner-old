@@ -170,26 +170,33 @@ export default {
       const endTime = event.event._instance.range.end.toISOString().split("T");
       endTime[1] = endTime[1].substring(0, 8);
 
+      const startMoment = new Date(startTime);
+      const endMomement = new Date(endTime);
+      const durationMoment = Math.round((endMomement - startMoment) / (1000 * 60));
       const {error} = await supabase
           .from('activity')
           .update({
             added_to_calendar: true, cal_date_start: startTime[0], cal_date_end: endTime[0]
-            , cal_from: startTime[1], cal_to: endTime[1]
+            , cal_from: startTime[1], cal_to: endTime[1], estimated_duration: durationMoment
           })
           .eq('pk_activity_uuid', event.event._def.extendedProps.defId);
       if (error) {
         console.log(error);
       }
-      event.draggedEl.parentNode.removeChild(event.draggedEl);
-      this.eventCount--;
-      if (this.eventCount <= 0) {
-        this.noEvents = true;
-      }
+      let alreadyAddedToCalendar;
       for (let i = 0; i < this.activities.length; i++) {
         if (this.activities[i].pk_activity_uuid === event.event._def.extendedProps.defId) {
+           alreadyAddedToCalendar = this.activities[i].added_to_calendar;
           this.activities[i].added_to_calendar = true;
           this.activities[i].cal_date_start = startTime[0];
           this.activities[i].cal_from = startTime[1];
+          this.activities[i].estimated_duration = durationMoment;
+        }
+      }
+      if (!alreadyAddedToCalendar){
+        this.eventCount--;
+        if (this.eventCount <= 0) {
+          this.noEvents = true;
         }
       }
     },
@@ -447,7 +454,7 @@ export default {
   <div>
     <section class="content mt-4">
       <div class="container-fluid">
-        <Dialog :visible="showDataBool" :close-on-escape="true" :header="' '"
+        <Dialog :draggable=false :visible="showDataBool" :close-on-escape="true" :header="' '"
                 :style="{ width: '60rem' }" @update:visible="handleClose()">
           <div class="relative flex flex-col justify-center items-center">
             <div class="flex flex-col justify-between">
