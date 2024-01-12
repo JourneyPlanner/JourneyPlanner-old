@@ -13,13 +13,13 @@ const AsyncDashboard = defineAsyncComponent(() =>
 
 <template>
   <div class="flex flex-col min-h-screen">
-    <header class="flex flex-row justify-between mb-4">
+    <header class="grid grid-cols-2 grid-rows-1 justify-between mb-4">
       <div class="flex flex-row ml-10 mt-3">
         <HomeMarkerIcon class="mt-3.5 ml-7 mr-5"/>
-        <h1 class="font-nunito font-medium text-4xl text-text-black">Deine Reisen</h1>
+        <h1 class="font-nunito font-medium text-2xl lg:text-4xl text-text-black">Deine Reisen</h1>
       </div>
 
-      <div class="flex flex-row mr-20">
+      <div class="flex flex-row  mr-20">
         <NewJourneyButton class="border-2 border-call-to-action hover:opacity-80 shadow-md" v-tooltip.bottom="{
                value: 'Neue Reise erstellen',
                  style:{
