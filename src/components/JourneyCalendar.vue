@@ -576,8 +576,8 @@ export default {
                          class="rounded border-none pl-1.5 placeholder-text-black"
                          :class="currentUserRole === 1 ? '' : 'bg-disabled-input'">
                 </div>
-                <h1 class="pt-3 w-[100%] underline font-bold" v-if="!added_to_calendar">Manuelle Datumseingabe</h1>
-                <div class="gap-5 grid grid-cols-2" v-if="!added_to_calendar">
+                <h1 class="pt-3 w-[100%] underline font-bold">Manuelle Datumseingabe</h1>
+                <div class="gap-5 grid grid-cols-2">
                   <div class="flex flex-col">
                     <label for="journey-from" class="pt-2">Startdatum</label>
                     <input :disabled="currentUserRole !== 1"
