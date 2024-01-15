@@ -134,8 +134,8 @@ export default {
           this.added_to_calendar = this.activities[i].added_to_calendar;
           this.form.oeffnungszeiten = this.activities[i].opening_hours;
           this.form.cal_from = this.activities[i].cal_from;
-          this.form.cal_date_start = this.activities[i].cal_date_start;
-          this.form.cal_to = this.activities[i].cal_to;
+          this.form.manualStartDate = this.activities[i].cal_date_start;
+          this.form.manualStartHours = this.activities[i].cal_from;
           this.form.cal_date_end = this.activities[i].cal_date_end;
           isActivityIndex = false;
         }
