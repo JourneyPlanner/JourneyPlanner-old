@@ -44,10 +44,12 @@ export default {
         additionalLink: '',
         pk_activity_uuid: '',
         added_to_calendar: '',
-        cal_from: '',
-        cal_to: '',
-        cal_date_start: '',
-        cal_date_end: '',
+        cal_from: null,
+        cal_to: null,
+        cal_date_start: null,
+        cal_date_end: null,
+        manualStartDate: null,
+        manualStartHours: null,
       }),
       currentUserRole: ref(),
       toast: useToast(),
@@ -132,8 +134,8 @@ export default {
           this.added_to_calendar = this.activities[i].added_to_calendar;
           this.form.oeffnungszeiten = this.activities[i].opening_hours;
           this.form.cal_from = this.activities[i].cal_from;
-          this.form.cal_date_start = this.activities[i].cal_date_start;
-          this.form.cal_to = this.activities[i].cal_to;
+          this.form.manualStartDate = this.activities[i].cal_date_start;
+          this.form.manualStartHours = this.activities[i].cal_from;
           this.form.cal_date_end = this.activities[i].cal_date_end;
           isActivityIndex = false;
         }
@@ -185,14 +187,14 @@ export default {
       let alreadyAddedToCalendar;
       for (let i = 0; i < this.activities.length; i++) {
         if (this.activities[i].pk_activity_uuid === event.event._def.extendedProps.defId) {
-           alreadyAddedToCalendar = this.activities[i].added_to_calendar;
+          alreadyAddedToCalendar = this.activities[i].added_to_calendar;
           this.activities[i].added_to_calendar = true;
           this.activities[i].cal_date_start = startTime[0];
           this.activities[i].cal_from = startTime[1];
           this.activities[i].estimated_duration = durationMoment;
         }
       }
-      if (!alreadyAddedToCalendar){
+      if (!alreadyAddedToCalendar) {
         this.eventCount--;
         if (this.eventCount <= 0) {
           this.noEvents = true;
@@ -320,21 +322,32 @@ export default {
           life: 4000
         });
       } else {
-        let durationIncrease = new Date(this.form.cal_date_start + "T" + this.form.cal_from);
-        let newDate = moment(durationIncrease).add(this.form.dauer, 'h');
-        let cal_date_end = newDate.get('year') + "-" + (newDate.get('month') + 1) + "-" + newDate.get('date');
-        let cal_to = newDate.get('hour').toString().padStart(2, "0") + ":" + (newDate.get('minute')).toString().padStart(2, "0") + ":" + newDate.get('second').toString().padStart(2, "0");
-        if (this.added_to_calendar) {
+        let cal_date_end;
+        let cal_to;
+        if (this.form.manualStartDate !== null && this.form.manualStartHours !== null){
+          this.form.cal_date_start = this.form.manualStartDate;
+          this.form.cal_from = this.form.manualStartHours;
+        }
+        if (this.form.cal_date_start !== null && this.form.cal_from !== null) {
+          let durationIncrease = new Date(this.form.cal_date_start + "T" + this.form.cal_from);
+          let newDate = moment(durationIncrease).add(this.form.dauer, 'h');
+          cal_date_end = newDate.get('year') + "-" + (newDate.get('month') + 1) + "-" + newDate.get('date');
+          cal_to = newDate.get('hour').toString().padStart(2, "0") + ":" + (newDate.get('minute')).toString().padStart(2, "0") + ":" + newDate.get('second').toString().padStart(2, "0");
+        }
+        if (cal_date_end !== null && cal_to !== null) {
           const {error} = await supabase
               .from('activity')
               .update([
                 {
+                  added_to_calendar: true,
                   name: this.form.name,
                   estimated_duration: Math.round(this.form.dauer * 60),
                   opening_hours: this.form.oeffnungszeiten,
                   google_maps_link: this.form.link,
                   contact: this.form.kontakt,
                   address: this.form.adresse,
+                  cal_date_start: this.form.cal_date_start,
+                  cal_from: this.form.cal_from,
                   cal_date_end: cal_date_end,
                   link: this.form.additionalLink,
                   cal_to: cal_to,
@@ -562,6 +575,25 @@ export default {
                          v-model="form.adresse"
                          class="rounded border-none pl-1.5 placeholder-text-black"
                          :class="currentUserRole === 1 ? '' : 'bg-disabled-input'">
+                </div>
+                <h1 class="pt-3 w-[100%] underline font-bold">Manuelle Datumseingabe</h1>
+                <div class="gap-5 grid grid-cols-2">
+                  <div class="flex flex-col">
+                    <label for="journey-from" class="pt-2">Startdatum</label>
+                    <input :disabled="currentUserRole !== 1"
+                           type="date"
+                           v-model="form.manualStartDate"
+                           class="w-[100%] rounded border-none cursor-pointer pl-1.5 placeholder-text-black"
+                           :class="currentUserRole === 1 ? '' : 'bg-disabled-input'">
+                  </div>
+                  <div class="flex flex-col">
+                    <label for="journey-to" class="pt-2">Startuhrzeit</label>
+                    <input :disabled="currentUserRole !== 1"
+                           type="time"
+                           v-model="form.manualStartHours"
+                           class="rounded border-none pl-1.5 placeholder-text-black"
+                           :class="currentUserRole === 1 ? '' : 'bg-disabled-input'">
+                  </div>
                 </div>
                 <label class="pt-2" for="journey-link">Beschreibung</label>
                 <div class="flex flex-row justify-between gap-2">
