@@ -114,12 +114,12 @@ onMounted(() => {
 <template>
   <div class="relative text-text-black">
     <div class="bg-background flex">
-      <div id="firsHalf" class="xl:w-1/2 md:w-2/3 sm:w-[100%] items-center justify-center flex flex-col">
+      <div class="xl:w-1/2 md:w-2/3 sm:w-[100%] items-center justify-center flex flex-col">
         <BackToHomeButton class="absolute top-[2%] left-[2%]"/>
         <div class="xl:w-1/2 md:w-[80%] sm:w-[80%]">
-          <h1 class="xl:text-3xl md:text-3xl sm:text-3xl pl-6.1538em font-nunito pt-[15%]">Registrierung</h1>
+          <h1 class="text-2xl lg:text-3xl text-center sm:text-left pl-6.1538em font-nunito pt-[15%]">Registrierung</h1>
           <form class="bg-primary rounded-2xl xl:w-[28vw] md:w-[55vw] sm:w-[80vw] ">
-            <div class="inside flex flex-col pl-8 ">
+            <div class="inside flex flex-col pl-8">
               <h2 class="col-start-1 text-xl font-nunito font-semibold">Benutzername</h2>
               <input v-model="v$.username.$model"
                      class="font-nunito text-xl border rounded border-none focus:outline-none focus:ring-2 focus:ring-call-to-action pl-1"
@@ -191,11 +191,11 @@ onMounted(() => {
         </div>
 
       </div>
-      <div class="w-1/2 items-center justify-center overflow-x-hidden">
+      <div class="w-1/2 items-center justify-center overflow-x-hidden hidden lg:block">
         <FliegerIllustration class="h-[85vh] ml-[1%]"/>
       </div>
     </div>
-    <div class="xl:w-1/2 md:w-2/3 sm:w-[100%] items-center justify-center flex ml-5 -mr-0.5">
+    <div class="xl:w-1/2 md:w-2/3 sm:w-[100%] items-center justify-center flex lg:ml-5 -mr-0.5">
       <Footer class="bottom-0 w-full"/>
     </div>
   </div>
