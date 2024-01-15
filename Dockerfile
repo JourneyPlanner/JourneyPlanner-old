@@ -13,5 +13,6 @@ COPY journeyplanner.io.* /etc/nginx/certs/
 COPY JourneyPlanner/conf/nginx.conf /etc/nginx/nginx.conf
 COPY --from=build-stage /app/dist /var/www/journeyplanner.io/html
 COPY JourneyPlanner/conf/microsoft-identity-association.json /var/www/journeyplanner.io/html/.well-known/microsoft-identity-association.json
+COPY JourneyPlanner/templates/src/index.html /var/www/journeyplanner.io/html/templates/email/confirmation.html
 EXPOSE 443
 CMD ["nginx", "-g", "daemon off;"]
