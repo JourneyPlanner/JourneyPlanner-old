@@ -199,7 +199,7 @@ input[type=number] {
               soll</p>
           </div>
           <div class="pt-4 flex flex-row justify-between">
-            <button @click="cancel" class="bg-cancel rounded-[38px] px-3 py-1 shadow-md hover:opacity-80">
+            <button type="submit" @click.prevent="cancel()" class="bg-cancel rounded-[38px] px-3 py-1 shadow-md hover:opacity-80">
               Abbrechen
             </button>
             <button type="submit" @submit.prevent="create()"
