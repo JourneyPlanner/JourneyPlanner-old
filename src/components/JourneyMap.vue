@@ -39,6 +39,9 @@ onMounted(async () => {
  * call to the different functions
  */
 async function getMapData() {
+  markers.value = [];
+  notFoundActivities.value = [];
+
   await getJourneyLocation();
   await getJourneyLocationCoordinates(journeyPlace.value);
   let activities = await getActivities();
@@ -166,7 +169,7 @@ async function handleActivities(activities) {
           <details class="font-nunito-sans" v-if="notFoundActivities.length > 0">
             <summary class="font-bold">Nicht lokalisierbare Aktivitäten</summary>
             <p>
-              Diese Aktivitäten konnten wir leider nicht eindeutig zuordnen. Sie sind daher nicht auf der Karte
+              Diese Aktivitäten {{notFoundActivities.length}} konnten wir leider nicht eindeutig zuordnen. Sie sind daher nicht auf der Karte
               ersichtlich.
             </p>
             <table class="table-auto border-collapse border border-b-placeholder-gray">
