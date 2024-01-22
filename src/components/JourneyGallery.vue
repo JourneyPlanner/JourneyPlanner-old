@@ -115,7 +115,7 @@ async function fetchMedia() {
         ></div>
 
         <div v-for="video in videos" :key="`video-${video}`">
-          <iframe :src="video" class="w-40 h-40 rounded-md bg-center shadow-md"></iframe>
+          <iframe sandbox :src="video" class="w-40 h-40 rounded-md bg-center shadow-md"></iframe>
         </div>
 
         <div v-for="file in texts" :key="`text-${file}`">
