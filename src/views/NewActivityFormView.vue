@@ -133,7 +133,7 @@ input[type=number] {
       <div class="bg-primary rounded-[58px] pl-6 pt-3 pr-10 pb-6 w-[33%]">
         <form class="flex flex-col font-nunito font-semibold text-xl" @submit.prevent="create">
           <label for="journey-name" class="pb-0.5 pt-2">Name deiner Aktivität*</label>
-          <input id="journey-name" placeholder="z.B. Name des Musuems" v-model="form.name" @blur="v$.name.$touch"
+          <input id="journey-name" placeholder="z.B. Name des Museums" v-model="form.name" @blur="v$.name.$touch"
                  class="rounded border-none focus:outline-none focus:ring-2 focus:ring-call-to-action pl-1.5">
           <p v-if="v$.name.$error" class="text-delete text-base font-nunito-sans font-bold">Bitte gib deiner Aktivität
             einen
