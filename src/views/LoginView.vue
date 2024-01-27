@@ -133,11 +133,11 @@ onMounted(() => {
   <Toast/>
 
   <div class="relative text-text-black">
-    <div class="about bg-background flex">
-      <div class="w-1/2 items-center justify-center overflow-x-hidden">
+    <div class="bg-background flex">
+      <div class="w-1/2 items-center justify-center overflow-x-hidden hidden lg:block">
         <PersonWalkingIllustration class="h-[85vh] ml-[-25%] mt-[5%]"/>
       </div>
-      <div id="firsHalf" class="xl:w-1/2 md:w-2/3 sm:w-[100%] items-center justify-center flex flex-col">
+      <div class="xl:w-1/2 md:w-2/3 sm:w-[100%] items-center justify-center flex flex-col min-h-screen">
         <Dialog v-model:visible="registered" :style="{ width: '50rem' }" header="Bestätige noch deine E-Mail-Adresse!"
                 modal>
           <p>
@@ -159,9 +159,9 @@ onMounted(() => {
           </p>
         </Dialog>
 
-        <BackToHomeButton class="absolute top-[2%] w-2/12 left-[82vw] pr-4"/>
-        <div class="form xl:w-1/2 md:w-[80%] sm:w-[80%]">
-          <h1 class="xl:text-3xl md:text-3xl sm:text-3xl pl-6.1538em font-nunito pt-[15%]">Anmelden</h1>
+        <BackToHomeButton class="absolute top-[2%] right-0 pr-4"/>
+        <div class="xl:w-1/2 md:w-[80%] sm:w-[80%]">
+          <h1 class="xl:text-3xl text-2xl pl-6.1538em font-nunito pt-[30%]">Anmelden</h1>
           <form class="bg-primary rounded-2xl xl:w-[25vw] md:w-[50vw] sm:w-[75vw]">
             <div class="inside flex flex-col pl-8 ">
               <h2 class="col-start-1 text-xl font-nunito font-semibold">E-Mail</h2>
@@ -177,7 +177,7 @@ onMounted(() => {
                         @click="signIn">Anmelden
                 </button>
                 <RouterLink
-                    class="font-nunito text-base font-bold px-2 break-after-all mt-2.5 2xl:mr-10 underline underline-offset-2"
+                    class="font-nunito text-base font-bold px-2 mt-2.5 sm:mr-12 underline underline-offset-2"
                     to="register">Noch kein Konto?
                 </RouterLink>
               </div>
@@ -204,13 +204,7 @@ onMounted(() => {
             </div>
           </form>
         </div>
-      </div>
-    </div>
-    <div class="justify-center text-center flex">
-      <div class="w-1/2 h-1 items-center justify-center overflow-x-hidden">
-      </div>
-      <div class="w-1/2 items-center justify-center overflow-x-hidden">
-        <Footer class=""/>
+        <Footer class="mt-auto"/>
       </div>
     </div>
   </div>
