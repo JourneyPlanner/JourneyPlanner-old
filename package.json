@@ -23,7 +23,7 @@
     "jszip": "^3.10.1",
     "moment": "^2.30.1",
     "pinia": "^2.1.7",
-    "primevue": "^3.46.0",
+    "primevue": "^3.47.2",
     "uuid": "^9.0.1",
     "vue": "^3.4.15",
     "vue-draggable-next": "^2.2.1",
