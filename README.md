@@ -1,40 +1,82 @@
-# JourneyPlanner
+<br>
+<p align="center">
+  <a href="https://github.com/JourneyPlanner/JourneyPlanner">
+    <img src="public/JP_Colorful_Logo_80x65_v1.0.svg" alt="Logo" width="80" height="80">
+  </a>
 
-This template should help get you started developing with Vue 3 in Vite.
+<h3 align="center">JourneyPlanner</h3>
 
-## Recommended IDE Setup
+  <p align="center">
+    Reiseplanung leicht gemacht!
+    <br/>
+    Trip planning made easy!
+    <br/>
+    <br/>
+    <a href="https://github.com/JourneyPlanner/JourneyPlanner">View Demo</a>
+    -
+    <a href="https://github.com/JourneyPlanner/JourneyPlanner/issues">Report Bug</a>
+    -
+    <a href="https://github.com/JourneyPlanner/JourneyPlanner/issues">Request Feature</a>
+  </p>
+</p>
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+![Contributors](https://img.shields.io/github/contributors/JourneyPlanner/JourneyPlanner?color=dark-green) ![Forks](https://img.shields.io/github/forks/JourneyPlanner/JourneyPlanner?style=social) ![Stargazers](https://img.shields.io/github/stars/JourneyPlanner/JourneyPlanner?style=social) ![Issues](https://img.shields.io/github/issues/JourneyPlanner/JourneyPlanner) ![License](https://img.shields.io/github/license/JourneyPlanner/JourneyPlanner)
 
-## Type Support for `.vue` Imports in TS
+## Table Of Contents
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+* [About the Project](#about-the-project)
+* [Built With](#built-with)
+* [Getting Started](#getting-started)
+* [Roadmap](#roadmap)
+* [License](#license)
+* [Authors](#authors)
+* [Acknowledgements](#acknowledgements)
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+## About The Project
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+JourneyPlanner is an innovative tool that makes planning group trips easier. Developed by 4 dedicated HTL students (vocational school in Austria), this Vue.js and Supabase project is designed to simplify the organization of journeys and ensure a smooth experience for everyone involved.
 
-## Customize configuration
+#### Features 🚀
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+- **Plan**: Create your next trip, add activities & make your own plan
+- **Share**: Add friends, make them tour guides & plan your trip together
+- **Experience**: Enjoy your planned trip, experience adventures and upload memories
 
-## Project Setup
+Your ultimate platform for effortlessly organizing unforgettable adventures!
+Design your trip, share your plan and go exploring together.
+Ready for your next adventure?
+#### Try it out at [journeyplanner.io](https://journeyplanner.io)!
 
-```sh
-npm install
-```
+![](.github/JP_dashboard_v1.0.png)
 
-### Compile and Hot-Reload for Development
+## Built With
 
-```sh
-npm run dev
-```
+JourneyPlanner uses these amazing tools, packages and frameworks (more listed at the bottom):
 
-### Type-Check, Compile and Minify for Production
+* [Vue.js](https://vuejs.org/)
+* [Tailwind](https://tailwindcss.com/)
+* [Supabase](https://supabase.com/)
 
-```sh
-npm run build
-```
+## Roadmap
+
+See the [open issues](https://github.com/JourneyPlanner/JourneyPlanner/issues) for a list of proposed features (and known issues).
+
+## Authors
+
+Created by 4 students of [HTL Rennweg](https://www.htl.rennweg.at/).
+* Raven Burkard ([@mathematti](https://github.com/mathematti))
+* Roman Krebs ([@ixpiria](https://github.com/Ixpiria))
+* Stefania Manastirska ([@stefll](https://github.com/stefll))
+* Severin Rosner ([@EinSev](https://github.com/EinSev))
+
+## Acknowledgements
+
+* [Fullcalendar.io](https://fullcalendar.io/)
+* [Cloudflare]()
+* [Oracle Cloud](https://cloud.oracle.com/)
+* [Mailgun](https://www.mailgun.com/)
+* [Docker](https://www.docker.com/)
+* [WebStorm](https://www.jetbrains.com/de-de/webstorm/)
+* [PrimeVue](https://primevue.org/)
+* [Leaflet](https://leafletjs.com/)
+* [See more](https://github.com/JourneyPlanner/JourneyPlanner/blob/main/package.json)
