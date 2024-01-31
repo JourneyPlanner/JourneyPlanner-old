@@ -9,11 +9,13 @@
   <p align="center">
     Reiseplanung leicht gemacht!
     <br/>
+    Trip planning made easy!
+    <br/>
     <br/>
     <a href="https://github.com/JourneyPlanner/JourneyPlanner">View Demo</a>
-    .
+    -
     <a href="https://github.com/JourneyPlanner/JourneyPlanner/issues">Report Bug</a>
-    .
+    -
     <a href="https://github.com/JourneyPlanner/JourneyPlanner/issues">Request Feature</a>
   </p>
 </p>
@@ -32,7 +34,7 @@
 
 ## About The Project
 
-JourneyPlanner is an innovative tool that makes planning group trips easier. Developed by 4 dedicated HTL students (vocational school in Austria), this Vue.js and Supabase project is designed to simplify the organization journeys and ensure a smooth experience for everyone involved.
+JourneyPlanner is an innovative tool that makes planning group trips easier. Developed by 4 dedicated HTL students (vocational school in Austria), this Vue.js and Supabase project is designed to simplify the organization of journeys and ensure a smooth experience for everyone involved.
 
 #### Features 🚀
 
@@ -43,7 +45,9 @@ JourneyPlanner is an innovative tool that makes planning group trips easier. Dev
 Your ultimate platform for effortlessly organizing unforgettable adventures!
 Design your trip, share your plan and go exploring together.
 Ready for your next adventure?
-#### Try it out at [journeyplanner.io](https://journeyplanner.io)
+#### Try it out at [journeyplanner.io](https://journeyplanner.io)!
+
+![](.github/JP_dashboard_v1.0.png)
 
 ## Built With
 
@@ -56,10 +60,6 @@ JourneyPlanner uses these amazing tools, packages and frameworks (more listed at
 ## Roadmap
 
 See the [open issues](https://github.com/JourneyPlanner/JourneyPlanner/issues) for a list of proposed features (and known issues).
-
-## License
-
-Distributed under the MIT License. See [LICENSE](https://github.com/JourneyPlanner/JourneyPlanner/blob/main/LICENSE.md) for more information.
 
 ## Authors
 
